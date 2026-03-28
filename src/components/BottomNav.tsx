@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 const NAV_ITEMS = [
   { path: "/", icon: Home, label: "Хаб" },
   { path: "/feed", icon: Compass, label: "Лента" },
-  { path: "/map", icon: Map, label: "Карта" },
+  { path: "/glyph", icon: Hexagon, label: "Глиф" },
   { path: "/search", icon: Search, label: "Поиск" },
   { path: "/profile", icon: User, label: "Я" },
 ];

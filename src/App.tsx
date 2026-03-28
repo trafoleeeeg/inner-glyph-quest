@@ -49,6 +49,7 @@ const App = () => (
             <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
             <Route path="/feed" element={<ProtectedRoute><FeedPage /></ProtectedRoute>} />
             <Route path="/map" element={<ProtectedRoute><MapPage /></ProtectedRoute>} />
+            <Route path="/glyph" element={<ProtectedRoute><GlyphPage /></ProtectedRoute>} />
             <Route path="/search" element={<ProtectedRoute><SearchPage /></ProtectedRoute>} />
             <Route path="/user/:userId" element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
