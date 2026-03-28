@@ -10,6 +10,7 @@ import NotificationBell from "@/components/NotificationBell";
 import ParticleField from "@/components/ParticleField";
 import { RefreshCw, Search } from "lucide-react";
 import RSSFeed from "@/components/RSSFeed";
+import Leaderboard from "@/components/Leaderboard";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
