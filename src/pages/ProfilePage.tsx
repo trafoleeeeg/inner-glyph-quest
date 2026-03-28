@@ -95,10 +95,17 @@ const ProfilePage = () => {
   useEffect(() => { fetchPosts(); }, [fetchPosts]);
 
   const handleNameSave = async () => {
-    if (nameInput.trim() && nameInput.trim().length <= 30) {
-      await updateProfile({ display_name: nameInput.trim() } as any);
-      setEditingName(false);
+    const trimmed = nameInput.trim();
+    if (!trimmed || trimmed.length > 30) return;
+    // Allow English letters, numbers, spaces, underscores, dots
+    const isValid = /^[a-zA-Z0-9_.\s]+$/.test(trimmed);
+    if (!isValid) {
+      toast.error("Никнейм должен быть на английском (буквы, цифры, _)");
+      return;
     }
+    await updateProfile({ display_name: trimmed } as any);
+    setEditingName(false);
+    toast.success("Никнейм обновлён");
   };
 
   const handleBioSave = async () => {
