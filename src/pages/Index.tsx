@@ -420,14 +420,7 @@ const Index = () => {
         </div>
 
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
-          className="text-center py-4">
-          <p className="text-[10px] text-muted-foreground/40 font-mono">
-            каждый день — шаг к лучшей версии себя
-          </p>
-        </motion.div>
-
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
-          className="text-center py-6 space-y-1">
+          className="text-center py-6">
           <p className="text-[10px] text-muted-foreground/40 font-mono">
             каждый день — шаг к лучшей версии себя
           </p>

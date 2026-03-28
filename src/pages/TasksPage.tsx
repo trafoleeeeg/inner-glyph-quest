@@ -288,13 +288,13 @@ const TasksPage = () => {
                 placeholder="Что нужно сделать?" autoFocus
                 className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none" />
 
-              {/* Quick presets — now they just prefill the title */}
-              {!newTaskTitle && (
+              {/* Quick presets from user's habits */}
+              {!newTaskTitle && missions.length > 0 && (
                 <div className="flex flex-wrap gap-1">
-                  {QUICK_PRESETS.map(p => (
-                    <button key={p.title} onClick={() => handlePresetClick(p.title)}
+                  {missions.map(m => (
+                    <button key={m.id} onClick={() => handlePresetClick(m.title)}
                       className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-mono text-muted-foreground hover:text-foreground bg-muted/20 hover:bg-muted/40 transition-colors border border-border/20">
-                      <span>{p.icon}</span> {p.title}
+                      <span>{m.icon}</span> {m.title.slice(0, 20)}
                     </button>
                   ))}
                 </div>

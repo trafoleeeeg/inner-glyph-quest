@@ -3,22 +3,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Slider } from "@/components/ui/slider";
 import { Battery, BatteryLow, BatteryFull, Zap } from "lucide-react";
 
-const TASK_POOL = [
-  { title: "Выпить воды", energy: 1, icon: "💧" },
-  { title: "Глубокое дыхание", energy: 1, icon: "🌬️" },
-  { title: "Записать мысль", energy: 1, icon: "📝" },
-  { title: "Чтение 10 страниц", energy: 2, icon: "📖" },
-  { title: "Прогулка 15 мин", energy: 2, icon: "🚶" },
-  { title: "Медитация 10 мин", energy: 2, icon: "🧘" },
-  { title: "Растяжка", energy: 2, icon: "🤸" },
-  { title: "Тренировка 30 мин", energy: 3, icon: "💪" },
-  { title: "Изучить новый навык", energy: 3, icon: "🎯" },
-  { title: "Холодный душ", energy: 3, icon: "🧊" },
-  { title: "Глубокая работа 1ч", energy: 4, icon: "🔥" },
-  { title: "Полный детокс от экранов", energy: 4, icon: "📵" },
-  { title: "Спринт по целям", energy: 5, icon: "🚀" },
-  { title: "Марафон продуктивности", energy: 5, icon: "⚡" },
-];
+interface Mission {
+  id: string;
+  title: string;
+  icon: string;
+  xp_reward: number;
+  category: string;
+}
 
 const MODES = [
   { max: 20, label: "Режим отдыха", desc: "Сейчас важно восстановиться. Только лёгкие действия.", color: "text-red-400", bg: "bg-red-500/10", border: "border-red-500/20", icon: BatteryLow },
@@ -28,15 +19,18 @@ const MODES = [
   { max: 101, label: "Максимум", desc: "Ты на пике! Бери самые амбициозные цели.", color: "text-accent", bg: "bg-accent/10", border: "border-accent/20", icon: Zap },
 ];
 
-const AdaptiveTaskSelector = () => {
+const AdaptiveTaskSelector = ({ missions }: { missions: Mission[] }) => {
   const [energy, setEnergy] = useState(50);
 
   const mode = useMemo(() => MODES.find(m => energy <= m.max) || MODES[2], [energy]);
 
+  // Map mission xp_reward to energy levels: low xp = easy, high xp = hard
   const availableTasks = useMemo(() => {
-    const maxLevel = energy <= 20 ? 1 : energy <= 40 ? 2 : energy <= 60 ? 3 : energy <= 80 ? 4 : 5;
-    return TASK_POOL.filter(t => t.energy <= maxLevel);
-  }, [energy]);
+    const maxXP = energy <= 20 ? 20 : energy <= 40 ? 30 : energy <= 60 ? 40 : energy <= 80 ? 50 : 999;
+    return missions.filter(m => m.xp_reward <= maxXP);
+  }, [energy, missions]);
+
+  if (missions.length === 0) return null;
 
   const ModeIcon = mode.icon;
 
@@ -83,34 +77,16 @@ const AdaptiveTaskSelector = () => {
         <p className="text-[11px] text-muted-foreground">{mode.desc}</p>
       </motion.div>
 
-      {/* Orb visualization */}
-      <div className="flex justify-center mb-4">
-        <motion.div
-          animate={{
-            width: 60 + energy * 0.8,
-            height: 60 + energy * 0.8,
-            opacity: 0.3 + energy * 0.007,
-          }}
-          transition={{ type: "spring", stiffness: 100 }}
-          className="rounded-full border-2 border-dashed border-primary/40 flex items-center justify-center"
-          style={{
-            background: `radial-gradient(circle, hsl(var(--primary) / ${0.05 + energy * 0.003}), transparent 70%)`,
-          }}
-        >
-          <span className="text-2xl">🌌</span>
-        </motion.div>
-      </div>
-
-      {/* Available tasks */}
+      {/* Available tasks from user's habits */}
       <div>
         <p className="text-[10px] font-mono text-muted-foreground mb-2 uppercase tracking-wider">
-          Доступно задач: {availableTasks.length}
+          Доступно: {availableTasks.length} из {missions.length}
         </p>
         <div className="grid grid-cols-2 gap-1.5 max-h-32 overflow-y-auto">
           <AnimatePresence mode="popLayout">
             {availableTasks.map((task) => (
               <motion.div
-                key={task.title}
+                key={task.id}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
