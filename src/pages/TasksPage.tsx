@@ -279,7 +279,7 @@ const TasksPage = () => {
           </AnimatePresence>
         </div>
 
-        {filteredTasks.length === 0 && !loading && (
+        {sortedTasks.length === 0 && !loading && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-12">
             <activeCat.icon className={`w-10 h-10 ${activeCat.color} mx-auto mb-3 opacity-30`} />
             <p className="text-xs text-muted-foreground font-mono">Нет задач</p>
