@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, MessageCircle, Share2, MoreHorizontal, Trash2 } from "lucide-react";
+import { Heart, MessageCircle, Share2, MoreHorizontal, Trash2, Mic, Play } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
@@ -17,6 +17,8 @@ interface PostCardProps {
     likes_count: number;
     comments_count: number;
     created_at: string;
+    image_url?: string | null;
+    post_type?: string;
     author?: { display_name: string; level: number; avatar_url?: string | null };
   };
   isLiked: boolean;
@@ -45,17 +47,55 @@ const PostCard = ({ post, isLiked, onLikeToggle, onDelete, onCommentClick }: Pos
     toast.success("Ссылка скопирована");
   };
 
+  const renderMedia = () => {
+    if (!post.image_url) return null;
+    const type = post.post_type || "post";
+
+    if (type === "circle") {
+      return (
+        <div className="flex justify-center my-3">
+          <div className="w-48 h-48 rounded-full overflow-hidden border-2 border-primary/20 shadow-lg shadow-primary/10">
+            <video src={post.image_url} controls className="w-full h-full object-cover" />
+          </div>
+        </div>
+      );
+    }
+
+    if (type === "voice") {
+      return (
+        <div className="flex items-center gap-3 p-3 my-2 rounded-xl bg-muted/20 border border-border/20">
+          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+            <Mic className="w-5 h-5 text-primary" />
+          </div>
+          <audio src={post.image_url} controls className="flex-1 h-8" />
+        </div>
+      );
+    }
+
+    if (type === "video") {
+      return (
+        <div className="my-2 rounded-xl overflow-hidden border border-border/20">
+          <video src={post.image_url} controls className="w-full max-h-96 object-cover" />
+        </div>
+      );
+    }
+
+    // Default: image
+    return (
+      <div className="my-2 rounded-xl overflow-hidden border border-border/20">
+        <img src={post.image_url} alt="" className="w-full max-h-96 object-cover" loading="lazy" />
+      </div>
+    );
+  };
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      className="glass-card rounded-2xl p-4 border border-border/30"
-    >
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
+      className="glass-card rounded-2xl p-4 border border-border/30">
       {/* Header */}
-      <div className="flex items-start gap-3 mb-3">
+      <div className="flex items-start gap-3 mb-2">
         <motion.button whileHover={{ scale: 1.05 }} onClick={() => navigate(`/user/${post.user_id}`)}>
           <Avatar className="w-10 h-10 border border-primary/20">
+            {post.author?.avatar_url && <AvatarImage src={post.author.avatar_url} />}
             <AvatarFallback className="bg-primary/10 text-primary text-xs font-mono">{initials}</AvatarFallback>
           </Avatar>
         </motion.button>
@@ -79,12 +119,8 @@ const PostCard = ({ post, isLiked, onLikeToggle, onDelete, onCommentClick }: Pos
             </button>
             <AnimatePresence>
               {showMenu && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  className="absolute right-0 top-full mt-1 glass-card rounded-xl p-1 border border-destructive/20 z-20 min-w-[120px]"
-                >
+                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }}
+                  className="absolute right-0 top-full mt-1 glass-card rounded-xl p-1 border border-destructive/20 z-20 min-w-[120px]">
                   <button onClick={() => { onDelete?.(post.id); setShowMenu(false); }}
                     className="flex items-center gap-2 w-full px-3 py-2 text-xs text-destructive hover:bg-destructive/10 rounded-lg transition-colors">
                     <Trash2 className="w-3 h-3" /> Удалить
@@ -97,15 +133,15 @@ const PostCard = ({ post, isLiked, onLikeToggle, onDelete, onCommentClick }: Pos
       </div>
 
       {/* Content */}
-      <p className="text-sm text-foreground/90 leading-relaxed whitespace-pre-wrap mb-4">{post.content}</p>
+      {post.content && <p className="text-sm text-foreground/90 leading-relaxed whitespace-pre-wrap mb-1">{post.content}</p>}
+
+      {/* Media */}
+      {renderMedia()}
 
       {/* Actions */}
-      <div className="flex items-center gap-4 pt-2 border-t border-border/20">
-        <motion.button
-          whileTap={{ scale: 0.8 }}
-          onClick={handleLike}
-          className={`flex items-center gap-1.5 text-xs transition-colors ${isLiked ? "text-destructive" : "text-muted-foreground hover:text-destructive"}`}
-        >
+      <div className="flex items-center gap-4 pt-2 border-t border-border/20 mt-2">
+        <motion.button whileTap={{ scale: 0.8 }} onClick={handleLike}
+          className={`flex items-center gap-1.5 text-xs transition-colors ${isLiked ? "text-destructive" : "text-muted-foreground hover:text-destructive"}`}>
           <motion.div animate={likeAnimating ? { scale: [1, 1.4, 1] } : {}} transition={{ duration: 0.3 }}>
             <Heart className={`w-4 h-4 ${isLiked ? "fill-current" : ""}`} />
           </motion.div>
