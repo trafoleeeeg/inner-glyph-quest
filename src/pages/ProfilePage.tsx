@@ -273,6 +273,9 @@ const ProfilePage = () => {
 
             <AnalyticsCharts />
 
+            {/* Inner Drives */}
+            <InnerDrives />
+
             {/* Stats Grid */}
             <div>
               <h3 className="text-sm font-semibold mb-3 flex items-center gap-2"><span>📊</span> Показатели</h3>

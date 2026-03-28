@@ -176,7 +176,7 @@ const FeedPage = () => {
               className={`px-4 py-1.5 rounded-xl text-xs font-mono transition-all ${
                 tab === t ? "bg-primary/20 text-primary border border-primary/30" : "text-muted-foreground hover:text-foreground"
               }`}>
-              {t === "all" ? "Все сигналы" : "Подписки"}
+              {t === "all" ? "Все посты" : "Подписки"}
             </motion.button>
           ))}
           <motion.button whileTap={{ scale: 0.9, rotate: 180 }} onClick={fetchPosts}
