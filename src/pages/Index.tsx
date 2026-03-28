@@ -379,10 +379,10 @@ const Index = () => {
                 <div className="flex-1">
                   <h3 className="text-sm font-semibold text-foreground mb-1">Это не просто трекер</h3>
                   <p className="text-xs text-muted-foreground leading-relaxed">
-                    Ты записываешь привычки, настроение и энергию. Через несколько дней AI находит закономерности: что реально улучшает твоё состояние, а что тянет вниз.
+                    Алгоритм определяет твой архетип прокрастинации и назначает нейробиологические протоколы (Глифы), которые ломают деструктивные паттерны. Настроение и энергия — входные данные для калибровки системы.
                   </p>
                   <p className="text-xs text-foreground/70 leading-relaxed mt-1.5 font-medium">
-                    Это инструмент, который показывает как твои действия влияют на твою жизнь.
+                    Каждый чекин = данные. Данные = точная диагностика. Диагностика = протоколы, которые работают.
                   </p>
                   <button
                     onClick={() => { localStorage.setItem("neuro_why_understood", "1"); setShowWhyBlock(false); }}
