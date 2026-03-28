@@ -10,6 +10,7 @@ import NotificationBell from "@/components/NotificationBell";
 import ParticleField from "@/components/ParticleField";
 import { RefreshCw, Search } from "lucide-react";
 import RSSFeed from "@/components/RSSFeed";
+import Leaderboard from "@/components/Leaderboard";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -42,7 +43,7 @@ const FeedPage = () => {
   const [likedPosts, setLikedPosts] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [activeComments, setActiveComments] = useState<string | null>(null);
-  const [tab, setTab] = useState<"all" | "following" | "rss">("all");
+  const [tab, setTab] = useState<"all" | "following" | "rss" | "leaderboard">("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [searching, setSearching] = useState(false);
@@ -171,16 +172,16 @@ const FeedPage = () => {
           )}
         </div>
 
-        <div className="flex items-center gap-2 justify-center">
-          {(["all", "following", "rss"] as const).map(t => (
+        <div className="flex items-center gap-2 justify-center flex-wrap">
+          {(["all", "following", "rss", "leaderboard"] as const).map(t => (
             <motion.button key={t} whileTap={{ scale: 0.95 }} onClick={() => setTab(t)}
               className={`px-4 py-1.5 rounded-xl text-xs font-mono transition-all ${
                 tab === t ? "bg-primary/20 text-primary border border-primary/30" : "text-muted-foreground hover:text-foreground"
               }`}>
-              {t === "all" ? "Все посты" : t === "following" ? "Подписки" : "📚 Читать"}
+              {t === "all" ? "Все посты" : t === "following" ? "Подписки" : t === "rss" ? "📚 Читать" : "🏆 Рейтинг"}
             </motion.button>
           ))}
-          {tab !== "rss" && (
+          {(tab === "all" || tab === "following") && (
             <motion.button whileTap={{ scale: 0.9, rotate: 180 }} onClick={fetchPosts}
               className="p-1.5 text-muted-foreground hover:text-primary transition-colors">
               <RefreshCw className="w-4 h-4" />
@@ -190,6 +191,8 @@ const FeedPage = () => {
 
         {tab === "rss" ? (
           <RSSFeed />
+        ) : tab === "leaderboard" ? (
+          <Leaderboard />
         ) : (
           <>
             <CreatePost onPostCreated={fetchPosts} />

@@ -55,6 +55,47 @@ const Index = () => {
     if (!localStorage.getItem("neuro_onboarded")) setShowOnboarding(true);
   }, []);
 
+  // Request browser notification permission
+  useEffect(() => {
+    if (!user || !profile) return;
+    if ("Notification" in window && Notification.permission === "default") {
+      // Ask after a short delay so it's not intrusive
+      const timer = setTimeout(() => {
+        Notification.requestPermission();
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [user, profile]);
+
+  // Schedule periodic in-app reminders via browser notifications
+  useEffect(() => {
+    if (!user || !profile) return;
+    if (!("Notification" in window) || Notification.permission !== "granted") return;
+
+    const checkAndNotify = () => {
+      const today = new Date().toISOString().split("T")[0];
+      const lastNotif = localStorage.getItem("neuro_last_notif_" + today);
+      if (lastNotif) return;
+
+      const hour = new Date().getHours();
+      // Morning reminder (9-11) or evening reminder (19-21)
+      if ((hour >= 9 && hour <= 11) || (hour >= 19 && hour <= 21)) {
+        const checkinDone = localStorage.getItem(CHECKIN_KEY + today);
+        if (!checkinDone) {
+          new Notification("Время для чекина 🧠", {
+            body: "Отметь настроение и энергию — это поможет найти закономерности",
+            icon: "/placeholder.svg",
+          });
+          localStorage.setItem("neuro_last_notif_" + today, "1");
+        }
+      }
+    };
+
+    checkAndNotify();
+    const interval = setInterval(checkAndNotify, 30 * 60 * 1000); // every 30 min
+    return () => clearInterval(interval);
+  }, [user, profile]);
+
   // Check if daily checkin needed
   useEffect(() => {
     if (!user || !profile) return;
