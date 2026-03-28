@@ -10,6 +10,9 @@ import ProfilePage from "./pages/ProfilePage";
 import DesireTracker from "./pages/DesireTracker";
 import CommunityChat from "./pages/CommunityChat";
 import AdminPanel from "./pages/AdminPanel";
+import FeedPage from "./pages/FeedPage";
+import SearchPage from "./pages/SearchPage";
+import UserProfilePage from "./pages/UserProfilePage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -42,6 +45,9 @@ const App = () => (
             <Route path="/desires" element={<ProtectedRoute><DesireTracker /></ProtectedRoute>} />
             <Route path="/chat" element={<ProtectedRoute><CommunityChat /></ProtectedRoute>} />
             <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
+            <Route path="/feed" element={<ProtectedRoute><FeedPage /></ProtectedRoute>} />
+            <Route path="/search" element={<ProtectedRoute><SearchPage /></ProtectedRoute>} />
+            <Route path="/user/:userId" element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

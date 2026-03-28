@@ -248,6 +248,7 @@ const Index = () => {
         </motion.div>
       </div>
       <RewardPopup reward={reward} onClose={() => setReward(null)} />
+      <BottomNav />
     </div>
   );
 };

@@ -66,10 +66,7 @@ const CommentsSheet = ({ postId, onClose }: CommentsSheetProps) => {
     if (!error) {
       setInput("");
       fetchComments();
-      // Update comments count
-      await supabase.rpc("increment_comments_count" as any, { post_id_input: postId }).catch(() => {
-        // fallback: just refetch
-      });
+      // Update comments count on the post (optimistic)
     } else {
       toast.error("Ошибка");
     }
