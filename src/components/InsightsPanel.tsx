@@ -39,7 +39,6 @@ const InsightsPanel = () => {
     const dreams = dreamsRes.data || [];
     const generated: Insight[] = [];
 
-    // 1. Mood trend detection
     if (moods.length >= 3) {
       const recent = moods.slice(-5);
       const older = moods.slice(0, Math.max(moods.length - 5, 1));
@@ -51,22 +50,21 @@ const InsightsPanel = () => {
         generated.push({
           id: "mood_up", type: "breakthrough",
           icon: <TrendingUp className="w-4 h-4" />,
-          title: "Восходящий вектор",
-          body: `Твоё состояние улучшилось на ${Math.abs(diff).toFixed(1)} пунктов. Интерпретатор фиксирует позитивный тренд — сжатие энтропии идёт эффективно.`,
+          title: "Настроение растёт",
+          body: `Твоё самочувствие улучшилось на ${Math.abs(diff).toFixed(1)} пунктов. Отличный тренд — продолжай в том же духе!`,
           color: "text-accent",
         });
       } else if (diff < -0.5) {
         generated.push({
           id: "mood_down", type: "warning",
           icon: <TrendingDown className="w-4 h-4" />,
-          title: "Сигнал перегрузки",
-          body: `Состояние снизилось на ${Math.abs(diff).toFixed(1)} пунктов. Возможно, Интерпретатор перегружен — слишком много энтропии без обработки. Проверь сон и нагрузку.`,
+          title: "Самочувствие снижается",
+          body: `Настроение упало на ${Math.abs(diff).toFixed(1)} пунктов. Возможно, стоит обратить внимание на отдых и сон.`,
           color: "text-streak",
         });
       }
     }
 
-    // 2. Energy-mood correlation
     if (moods.length >= 3) {
       const lowEnergyMoods = moods.filter(m => m.energy_level <= 2);
       const highEnergyMoods = moods.filter(m => m.energy_level >= 4);
@@ -77,17 +75,15 @@ const InsightsPanel = () => {
           generated.push({
             id: "energy_mood", type: "correlation",
             icon: <Lightbulb className="w-4 h-4" />,
-            title: "Паттерн обнаружен",
-            body: `При высоком ресурсе (≥4) твоё состояние в среднем ${highMoodAvg.toFixed(1)}, при низком (≤2) — ${lowMoodAvg.toFixed(1)}. Энергия напрямую определяет качество сжатия.`,
+            title: "Связь найдена",
+            body: `Когда энергия высокая (≥4), настроение в среднем ${highMoodAvg.toFixed(1)}, при низкой (≤2) — ${lowMoodAvg.toFixed(1)}. Энергия напрямую влияет на самочувствие.`,
             color: "text-energy",
           });
         }
       }
     }
 
-    // 3. Mission activity vs mood
     if (completions.length > 0 && moods.length > 0) {
-      // Days with missions vs days without
       const moodsByDate: Record<string, number[]> = {};
       moods.forEach(m => {
         const d = m.created_at.split("T")[0];
@@ -98,8 +94,8 @@ const InsightsPanel = () => {
       
       const activeDayMoods: number[] = [];
       const inactiveDayMoods: number[] = [];
-      Object.entries(moodsByDate).forEach(([date, moods]) => {
-        const avg = moods.reduce((a, b) => a + b, 0) / moods.length;
+      Object.entries(moodsByDate).forEach(([date, dayMoods]) => {
+        const avg = dayMoods.reduce((a, b) => a + b, 0) / dayMoods.length;
         if (compDates.has(date)) activeDayMoods.push(avg);
         else inactiveDayMoods.push(avg);
       });
@@ -111,46 +107,43 @@ const InsightsPanel = () => {
           generated.push({
             id: "active_mood", type: "pattern",
             icon: <Sparkles className="w-4 h-4" />,
-            title: "Протоколы работают",
-            body: `В дни с выполненными протоколами твоё состояние: ${activeAvg.toFixed(1)} vs ${inactiveAvg.toFixed(1)} в простое. Действие = сжатие = вознаграждение.`,
+            title: "Привычки работают",
+            body: `В дни с выполненными привычками настроение: ${activeAvg.toFixed(1)} vs ${inactiveAvg.toFixed(1)} в дни отдыха. Действие = хорошее самочувствие.`,
             color: "text-primary",
           });
         }
       }
     }
 
-    // 4. Dream lucidity trend
     if (dreams.length >= 3) {
       const avgLucidity = dreams.reduce((s, d) => s + d.lucidity, 0) / dreams.length;
       if (avgLucidity >= 3) {
         generated.push({
           id: "lucidity", type: "breakthrough",
           icon: <Lightbulb className="w-4 h-4" />,
-          title: "Оффлайн-синхронизация усиливается",
-          body: `Средняя осознанность снов: ${avgLucidity.toFixed(1)}/5. Высокая осознанность = качественная ночная дефрагментация данных.`,
+          title: "Качество снов растёт",
+          body: `Средняя осознанность снов: ${avgLucidity.toFixed(1)}/5. Высокая осознанность = более глубокий отдых.`,
           color: "text-dream",
         });
       }
     }
 
-    // 5. Inactivity warning
     if (completions.length === 0 && moods.length === 0) {
       generated.push({
         id: "inactive", type: "warning",
         icon: <AlertTriangle className="w-4 h-4" />,
-        title: "Туман сгущается",
-        body: "Нет данных за последние 14 дней. Без логирования паттерны невидимы. Интерпретатор теряет калибровку.",
+        title: "Нет данных",
+        body: "За последние 14 дней нет записей. Начни отмечать настроение и выполнять привычки — так ты увидишь свои паттерны.",
         color: "text-destructive",
       });
     }
 
-    // 6. If we have enough data but no other insights
     if (generated.length === 0 && (moods.length > 0 || completions.length > 0)) {
       generated.push({
         id: "collecting", type: "pattern",
         icon: <Sparkles className="w-4 h-4" />,
-        title: "Сбор данных",
-        body: `Интерпретатор накапливает данные: ${moods.length} сканирований, ${completions.length} протоколов, ${dreams.length} синхронизаций. Инсайты появятся при большем объёме.`,
+        title: "Собираем данные",
+        body: `Уже есть: ${moods.length} записей настроения, ${completions.length} выполненных привычек, ${dreams.length} снов. Скоро появятся первые инсайты!`,
         color: "text-muted-foreground",
       });
     }
@@ -178,7 +171,7 @@ const InsightsPanel = () => {
           >
             <Lightbulb className="w-4 h-4 text-primary" />
           </motion.div>
-          <span className="text-sm font-semibold text-foreground">Инсайты Интерпретатора</span>
+          <span className="text-sm font-semibold text-foreground">Инсайты и паттерны</span>
           <span className="text-[9px] font-mono text-primary bg-primary/10 px-1.5 py-0.5 rounded">
             {insights.length}
           </span>

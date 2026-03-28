@@ -14,11 +14,11 @@ const StatsRow = ({ energy, maxEnergy, streak, totalMissions, dreamsLogged, coin
   const energyPercent = Math.round((energy / maxEnergy) * 100);
   
   const stats = [
-    { label: "Ресурс", value: `${energyPercent}%`, icon: Zap, color: "text-energy", borderColor: "border-energy/20" },
-    { label: "Поток", value: `${streak}д`, icon: Flame, color: "text-streak", borderColor: "border-streak/20" },
-    { label: "Сжато", value: totalMissions, icon: Target, color: "text-primary", borderColor: "border-primary/20" },
-    { label: "Синхр", value: dreamsLogged, icon: Moon, color: "text-dream", borderColor: "border-dream/20" },
-    { label: "Коины", value: coins, icon: Coins, color: "text-energy", borderColor: "border-energy/20" },
+    { label: "Энергия", value: `${energyPercent}%`, icon: Zap, color: "text-energy", borderColor: "border-energy/20" },
+    { label: "Серия", value: `${streak}д`, icon: Flame, color: "text-streak", borderColor: "border-streak/20" },
+    { label: "Сделано", value: totalMissions, icon: Target, color: "text-primary", borderColor: "border-primary/20" },
+    { label: "Снов", value: dreamsLogged, icon: Moon, color: "text-dream", borderColor: "border-dream/20" },
+    { label: "Монеты", value: coins, icon: Coins, color: "text-energy", borderColor: "border-energy/20" },
   ];
 
   const container = {

@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useMemo } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -26,12 +26,12 @@ import BottomNav from "@/components/BottomNav";
 import { useTutorial } from "@/components/TutorialOverlay";
 
 const DEFAULT_MISSIONS = [
-  { title: 'Утренняя калибровка', description: '10 минут тишины — перезагрузка фильтров', xp_reward: 30, category: 'habit', icon: '🧘' },
-  { title: 'Дешифровать сон', description: 'Распаковать ночной архив', xp_reward: 25, category: 'dream', icon: '🌙' },
-  { title: 'Сканировать состояние', description: 'Зафиксировать текущий сигнал', xp_reward: 15, category: 'mood', icon: '📡' },
-  { title: 'Рассеять туман', description: '30 мин движения — расширить зону видимости', xp_reward: 35, category: 'health', icon: '🚶' },
-  { title: 'Записать вектор', description: 'Куда направлен твой Интерпретатор?', xp_reward: 20, category: 'desire', icon: '✨' },
-  { title: 'Холодная перезагрузка', description: 'Термошок — перекалибровка нервной системы', xp_reward: 40, category: 'health', icon: '🧊' },
+  { title: 'Утренняя медитация', description: '10 минут тишины для ясности ума', xp_reward: 30, category: 'habit', icon: '🧘' },
+  { title: 'Записать сон', description: 'Вспомни и запиши ночные образы', xp_reward: 25, category: 'dream', icon: '🌙' },
+  { title: 'Отметить настроение', description: 'Как ты себя сейчас чувствуешь?', xp_reward: 15, category: 'mood', icon: '📡' },
+  { title: 'Прогулка 30 мин', description: 'Движение для тела и ясности', xp_reward: 35, category: 'health', icon: '🚶' },
+  { title: 'Записать желание', description: 'Чего ты сейчас хочешь больше всего?', xp_reward: 20, category: 'desire', icon: '✨' },
+  { title: 'Холодный душ', description: 'Бодрость и перезагрузка за 2 минуты', xp_reward: 40, category: 'health', icon: '🧊' },
 ];
 
 const Index = () => {
@@ -50,7 +50,6 @@ const Index = () => {
     if (!localStorage.getItem("neuro_onboarded")) setShowOnboarding(true);
   }, []);
 
-  // Fetch life balance for glyph
   useEffect(() => {
     if (!user) return;
     const fetchBalance = async () => {
@@ -129,12 +128,12 @@ const Index = () => {
     const rewardResult = {
       baseXP: result.baseXP, bonusXP: result.bonusXP, totalXP: result.totalXP,
       isCriticalHit: result.isCriticalHit,
-      mysteryBox: result.hasMysteryBox ? { type: 'xp_boost' as const, amount: result.mysteryAmount, description: 'Аномалия данных!', icon: '⚡' } : null,
+      mysteryBox: result.hasMysteryBox ? { type: 'xp_boost' as const, amount: result.mysteryAmount, description: 'Бонус дня!', icon: '⚡' } : null,
       streakMultiplier: result.streakMultiplier, coinsEarned: result.coinsEarned,
       leveledUp: result.leveledUp, newLevel: result.newLevel || undefined,
     };
     if (result.isCriticalHit || result.hasMysteryBox || result.leveledUp) setReward(rewardResult);
-    else toast.success(`+${result.totalXP} негэнтропии`, { description: mission.title, duration: 2000 });
+    else toast.success(`+${result.totalXP} опыта`, { description: mission.title, duration: 2000 });
     setMissions(prev => prev.map(m => m.id === id ? { ...m, completed: true } : m));
     setMissionCompletionCounts(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
     await refetchProfile();
@@ -143,14 +142,14 @@ const Index = () => {
   const handleMoodSubmit = useCallback(async (mood: number, energy: number, note: string) => {
     if (!user) return;
     await supabase.rpc('submit_mood_checkin', { p_mood: mood, p_energy: energy, p_note: note || null });
-    toast.success("+15 негэнтропии", { description: "Туман рассеивается" });
+    toast.success("+15 опыта", { description: "Настроение записано" });
     await refetchProfile();
   }, [user, refetchProfile]);
 
   const handleDreamSubmit = useCallback(async (title: string, description: string, lucidity: number) => {
     if (!user) return;
     await supabase.rpc('submit_dream_entry', { p_title: title, p_description: description || null, p_lucidity: lucidity });
-    toast.success("+25 негэнтропии", { description: `Архив "${title}" распакован` });
+    toast.success("+25 опыта", { description: `Сон «${title}» записан` });
     await refetchProfile();
   }, [user, refetchProfile]);
 
@@ -159,7 +158,7 @@ const Index = () => {
     const { data: inserted } = await supabase.from("missions").insert({ ...data, user_id: user.id }).select().single();
     if (inserted) {
       setMissions(prev => [...prev, { ...inserted, completed: false }]);
-      toast.success("Протокол активирован", { description: data.title });
+      toast.success("Привычка добавлена", { description: data.title });
     }
   }, [user]);
 
@@ -178,11 +177,11 @@ const Index = () => {
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-primary text-glow-primary font-display tracking-tight">INNER GLYPH</h1>
-            <p className="text-[10px] text-muted-foreground font-mono">кибернетическое самоопределение • негэнтропия</p>
+            <p className="text-[10px] text-muted-foreground font-mono">твой путь к осознанности</p>
           </div>
           <div className="flex items-center gap-1.5">
             <NavButton icon={<HelpCircle className="w-4 h-4" />} onClick={startTutorial} tooltip="Обучение" color="text-muted-foreground" />
-            <NavButton icon={<Heart className="w-4 h-4" />} onClick={() => navigate("/desires")} tooltip="Вектора" color="text-secondary" />
+            <NavButton icon={<Heart className="w-4 h-4" />} onClick={() => navigate("/desires")} tooltip="Желания" color="text-secondary" />
           </div>
         </motion.div>
 
@@ -194,24 +193,19 @@ const Index = () => {
           {profile && <StatsRow energy={profile.energy} maxEnergy={profile.max_energy} streak={profile.streak} totalMissions={profile.total_missions_completed} dreamsLogged={profile.total_dreams_logged} coins={profile.coins} />}
         </div>
 
-        {/* Glyph - integrated into Hub */}
+        {/* Glyph */}
         <div id="tutorial-glyph">
           {profile && (
             <GlyphVisualizer
-              level={profile.level}
-              xp={profile.xp}
-              xpToNext={profile.xp_to_next}
-              energy={profile.energy}
-              maxEnergy={profile.max_energy}
-              streak={profile.streak}
-              balance={lifeBalance}
-              missionsCompleted={profile.total_missions_completed}
-              dreamsLogged={profile.total_dreams_logged}
+              level={profile.level} xp={profile.xp} xpToNext={profile.xp_to_next}
+              energy={profile.energy} maxEnergy={profile.max_energy}
+              streak={profile.streak} balance={lifeBalance}
+              missionsCompleted={profile.total_missions_completed} dreamsLogged={profile.total_dreams_logged}
             />
           )}
         </div>
 
-        {/* Fog of War + Balance */}
+        {/* Life Map + Balance */}
         <div id="tutorial-fog">
           <FogOfWarMap />
         </div>
@@ -223,10 +217,10 @@ const Index = () => {
         {/* Insights */}
         <InsightsPanel />
 
-        {/* Missions */}
+        {/* Habits */}
         <div id="tutorial-missions">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold text-foreground flex items-center gap-2"><span>⚡</span> Протоколы сжатия</h2>
+            <h2 className="text-sm font-semibold text-foreground flex items-center gap-2"><span>⚡</span> Ежедневные привычки</h2>
             <span className="text-xs font-mono text-muted-foreground">{completedCount}/{missions.length}</span>
           </div>
           <div className="space-y-2">
@@ -249,10 +243,10 @@ const Index = () => {
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
           className="text-center py-6 space-y-1">
           <p className="text-[10px] text-muted-foreground/40 font-mono">
-            ты — движок негэнтропии. сжимай хаос в ясность.
+            каждый день — шаг к лучшей версии себя
           </p>
           <p className="text-[9px] text-muted-foreground/20 font-mono">
-            INNER GLYPH QUEST • кибернетическое самоопределение
+            INNER GLYPH QUEST
           </p>
         </motion.div>
       </div>

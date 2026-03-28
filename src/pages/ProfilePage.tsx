@@ -6,6 +6,7 @@ import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import ParticleField from "@/components/ParticleField";
 import AnalyticsCharts from "@/components/AnalyticsCharts";
+import InnerDrives from "@/components/InnerDrives";
 import BottomNav from "@/components/BottomNav";
 import PostCard from "@/components/PostCard";
 import CreatePost from "@/components/CreatePost";
@@ -15,8 +16,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
 
 const LEVEL_TITLES: Record<number, string> = {
-  1: "Спящий агент", 2: "Пробуждённый", 3: "Дешифратор", 4: "Компрессор",
-  5: "Мета-Дипломат", 6: "Архитектор", 7: "Провидец", 8: "Нейромант", 9: "Трансцендент", 10: "Демиург",
+  1: "Новичок", 2: "Исследователь", 3: "Практик", 4: "Стратег",
+  5: "Наставник", 6: "Архитектор", 7: "Мастер", 8: "Эксперт", 9: "Гуру", 10: "Легенда",
 };
 
 const ProfilePage = () => {
@@ -114,12 +115,12 @@ const ProfilePage = () => {
   const initials = profile.display_name.slice(0, 2).toUpperCase();
 
   const statCards = [
-    { icon: Target, label: "Протоколов", value: profile.total_missions_completed, color: "text-primary" },
-    { icon: Moon, label: "Синхронизаций", value: profile.total_dreams_logged, color: "text-dream" },
-    { icon: Flame, label: "Поток", value: `${profile.streak}д`, color: "text-streak" },
-    { icon: Trophy, label: "Макс. поток", value: `${profile.longest_streak}д`, color: "text-energy" },
+    { icon: Target, label: "Привычек", value: profile.total_missions_completed, color: "text-primary" },
+    { icon: Moon, label: "Снов", value: profile.total_dreams_logged, color: "text-dream" },
+    { icon: Flame, label: "Серия", value: `${profile.streak}д`, color: "text-streak" },
+    { icon: Trophy, label: "Макс. серия", value: `${profile.longest_streak}д`, color: "text-energy" },
     { icon: Calendar, label: "За неделю", value: weeklyCompletions, color: "text-accent" },
-    { icon: Coins, label: "Коины", value: profile.coins, color: "text-energy" },
+    { icon: Coins, label: "Монеты", value: profile.coins, color: "text-energy" },
   ];
 
   return (
@@ -206,7 +207,7 @@ const ProfilePage = () => {
           {/* XP bar */}
           <div className="mt-4">
             <div className="flex items-center justify-between text-[10px] font-mono mb-1">
-              <span className="text-primary">Негэнтропия</span>
+              <span className="text-primary">Опыт</span>
               <span className="text-muted-foreground">{profile.xp}/{profile.xp_to_next}</span>
             </div>
             <div className="h-2 bg-muted/50 rounded-full overflow-hidden">
@@ -229,7 +230,7 @@ const ProfilePage = () => {
                 tab === t ? "bg-primary/20 text-primary border border-primary/30" : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              {t === "posts" ? "Трансляции" : "Аналитика"}
+              {t === "posts" ? "Посты" : "Аналитика"}
             </motion.button>
           ))}
         </div>
@@ -253,18 +254,18 @@ const ProfilePage = () => {
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
                 className="glass-card rounded-2xl p-5 border border-energy/10">
                 <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4 text-energy" /> Телеметрия за неделю
+                  <TrendingUp className="w-4 h-4 text-energy" /> Статистика за неделю
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="text-center p-3 rounded-xl bg-energy/5 border border-energy/10">
                     <span className="text-2xl">{moodEmoji[Math.round(moodStats.avgMood)] || '😐'}</span>
                     <p className="text-lg font-bold font-mono text-energy mt-1">{moodStats.avgMood}</p>
-                    <p className="text-[9px] text-muted-foreground font-mono uppercase">Ср. сигнал</p>
+                    <p className="text-[9px] text-muted-foreground font-mono uppercase">Ср. настрой</p>
                   </div>
                   <div className="text-center p-3 rounded-xl bg-primary/5 border border-primary/10">
                     <span className="text-2xl">⚡</span>
                     <p className="text-lg font-bold font-mono text-primary mt-1">{moodStats.avgEnergy}</p>
-                    <p className="text-[9px] text-muted-foreground font-mono uppercase">Ср. ресурс</p>
+                    <p className="text-[9px] text-muted-foreground font-mono uppercase">Ср. энергия</p>
                   </div>
                 </div>
               </motion.div>
@@ -272,9 +273,12 @@ const ProfilePage = () => {
 
             <AnalyticsCharts />
 
+            {/* Inner Drives */}
+            <InnerDrives />
+
             {/* Stats Grid */}
             <div>
-              <h3 className="text-sm font-semibold mb-3 flex items-center gap-2"><span>📊</span> Метрики сжатия</h3>
+              <h3 className="text-sm font-semibold mb-3 flex items-center gap-2"><span>📊</span> Показатели</h3>
               <div className="grid grid-cols-3 gap-2">
                 {statCards.map((stat, i) => (
                   <motion.div key={stat.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.05 }}
@@ -291,7 +295,7 @@ const ProfilePage = () => {
             {recentRewards.length > 0 && (
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
                 className="glass-card rounded-2xl p-5 border border-secondary/10">
-                <h3 className="text-sm font-semibold mb-3 flex items-center gap-2"><span>🎁</span> Аномалии данных</h3>
+                <h3 className="text-sm font-semibold mb-3 flex items-center gap-2"><span>🎁</span> Бонусы</h3>
                 <div className="space-y-2">
                   {recentRewards.map(r => (
                     <div key={r.id} className="flex items-center gap-3 p-2 rounded-lg bg-muted/20">
