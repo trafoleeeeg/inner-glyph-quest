@@ -111,7 +111,7 @@ const SearchPage = () => {
             <div className="w-6 h-6 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
           </div>
         ) : displayList.length === 0 ? (
-          <p className="text-center text-xs text-muted-foreground font-mono py-12">Агенты не найдены</p>
+          <p className="text-center text-xs text-muted-foreground font-mono py-12">Никого не найдено</p>
         ) : (
           <div className="space-y-2">
             {displayList.map((u, i) => {
