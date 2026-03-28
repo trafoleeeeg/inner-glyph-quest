@@ -332,23 +332,23 @@ const Index = () => {
           </motion.div>
         )}
 
-        {/* Discover yourself — accent block */}
+        {/* Diagnostic block — accent */}
         <motion.div
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-          className="rounded-2xl p-4 border-2 border-primary/30 bg-gradient-to-r from-primary/10 to-accent/10 cursor-pointer hover:border-primary/50 transition-all"
+          className="rounded-2xl p-4 border-2 border-destructive/30 bg-gradient-to-r from-destructive/10 via-primary/10 to-accent/10 cursor-pointer hover:border-destructive/50 transition-all"
           onClick={() => navigate("/life-analysis")}
         >
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-primary/15 flex items-center justify-center text-2xl">
-              🎯
+            <div className="w-12 h-12 rounded-xl bg-destructive/15 flex items-center justify-center text-2xl">
+              🧬
             </div>
             <div className="flex-1">
-              <p className="text-sm font-semibold text-foreground">Подбери привычки под свои цели</p>
+              <p className="text-sm font-bold text-foreground">Диагностика: определи свой архетип</p>
               <p className="text-[10px] text-muted-foreground mt-0.5">
-                AI проанализирует твой образ жизни и предложит план действий
+                Алгоритм определит тип твоей прокрастинации и назначит протоколы, которые сломают паттерн
               </p>
             </div>
-            <span className="text-primary text-lg">→</span>
+            <span className="text-destructive text-lg font-bold">→</span>
           </div>
         </motion.div>
 
