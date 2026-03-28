@@ -72,6 +72,8 @@ const GlyphPage = () => {
           dreamsLogged={profile.total_dreams_logged}
         />
 
+        <StateRadar />
+
         <InnerDrives />
 
         <LifeBalanceChart />

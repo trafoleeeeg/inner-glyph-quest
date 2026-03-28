@@ -212,6 +212,9 @@ const Index = () => {
         </div>
         <LifeBalanceChart />
 
+        {/* Adaptive Task Selector */}
+        <AdaptiveTaskSelector />
+
         {/* AI Insights */}
         <AIInsights />
 
