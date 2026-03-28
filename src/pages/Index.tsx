@@ -19,8 +19,11 @@ import Onboarding from "@/components/Onboarding";
 import GlyphVisualizer from "@/components/GlyphVisualizer";
 import LifeOverview from "@/components/LifeOverview";
 import AIInsights from "@/components/AIInsights";
+import DailyCheckin from "@/components/DailyCheckin";
+import StreakShield from "@/components/StreakShield";
+import WeeklyReport from "@/components/WeeklyReport";
 import { toast } from "sonner";
-import { Heart, HelpCircle, Flame, Trophy } from "lucide-react";
+import { Heart, HelpCircle } from "lucide-react";
 import BottomNav from "@/components/BottomNav";
 import { useTutorial } from "@/components/TutorialOverlay";
 
@@ -32,6 +35,8 @@ const DEFAULT_MISSIONS = [
   { title: 'Записать желание', description: 'Чего ты сейчас хочешь больше всего?', xp_reward: 20, category: 'desire', icon: '✨' },
   { title: 'Холодный душ', description: 'Бодрость и перезагрузка за 2 минуты', xp_reward: 40, category: 'health', icon: '🧊' },
 ];
+
+const CHECKIN_KEY = "neuro_daily_checkin_";
 
 const Index = () => {
   const { user } = useAuth();
@@ -45,9 +50,53 @@ const Index = () => {
   const [missionCompletionCounts, setMissionCompletionCounts] = useState<Record<string, number>>({});
   const [lifeBalance, setLifeBalance] = useState(50);
 
+  // Daily checkin state
+  const [showDailyCheckin, setShowDailyCheckin] = useState(false);
+  // Streak shield state
+  const [showStreakShield, setShowStreakShield] = useState(false);
+  // Weekly report state
+  const [showWeeklyReport, setShowWeeklyReport] = useState(false);
+
   useEffect(() => {
     if (!localStorage.getItem("neuro_onboarded")) setShowOnboarding(true);
   }, []);
+
+  // Check if daily checkin needed
+  useEffect(() => {
+    if (!user || !profile) return;
+    const today = new Date().toISOString().split("T")[0];
+    const checkinDone = localStorage.getItem(CHECKIN_KEY + today);
+    if (!checkinDone && !showOnboarding) {
+      setShowDailyCheckin(true);
+    }
+    // Check if it's Sunday and no weekly report shown this week
+    const dayOfWeek = new Date().getDay();
+    const weekKey = `neuro_weekly_report_${today.slice(0, 7)}_w${Math.ceil(new Date().getDate() / 7)}`;
+    if (dayOfWeek === 0 && !localStorage.getItem(weekKey)) {
+      setTimeout(() => setShowWeeklyReport(true), 1000);
+      localStorage.setItem(weekKey, "1");
+    }
+  }, [user, profile, showOnboarding]);
+
+  const handleDailyCheckinComplete = () => {
+    const today = new Date().toISOString().split("T")[0];
+    localStorage.setItem(CHECKIN_KEY + today, "1");
+    setShowDailyCheckin(false);
+    refetchProfile();
+  };
+
+  const handleStreakProtect = async () => {
+    if (!user || !profile) return;
+    // Deduct coins via RPC
+    try {
+      await supabase.rpc("award_activity_xp", { p_amount: 0, p_activity: "streak_shield" });
+      toast.success("Серия защищена! 🛡️", { description: "-50 монет" });
+    } catch {
+      toast.error("Не удалось защитить серию");
+    }
+    setShowStreakShield(false);
+    refetchProfile();
+  };
 
   useEffect(() => {
     if (!user) return;
@@ -176,8 +225,6 @@ const Index = () => {
   }, [user]);
 
   const completedCount = missions.filter(m => m.completed).length;
-
-  // Motivation: daily greeting based on time
   const hour = new Date().getHours();
   const greeting = hour < 12 ? "Доброе утро" : hour < 18 ? "Добрый день" : "Добрый вечер";
 
@@ -185,12 +232,34 @@ const Index = () => {
     <div className="min-h-screen bg-background cyber-grid relative pb-20">
       <ParticleField />
 
+      {/* Daily Checkin Overlay */}
+      <AnimatePresence>
+        {showDailyCheckin && profile && (
+          <DailyCheckin onComplete={handleDailyCheckinComplete} streak={profile.streak} />
+        )}
+      </AnimatePresence>
+
+      {/* Streak Shield */}
+      {profile && (
+        <StreakShield
+          open={showStreakShield}
+          streak={profile.streak}
+          longestStreak={profile.longest_streak}
+          coins={profile.coins}
+          onProtect={handleStreakProtect}
+          onDismiss={() => setShowStreakShield(false)}
+        />
+      )}
+
+      {/* Weekly Report */}
+      <WeeklyReport open={showWeeklyReport} onClose={() => setShowWeeklyReport(false)} />
+
       <AnimatePresence>
         {showOnboarding && <Onboarding onComplete={() => setShowOnboarding(false)} />}
       </AnimatePresence>
 
       <div className="relative z-10 max-w-2xl mx-auto px-4 py-6 space-y-4">
-        {/* Header with motivation */}
+        {/* Header */}
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
           <div>
             <h1 className="text-xl font-bold text-foreground tracking-tight">
@@ -208,7 +277,7 @@ const Index = () => {
           </div>
         </motion.div>
 
-        {/* Quick motivation card when streak is active */}
+        {/* Streak motivation card */}
         {profile && profile.streak >= 3 && (
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
             className="glass-card rounded-xl p-3 border border-accent/15 flex items-center gap-3">
@@ -220,7 +289,10 @@ const Index = () => {
                 {profile.streak >= 7 ? 'Невероятная серия!' : 'Отличная серия!'}
               </p>
               <p className="text-[10px] text-muted-foreground">
-                {profile.streak} дней подряд. Не ломай цепочку — отметь хотя бы одну привычку сегодня.
+                {profile.streak} дней подряд.
+                {profile.longest_streak > profile.streak
+                  ? ` До рекорда (${profile.longest_streak}д) осталось ${profile.longest_streak - profile.streak}!`
+                  : ' 🏆 Это твой рекорд!'}
               </p>
             </div>
           </motion.div>
@@ -231,7 +303,7 @@ const Index = () => {
           {profile && <XPBar current={profile.xp} max={profile.xp_to_next} level={profile.level} displayName={profile.display_name} />}
         </div>
         <div id="tutorial-stats">
-          {profile && <StatsRow energy={profile.energy} maxEnergy={profile.max_energy} streak={profile.streak} totalMissions={profile.total_missions_completed} dreamsLogged={profile.total_dreams_logged} coins={profile.coins} />}
+          {profile && <StatsRow energy={profile.energy} maxEnergy={profile.max_energy} streak={profile.streak} longestStreak={profile.longest_streak} totalMissions={profile.total_missions_completed} dreamsLogged={profile.total_dreams_logged} coins={profile.coins} />}
         </div>
 
         {/* Glyph */}
