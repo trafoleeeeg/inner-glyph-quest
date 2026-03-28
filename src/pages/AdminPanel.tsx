@@ -129,6 +129,7 @@ const AdminPanel = () => {
               <thead>
                 <tr className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider border-b border-border/30">
                   <th className="text-left py-2 px-2">Пользователь</th>
+                  <th className="text-left py-2 px-2">User ID</th>
                   <th className="text-center py-2 px-2">Уровень</th>
                   <th className="text-center py-2 px-2">XP</th>
                   <th className="text-center py-2 px-2">Стрик</th>
