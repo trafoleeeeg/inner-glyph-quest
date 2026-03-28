@@ -102,7 +102,7 @@ const PostCard = ({ post, isLiked, onLikeToggle, onDelete, onCommentClick }: Pos
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <button onClick={() => navigate(`/user/${post.user_id}`)} className="text-sm font-semibold text-foreground hover:text-primary transition-colors truncate">
-              {post.author?.display_name || "Нейронавт"}
+              {post.author?.display_name || "Участник"}
             </button>
             <span className="text-[9px] font-mono text-primary/60 bg-primary/5 px-1.5 py-0.5 rounded">
               LVL {post.author?.level || 1}

@@ -195,7 +195,7 @@ const FeedPage = () => {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-16">
             <p className="text-4xl mb-3">📡</p>
             <p className="text-sm text-muted-foreground font-mono">
-              {tab === "following" ? "Подпишись на нейронавтов" : "Эфир пуст. Отправь первый сигнал."}
+              {tab === "following" ? "Подпишись на интересных людей" : "Пока нет постов. Напиши первый!"}
             </p>
           </motion.div>
         ) : (

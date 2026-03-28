@@ -159,7 +159,7 @@ const TribesPage = () => {
                     <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-[10px]">
                       {m.profile?.avatar_url ? <img src={m.profile.avatar_url} className="w-6 h-6 rounded-full object-cover" /> : "👤"}
                     </div>
-                    <span className="text-xs text-foreground flex-1">{m.profile?.display_name || "Нейронавт"}</span>
+                    <span className="text-xs text-foreground flex-1">{m.profile?.display_name || "Участник"}</span>
                     {m.role === "creator" && <Crown className="w-3 h-3 text-yellow-500" />}
                     <span className="text-[9px] font-mono text-muted-foreground">Lv.{m.profile?.level || 1}</span>
                   </div>

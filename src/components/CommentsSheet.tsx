@@ -132,7 +132,7 @@ const CommentsSheet = ({ postId, onClose }: CommentsSheetProps) => {
                       </Avatar>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-baseline gap-2">
-                          <span className="text-xs font-semibold text-foreground">{c.author?.display_name || "Нейронавт"}</span>
+                          <span className="text-xs font-semibold text-foreground">{c.author?.display_name || "Участник"}</span>
                           <span className="text-[9px] text-muted-foreground font-mono">
                             {formatDistanceToNow(new Date(c.created_at), { addSuffix: true, locale: ru })}
                           </span>

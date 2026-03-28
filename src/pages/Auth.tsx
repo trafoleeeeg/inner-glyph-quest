@@ -115,8 +115,8 @@ const Auth = () => {
             <AnimatePresence mode="wait">
               {!isLogin && (
                 <motion.div key="name" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}>
-                  <label className="block text-xs text-muted-foreground font-mono uppercase tracking-wider mb-1.5">Позывной</label>
-                  <input type="text" value={displayName} onChange={e => setDisplayName(e.target.value)} placeholder="Нейронавт" maxLength={30}
+                  <label className="block text-xs text-muted-foreground font-mono uppercase tracking-wider mb-1.5">Имя</label>
+                  <input type="text" value={displayName} onChange={e => setDisplayName(e.target.value)} placeholder="Как тебя зовут?" maxLength={30}
                     className={`w-full bg-muted/50 border rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none transition-all ${errors.displayName ? 'border-destructive/50' : 'border-border/50 focus:border-primary/50'}`} />
                   <FieldError field="displayName" />
                 </motion.div>
