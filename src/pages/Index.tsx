@@ -120,13 +120,14 @@ const Index = () => {
     if (!user) return;
     const fetchMissions = async () => {
       const { data } = await supabase.from("missions").select("*").eq("user_id", user.id).eq("is_active", true);
-      if (data && data.length > 0) {
+      const missionData = data || [];
+      if (missionData.length > 0) {
         const today = new Date().toISOString().split('T')[0];
         const { data: completions } = await supabase
           .from("mission_completions").select("mission_id").eq("user_id", user.id)
           .gte("completed_at", today + "T00:00:00").lte("completed_at", today + "T23:59:59");
         const completedIds = new Set((completions || []).map(c => c.mission_id));
-        setMissions(data.map(m => ({ ...m, completed: completedIds.has(m.id) })));
+        setMissions(missionData.map(m => ({ ...m, completed: completedIds.has(m.id) })));
         const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
         const { data: weekCompletions } = await supabase
           .from("mission_completions").select("mission_id").eq("user_id", user.id)
@@ -135,9 +136,7 @@ const Index = () => {
         (weekCompletions || []).forEach(c => { counts[c.mission_id] = (counts[c.mission_id] || 0) + 1; });
         setMissionCompletionCounts(counts);
       } else {
-        const toInsert = DEFAULT_MISSIONS.map(m => ({ ...m, user_id: user.id }));
-        const { data: inserted } = await supabase.from("missions").insert(toInsert).select();
-        if (inserted) setMissions(inserted.map(m => ({ ...m, completed: false })));
+        setMissions([]);
       }
     };
     fetchMissions();
