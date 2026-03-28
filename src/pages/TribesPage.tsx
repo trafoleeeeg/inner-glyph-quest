@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import ParticleField from "@/components/ParticleField";
 import BottomNav from "@/components/BottomNav";
 import HeuristicsMarket from "@/components/HeuristicsMarket";
+import CommunityPulse from "@/components/CommunityPulse";
 
 interface Tribe {
   id: string;
@@ -312,6 +313,9 @@ const TribesPage = () => {
             )}
           </div>
         )}
+
+        {/* Community Pulse */}
+        <CommunityPulse />
 
         {/* Heuristics Market */}
         <HeuristicsMarket />

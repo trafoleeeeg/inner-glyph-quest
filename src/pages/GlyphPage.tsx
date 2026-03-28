@@ -8,6 +8,7 @@ import GlyphVisualizer from "@/components/GlyphVisualizer";
 import InnerDrives from "@/components/InnerDrives";
 import LifeBalanceChart from "@/components/LifeBalanceChart";
 import FogOfWarMap from "@/components/FogOfWarMap";
+import StateRadar from "@/components/StateRadar";
 import BottomNav from "@/components/BottomNav";
 
 const GlyphPage = () => {
@@ -70,6 +71,8 @@ const GlyphPage = () => {
           missionsCompleted={profile.total_missions_completed}
           dreamsLogged={profile.total_dreams_logged}
         />
+
+        <StateRadar />
 
         <InnerDrives />
 

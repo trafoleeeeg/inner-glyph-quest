@@ -6,6 +6,7 @@ import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import ParticleField from "@/components/ParticleField";
 import AnalyticsCharts from "@/components/AnalyticsCharts";
+import GrowthPathChart from "@/components/GrowthPathChart";
 import InnerDrives from "@/components/InnerDrives";
 import BottomNav from "@/components/BottomNav";
 import PostCard from "@/components/PostCard";
@@ -272,6 +273,8 @@ const ProfilePage = () => {
             )}
 
             <AnalyticsCharts />
+
+            <GrowthPathChart />
 
             {/* Inner Drives */}
             <InnerDrives />
