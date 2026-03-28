@@ -16,7 +16,7 @@ import ParticleField from "@/components/ParticleField";
 import CreateMission from "@/components/CreateMission";
 import InsightsPanel from "@/components/InsightsPanel";
 import Onboarding from "@/components/Onboarding";
-import GlyphVisualizer from "@/components/GlyphVisualizer";
+import Companion from "@/components/Companion";
 import LifeOverview from "@/components/LifeOverview";
 import AIInsights from "@/components/AIInsights";
 import DailyCheckin from "@/components/DailyCheckin";
