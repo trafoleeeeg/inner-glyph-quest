@@ -47,6 +47,9 @@ const TribesPage = () => {
   const [selectedTribe, setSelectedTribe] = useState<Tribe | null>(null);
   const [tribeMembers, setTribeMembers] = useState<any[]>([]);
   const [view, setView] = useState<"all" | "mine" | "ranking">("all");
+  const [challenges, setChallenges] = useState<any[]>([]);
+  const [showNewChallenge, setShowNewChallenge] = useState(false);
+  const [newChallengeTitle, setNewChallengeTitle] = useState("");
 
   const ICONS = ["🔥", "⚡", "🧠", "🌱", "💎", "🎯", "🦅", "🐉", "🌊", "☀️"];
 
