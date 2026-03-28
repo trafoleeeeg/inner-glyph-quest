@@ -78,6 +78,18 @@ const ProfilePage = () => {
       setFollowersCount(followers.count || 0);
       setFollowingCount(following.count || 0);
     });
+    // Fetch achievements
+    Promise.all([
+      supabase.from("achievements").select("*"),
+      supabase.from("user_achievements").select("*").eq("user_id", user.id),
+    ]).then(([achRes, userAchRes]) => {
+      const userAchMap = new Map((userAchRes.data || []).map(ua => [ua.achievement_id, ua]));
+      setAchievements((achRes.data || []).map(a => ({
+        ...a,
+        progress: userAchMap.get(a.id)?.progress || 0,
+        unlocked: userAchMap.get(a.id)?.unlocked || false,
+      })));
+    });
   }, [user]);
 
   useEffect(() => { fetchPosts(); }, [fetchPosts]);
