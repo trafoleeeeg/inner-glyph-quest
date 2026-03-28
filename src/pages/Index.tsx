@@ -332,23 +332,23 @@ const Index = () => {
           </motion.div>
         )}
 
-        {/* Discover yourself — accent block */}
+        {/* Diagnostic block — accent */}
         <motion.div
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-          className="rounded-2xl p-4 border-2 border-primary/30 bg-gradient-to-r from-primary/10 to-accent/10 cursor-pointer hover:border-primary/50 transition-all"
+          className="rounded-2xl p-4 border-2 border-destructive/30 bg-gradient-to-r from-destructive/10 via-primary/10 to-accent/10 cursor-pointer hover:border-destructive/50 transition-all"
           onClick={() => navigate("/life-analysis")}
         >
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-primary/15 flex items-center justify-center text-2xl">
-              🎯
+            <div className="w-12 h-12 rounded-xl bg-destructive/15 flex items-center justify-center text-2xl">
+              🧬
             </div>
             <div className="flex-1">
-              <p className="text-sm font-semibold text-foreground">Подбери привычки под свои цели</p>
+              <p className="text-sm font-bold text-foreground">Диагностика: определи свой архетип</p>
               <p className="text-[10px] text-muted-foreground mt-0.5">
-                AI проанализирует твой образ жизни и предложит план действий
+                Алгоритм определит тип твоей прокрастинации и назначит протоколы, которые сломают паттерн
               </p>
             </div>
-            <span className="text-primary text-lg">→</span>
+            <span className="text-destructive text-lg font-bold">→</span>
           </div>
         </motion.div>
 
@@ -379,10 +379,10 @@ const Index = () => {
                 <div className="flex-1">
                   <h3 className="text-sm font-semibold text-foreground mb-1">Это не просто трекер</h3>
                   <p className="text-xs text-muted-foreground leading-relaxed">
-                    Ты записываешь привычки, настроение и энергию. Через несколько дней AI находит закономерности: что реально улучшает твоё состояние, а что тянет вниз.
+                    Алгоритм определяет твой архетип прокрастинации и назначает нейробиологические протоколы (Глифы), которые ломают деструктивные паттерны. Настроение и энергия — входные данные для калибровки системы.
                   </p>
                   <p className="text-xs text-foreground/70 leading-relaxed mt-1.5 font-medium">
-                    Это инструмент, который показывает как твои действия влияют на твою жизнь.
+                    Каждый чекин = данные. Данные = точная диагностика. Диагностика = протоколы, которые работают.
                   </p>
                   <button
                     onClick={() => { localStorage.setItem("neuro_why_understood", "1"); setShowWhyBlock(false); }}
@@ -443,16 +443,16 @@ const Index = () => {
               animate={{ opacity: 1, y: 0 }}
               className="rounded-2xl p-6 border-2 border-dashed border-primary/20 bg-primary/5 text-center space-y-3"
             >
-              <div className="text-4xl">🎯</div>
-              <h3 className="text-sm font-semibold text-foreground">У тебя пока нет привычек</h3>
+              <div className="text-4xl">🧬</div>
+              <h3 className="text-sm font-semibold text-foreground">Протоколы не назначены</h3>
               <p className="text-xs text-muted-foreground leading-relaxed max-w-xs mx-auto">
-                Пройди анализ жизни — AI подберёт привычки, которые приведут тебя к твоим целям. Никаких случайных задач — только то, что реально двигает вперёд.
+                Пройди диагностику — алгоритм определит твой архетип прокрастинации и назначит Глифы, которые сломают деструктивные паттерны.
               </p>
               <button
                 onClick={() => navigate("/life-analysis")}
-                className="px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors"
+                className="px-4 py-2 rounded-xl bg-destructive text-destructive-foreground text-xs font-semibold hover:bg-destructive/90 transition-colors"
               >
-                Пройти анализ →
+                Запустить диагностику →
               </button>
               <div className="pt-2">
                 <CreateMission onSubmit={handleCreateMission} />
