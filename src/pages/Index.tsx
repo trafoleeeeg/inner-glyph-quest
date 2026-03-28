@@ -327,34 +327,46 @@ const Index = () => {
           {profile && <StatsRow energy={profile.energy} maxEnergy={profile.max_energy} streak={profile.streak} longestStreak={profile.longest_streak} totalMissions={profile.total_missions_completed} dreamsLogged={profile.total_dreams_logged} coins={profile.coins} />}
         </div>
 
-        {/* Companion */}
-        <div id="tutorial-glyph">
-          {profile && (
-            <Companion
-              level={profile.level}
-              energy={profile.energy} maxEnergy={profile.max_energy}
-              streak={profile.streak}
-              totalMissions={profile.total_missions_completed}
-              justFed={companionFed}
-            />
-          )}
-        </div>
-
-        {/* Why this app? - for newcomers */}
-        {profile && profile.level <= 1 && profile.total_missions_completed < 3 && !localStorage.getItem("neuro_why_dismissed") && (
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-            className="rounded-2xl p-4 border border-primary/15 bg-primary/5">
-            <h3 className="text-sm font-semibold text-foreground mb-1.5">💡 Зачем это приложение?</h3>
-            <p className="text-xs text-muted-foreground leading-relaxed mb-3">
-              Записывай привычки, настроение и сны. Приложение покажет, в каких сферах жизни у тебя всё хорошо, а где стоит поработать. Твой компаньон будет расти вместе с тобой — не дай ему загрустить!
-            </p>
-            <button
-              onClick={() => { localStorage.setItem("neuro_why_dismissed", "1"); }}
-              className="text-xs font-medium text-primary hover:text-primary/80 transition-colors"
+        {/* Why this app — motivational block */}
+        <AnimatePresence>
+          {showWhyBlock && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+              className="rounded-2xl p-4 border border-accent/20 bg-gradient-to-br from-accent/5 via-primary/5 to-secondary/5"
             >
-              Понятно ✓
-            </button>
-          </motion.div>
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-xl flex-shrink-0">🧠</div>
+                <div className="flex-1">
+                  <h3 className="text-sm font-semibold text-foreground mb-1">Это не просто трекер</h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Ты записываешь привычки, настроение и энергию. Через несколько дней AI находит закономерности: что реально улучшает твоё состояние, а что тянет вниз.
+                  </p>
+                  <p className="text-xs text-foreground/70 leading-relaxed mt-1.5 font-medium">
+                    Это инструмент, который показывает как твои действия влияют на твою жизнь.
+                  </p>
+                  <button
+                    onClick={() => { localStorage.setItem("neuro_why_understood", "1"); setShowWhyBlock(false); }}
+                    className="mt-2 text-xs font-medium text-primary hover:text-primary/80 transition-colors"
+                  >
+                    Понятно ✓
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Collapsed "?" hint if block was dismissed */}
+        {!showWhyBlock && (
+          <motion.button
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+            onClick={() => setShowWhyBlock(true)}
+            className="flex items-center gap-1.5 text-[10px] text-muted-foreground/60 hover:text-muted-foreground transition-colors font-mono"
+          >
+            <HelpCircle className="w-3 h-3" /> зачем всё это?
+          </motion.button>
         )}
 
         {/* Life Overview */}
