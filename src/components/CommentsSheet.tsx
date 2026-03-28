@@ -76,7 +76,7 @@ const CommentsSheet = ({ postId, onClose }: CommentsSheetProps) => {
         supabase.rpc('send_notification', {
           p_target_user_id: post.user_id,
           p_type: "comment",
-          p_title: "Новый комментарий к твоему сигналу",
+          p_title: "Новый комментарий к посту",
           p_body: input.trim().slice(0, 50),
           p_related_user_id: user.id,
           p_related_post_id: postId,
