@@ -37,9 +37,9 @@ const RewardPopup = ({ reward, onClose }: RewardPopupProps) => {
 
           {reward.leveledUp && (
             <motion.div initial={{ scale: 0 }} animate={{ scale: [0, 1.3, 1] }} transition={{ delay: 0.1, duration: 0.6 }} className="mb-4">
-              <p className="text-xs font-mono text-primary uppercase tracking-widest">Калибровка завершена</p>
+              <p className="text-xs font-mono text-primary uppercase tracking-widest">Новый уровень!</p>
               <p className="text-5xl font-bold text-primary text-glow-primary">{reward.newLevel}</p>
-              <p className="text-[10px] font-mono text-muted-foreground mt-1">Интерпретатор усилен</p>
+              <p className="text-[10px] font-mono text-muted-foreground mt-1">Ты стал сильнее</p>
             </motion.div>
           )}
 
