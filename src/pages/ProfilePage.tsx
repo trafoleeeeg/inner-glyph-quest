@@ -50,6 +50,8 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (!user) return;
+    supabase.from("user_roles").select("role").eq("user_id", user.id).eq("role", "admin")
+      .then(({ data }) => setIsAdmin(!!(data && data.length > 0)));
     const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
     Promise.all([
       supabase.from("mood_entries").select("mood, energy_level").eq("user_id", user.id).gte("created_at", weekAgo),
