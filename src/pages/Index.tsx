@@ -19,7 +19,6 @@ import Onboarding from "@/components/Onboarding";
 import GlyphVisualizer from "@/components/GlyphVisualizer";
 import LifeOverview from "@/components/LifeOverview";
 import AIInsights from "@/components/AIInsights";
-import AIInsights from "@/components/AIInsights";
 import AdaptiveTaskSelector from "@/components/AdaptiveTaskSelector";
 import { toast } from "sonner";
 import { Heart, HelpCircle } from "lucide-react";
