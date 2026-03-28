@@ -2,11 +2,11 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const moods = [
-  { emoji: '😫', label: 'Тяжело', value: 1, color: 'text-destructive' },
-  { emoji: '😕', label: 'Так себе', value: 2, color: 'text-streak' },
-  { emoji: '😐', label: 'Норм', value: 3, color: 'text-energy' },
-  { emoji: '😊', label: 'Хорошо', value: 4, color: 'text-accent' },
-  { emoji: '🔥', label: 'Огонь', value: 5, color: 'text-primary' },
+  { emoji: '😫', label: 'Перегрузка', value: 1, color: 'text-destructive' },
+  { emoji: '😕', label: 'Шум', value: 2, color: 'text-streak' },
+  { emoji: '😐', label: 'Стабильно', value: 3, color: 'text-energy' },
+  { emoji: '😊', label: 'Поток', value: 4, color: 'text-accent' },
+  { emoji: '🔥', label: 'Катарсис', value: 5, color: 'text-primary' },
 ];
 
 const energyLevels = [
@@ -36,20 +36,11 @@ const MoodCheckin = ({ onSubmit }: MoodCheckinProps) => {
 
   if (submitted) {
     return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="glass-card rounded-2xl p-6 border border-accent/20 text-center"
-      >
-        <motion.span
-          className="text-4xl block mb-2"
-          animate={{ scale: [1, 1.2, 1] }}
-          transition={{ duration: 0.5 }}
-        >
-          ✓
-        </motion.span>
-        <p className="text-accent text-sm font-semibold">Чекин записан</p>
-        <p className="text-xs text-muted-foreground mt-1 font-mono">+15 XP</p>
+      <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+        className="glass-card rounded-2xl p-6 border border-accent/20 text-center">
+        <motion.span className="text-4xl block mb-2" animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 0.5 }}>✓</motion.span>
+        <p className="text-accent text-sm font-semibold">Состояние зафиксировано</p>
+        <p className="text-xs text-muted-foreground mt-1 font-mono">туман рассеивается...</p>
       </motion.div>
     );
   }
@@ -57,45 +48,29 @@ const MoodCheckin = ({ onSubmit }: MoodCheckinProps) => {
   return (
     <div className="glass-card rounded-2xl p-5 border border-energy/10">
       <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
-        <span className="text-energy">💫</span> Как ты сейчас?
+        <span className="text-energy">📡</span> Сканирование состояния
       </h3>
       
-      {/* Mood */}
-      <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider mb-2">Настроение</p>
+      <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider mb-2">Качество сигнала</p>
       <div className="flex justify-between mb-4 gap-1">
         {moods.map((m) => (
-          <motion.button
-            key={m.value}
-            onClick={() => setSelectedMood(m.value)}
+          <motion.button key={m.value} onClick={() => setSelectedMood(m.value)}
             className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all flex-1 ${
-              selectedMood === m.value
-                ? 'bg-energy/15 border border-energy/30'
-                : 'hover:bg-muted/50 border border-transparent'
-            }`}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.9 }}
-          >
+              selectedMood === m.value ? 'bg-energy/15 border border-energy/30' : 'hover:bg-muted/50 border border-transparent'
+            }`} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.9 }}>
             <span className="text-xl">{m.emoji}</span>
             <span className="text-[9px] text-muted-foreground font-mono">{m.label}</span>
           </motion.button>
         ))}
       </div>
 
-      {/* Energy */}
-      <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider mb-2">Энергия</p>
+      <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider mb-2">Ресурс Интерпретатора</p>
       <div className="flex justify-between mb-4 gap-1">
         {energyLevels.map((e) => (
-          <motion.button
-            key={e.value}
-            onClick={() => setSelectedEnergy(e.value)}
+          <motion.button key={e.value} onClick={() => setSelectedEnergy(e.value)}
             className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all flex-1 ${
-              selectedEnergy === e.value
-                ? 'bg-primary/15 border border-primary/30'
-                : 'hover:bg-muted/50 border border-transparent'
-            }`}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.9 }}
-          >
+              selectedEnergy === e.value ? 'bg-primary/15 border border-primary/30' : 'hover:bg-muted/50 border border-transparent'
+            }`} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.9 }}>
             <span className="text-xl">{e.emoji}</span>
             <span className="text-[9px] text-muted-foreground font-mono">{e.label}</span>
           </motion.button>
@@ -104,24 +79,12 @@ const MoodCheckin = ({ onSubmit }: MoodCheckinProps) => {
 
       <AnimatePresence>
         {selectedMood !== null && selectedEnergy !== null && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-          >
-            <textarea
-              placeholder="Что повлияло? (опционально)"
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-              className="w-full bg-muted/30 border border-border/50 rounded-xl p-3 text-sm text-foreground placeholder:text-muted-foreground resize-none h-16 mb-3 focus:outline-none focus:border-energy/50 transition-all"
-            />
-            <motion.button
-              onClick={handleSubmit}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full bg-gradient-to-r from-energy/20 to-primary/20 hover:from-energy/30 hover:to-primary/30 text-energy border border-energy/20 rounded-xl py-2.5 text-sm font-semibold transition-all"
-            >
-              Записать +15 XP
+          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}>
+            <textarea placeholder="Что повлияло на сигнал? (опционально)" value={note} onChange={(e) => setNote(e.target.value)}
+              className="w-full bg-muted/30 border border-border/50 rounded-xl p-3 text-sm text-foreground placeholder:text-muted-foreground resize-none h-16 mb-3 focus:outline-none focus:border-energy/50 transition-all" />
+            <motion.button onClick={handleSubmit} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+              className="w-full bg-gradient-to-r from-energy/20 to-primary/20 hover:from-energy/30 hover:to-primary/30 text-energy border border-energy/20 rounded-xl py-2.5 text-sm font-semibold transition-all">
+              Зафиксировать · рассеять туман
             </motion.button>
           </motion.div>
         )}

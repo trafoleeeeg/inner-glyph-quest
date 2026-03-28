@@ -8,16 +8,16 @@ interface XPBarProps {
 }
 
 const LEVEL_TITLES: Record<number, string> = {
-  1: "Новичок",
+  1: "Спящий агент",
   2: "Пробуждённый",
-  3: "Исследователь",
-  4: "Адепт",
-  5: "Мастер",
-  6: "Мудрец",
-  7: "Архитектор",
-  8: "Провидец",
-  9: "Нейромант",
-  10: "Трансцендент",
+  3: "Дешифратор",
+  4: "Компрессор",
+  5: "Мета-Дипломат",
+  6: "Архитектор",
+  7: "Провидец",
+  8: "Нейромант",
+  9: "Трансцендент",
+  10: "Демиург",
 };
 
 const XPBar = ({ current, max, level, displayName }: XPBarProps) => {
@@ -32,7 +32,6 @@ const XPBar = ({ current, max, level, displayName }: XPBarProps) => {
     >
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-3">
-          {/* Level orb */}
           <motion.div
             className="relative w-12 h-12 rounded-2xl bg-primary/10 border border-primary/30 flex items-center justify-center overflow-hidden"
             animate={{ boxShadow: ['0 0 15px hsl(180 100% 50% / 0.2)', '0 0 25px hsl(180 100% 50% / 0.4)', '0 0 15px hsl(180 100% 50% / 0.2)'] }}
@@ -42,7 +41,7 @@ const XPBar = ({ current, max, level, displayName }: XPBarProps) => {
             <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent" />
           </motion.div>
           <div>
-            <p className="text-sm font-semibold text-foreground">{displayName || 'Нейронавт'}</p>
+            <p className="text-sm font-semibold text-foreground">{displayName || 'Агент'}</p>
             <p className="text-xs text-primary font-mono">{title}</p>
           </div>
         </div>
@@ -50,7 +49,7 @@ const XPBar = ({ current, max, level, displayName }: XPBarProps) => {
           <p className="font-mono text-sm text-primary font-bold">
             {current} <span className="text-muted-foreground">/ {max}</span>
           </p>
-          <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider">XP</p>
+          <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider">негэнтропия</p>
         </div>
       </div>
       
@@ -65,7 +64,6 @@ const XPBar = ({ current, max, level, displayName }: XPBarProps) => {
             boxShadow: '0 0 15px hsl(180 100% 50% / 0.5), 0 0 30px hsl(180 100% 50% / 0.2)',
           }}
         />
-        {/* Shimmer on progress */}
         <motion.div
           className="absolute inset-y-0 left-0 rounded-full opacity-30"
           style={{ width: `${percentage}%` }}
