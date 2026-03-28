@@ -274,6 +274,8 @@ const ProfilePage = () => {
 
             <AnalyticsCharts />
 
+            <GrowthPathChart />
+
             {/* Inner Drives */}
             <InnerDrives />
 
