@@ -249,6 +249,7 @@ const LifeAnalysisPage = () => {
           xp_reward: 25,
           is_daily: true,
           is_active: true,
+          glyph_type: h.glyph_type || "cognitive_constraint",
         }));
         const { error: insertError } = await supabase.from("missions").insert(missionsToInsert);
         if (!insertError) {
