@@ -11,6 +11,8 @@ import ParticleField from "@/components/ParticleField";
 import { RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 
+const PUBLIC_PROFILES_TABLE = "public_profiles" as any;
+
 interface PostWithAuthor {
   id: string;
   user_id: string;
@@ -48,7 +50,10 @@ const FeedPage = () => {
     if (!postsData) { setLoading(false); return; }
 
     const userIds = [...new Set(postsData.map(p => p.user_id))];
-    const { data: profiles } = await supabase.from("profiles").select("user_id, display_name, level, avatar_url").in("user_id", userIds);
+    const { data: profiles } = await supabase
+      .from(PUBLIC_PROFILES_TABLE)
+      .select("user_id, display_name, level, avatar_url")
+      .in("user_id", userIds);
     const profileMap = new Map(profiles?.map(p => [p.user_id, p]) || []);
 
     setPosts(postsData.map(p => ({ ...p, author: profileMap.get(p.user_id) as any })));
