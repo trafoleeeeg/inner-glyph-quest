@@ -188,26 +188,32 @@ const FeedPage = () => {
           )}
         </div>
 
-        <CreatePost onPostCreated={fetchPosts} />
-
-        {loading ? (
-          <div className="flex justify-center py-12">
-            <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
-          </div>
-        ) : posts.length === 0 ? (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-16">
-            <p className="text-4xl mb-3">📡</p>
-            <p className="text-sm text-muted-foreground font-mono">
-              {tab === "following" ? "Подпишись на интересных людей" : "Пока нет постов. Напиши первый!"}
-            </p>
-          </motion.div>
+        {tab === "rss" ? (
+          <RSSFeed />
         ) : (
-          <div className="space-y-3">
-            {posts.map(post => (
-              <PostCard key={post.id} post={post} isLiked={likedPosts.has(post.id)}
-                onLikeToggle={handleLikeToggle} onDelete={handleDelete} onCommentClick={setActiveComments} />
-            ))}
-          </div>
+          <>
+            <CreatePost onPostCreated={fetchPosts} />
+
+            {loading ? (
+              <div className="flex justify-center py-12">
+                <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+              </div>
+            ) : posts.length === 0 ? (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-16">
+                <p className="text-4xl mb-3">📡</p>
+                <p className="text-sm text-muted-foreground font-mono">
+                  {tab === "following" ? "Подпишись на интересных людей" : "Пока нет постов. Напиши первый!"}
+                </p>
+              </motion.div>
+            ) : (
+              <div className="space-y-3">
+                {posts.map(post => (
+                  <PostCard key={post.id} post={post} isLiked={likedPosts.has(post.id)}
+                    onLikeToggle={handleLikeToggle} onDelete={handleDelete} onCommentClick={setActiveComments} />
+                ))}
+              </div>
+            )}
+          </>
         )}
       </div>
 
