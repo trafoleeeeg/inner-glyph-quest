@@ -130,12 +130,11 @@ const Index = () => {
   }, [user, profile, missions, refetchProfile]);
 
   const handleMoodSubmit = useCallback(async (mood: number, energy: number, note: string) => {
-    if (!user || !profile) return;
-    await supabase.from("mood_entries").insert({ user_id: user.id, mood, energy_level: energy, note: note || null });
-    await supabase.from("profiles").update({ xp: profile.xp + 15 }).eq("user_id", user.id);
+    if (!user) return;
+    await supabase.rpc('submit_mood_checkin', { p_mood: mood, p_energy: energy, p_note: note || null });
     toast.success("+15 негэнтропии", { description: "Туман рассеивается" });
     await refetchProfile();
-  }, [user, profile, refetchProfile]);
+  }, [user, refetchProfile]);
 
   const handleDreamSubmit = useCallback(async (title: string, description: string, lucidity: number) => {
     if (!user || !profile) return;
