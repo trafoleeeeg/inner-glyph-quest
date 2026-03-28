@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -16,9 +16,11 @@ import ParticleField from "@/components/ParticleField";
 import CreateMission from "@/components/CreateMission";
 import InsightsPanel from "@/components/InsightsPanel";
 import Onboarding from "@/components/Onboarding";
+import GlyphVisualizer from "@/components/GlyphVisualizer";
 import { toast } from "sonner";
-import { Heart, Shield } from "lucide-react";
+import { Heart, HelpCircle } from "lucide-react";
 import BottomNav from "@/components/BottomNav";
+import { useTutorial } from "@/components/TutorialOverlay";
 
 const DEFAULT_MISSIONS = [
   { title: 'Утренняя калибровка', description: '10 минут тишины — перезагрузка фильтров', xp_reward: 30, category: 'habit', icon: '🧘' },
@@ -30,30 +32,47 @@ const DEFAULT_MISSIONS = [
 ];
 
 const Index = () => {
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   const { profile, refetch: refetchProfile } = useProfile();
   const navigate = useNavigate();
+  const { startTutorial } = useTutorial();
   const [missions, setMissions] = useState<(MissionData & { completed: boolean })[]>([]);
   const [achievements, setAchievements] = useState<any[]>([]);
   const [reward, setReward] = useState<any>(null);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [missionCompletionCounts, setMissionCompletionCounts] = useState<Record<string, number>>({});
+  const [lifeBalance, setLifeBalance] = useState(50);
 
-  // Check onboarding
   useEffect(() => {
-    if (!localStorage.getItem("neuro_onboarded")) {
-      setShowOnboarding(true);
-    }
+    if (!localStorage.getItem("neuro_onboarded")) setShowOnboarding(true);
   }, []);
 
+  // Fetch life balance for glyph
   useEffect(() => {
     if (!user) return;
-    supabase.from("user_roles").select("role").eq("user_id", user.id).eq("role", "admin")
-      .then(({ data }) => setIsAdmin(!!(data && data.length > 0)));
+    const fetchBalance = async () => {
+      const twoWeeksAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString();
+      const [moods, completions, dreams, desires, posts] = await Promise.all([
+        supabase.from("mood_entries").select("mood, energy_level").eq("user_id", user.id).gte("created_at", twoWeeksAgo),
+        supabase.from("mission_completions").select("*", { count: "exact", head: true }).eq("user_id", user.id).gte("completed_at", twoWeeksAgo),
+        supabase.from("dream_entries").select("*", { count: "exact", head: true }).eq("user_id", user.id).gte("created_at", twoWeeksAgo),
+        supabase.from("desires").select("*", { count: "exact", head: true }).eq("user_id", user.id),
+        supabase.from("posts").select("*", { count: "exact", head: true }).eq("user_id", user.id).gte("created_at", twoWeeksAgo),
+      ]);
+      const moodData = moods.data || [];
+      const avgEnergy = moodData.length > 0 ? moodData.reduce((s, m) => s + m.energy_level, 0) / moodData.length : 0;
+      const avgMood = moodData.length > 0 ? moodData.reduce((s, m) => s + m.mood, 0) / moodData.length : 0;
+      const scores = [
+        Math.min(avgEnergy * 20, 100), Math.min((completions.count || 0) * 5, 100),
+        Math.min(avgMood * 20 + moodData.length * 3, 100), Math.min((posts.count || 0) * 10, 100),
+        Math.min((desires.count || 0) * 15 + (completions.count || 0) * 3, 100),
+        Math.min((dreams.count || 0) * 14, 100),
+      ];
+      setLifeBalance(Math.round(scores.reduce((a, b) => a + b, 0) / scores.length));
+    };
+    fetchBalance();
   }, [user]);
 
-  // Fetch missions + completion counts for devaluation
   useEffect(() => {
     if (!user) return;
     const fetchMissions = async () => {
@@ -65,8 +84,6 @@ const Index = () => {
           .gte("completed_at", today + "T00:00:00").lte("completed_at", today + "T23:59:59");
         const completedIds = new Set((completions || []).map(c => c.mission_id));
         setMissions(data.map(m => ({ ...m, completed: completedIds.has(m.id) })));
-
-        // Get total completion counts for devaluation (last 7 days)
         const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
         const { data: weekCompletions } = await supabase
           .from("mission_completions").select("mission_id").eq("user_id", user.id)
@@ -97,21 +114,14 @@ const Index = () => {
     fetchAchievements();
   }, [user]);
 
-  // Calculate devaluation: entropy drops as mission is repeated
-  const getDevaluation = (missionId: string) => {
-    const count = missionCompletionCounts[missionId] || 0;
-    // After 7 completions in a week, XP drops to 30%
-    return Math.min(count * 0.1, 0.7);
-  };
+  const getDevaluation = (missionId: string) => Math.min((missionCompletionCounts[missionId] || 0) * 0.1, 0.7);
 
   const completeMission = useCallback(async (id: string) => {
     if (!user || !profile) return;
     const mission = missions.find(m => m.id === id);
     if (!mission || mission.completed) return;
-
     const { data, error } = await supabase.rpc('complete_mission', { p_mission_id: id });
     if (error) { toast.error("Ошибка выполнения"); return; }
-
     const result = data as any;
     const rewardResult = {
       baseXP: result.baseXP, bonusXP: result.bonusXP, totalXP: result.totalXP,
@@ -120,10 +130,8 @@ const Index = () => {
       streakMultiplier: result.streakMultiplier, coinsEarned: result.coinsEarned,
       leveledUp: result.leveledUp, newLevel: result.newLevel || undefined,
     };
-
     if (result.isCriticalHit || result.hasMysteryBox || result.leveledUp) setReward(rewardResult);
     else toast.success(`+${result.totalXP} негэнтропии`, { description: mission.title, duration: 2000 });
-
     setMissions(prev => prev.map(m => m.id === id ? { ...m, completed: true } : m));
     setMissionCompletionCounts(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
     await refetchProfile();
@@ -166,23 +174,45 @@ const Index = () => {
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
           <div>
-          <h1 className="text-2xl font-bold text-primary text-glow-primary font-display tracking-tight">INNER GLYPH</h1>
+            <h1 className="text-2xl font-bold text-primary text-glow-primary font-display tracking-tight">INNER GLYPH</h1>
             <p className="text-[10px] text-muted-foreground font-mono">кибернетическое самоопределение • негэнтропия</p>
           </div>
           <div className="flex items-center gap-1.5">
+            <NavButton icon={<HelpCircle className="w-4 h-4" />} onClick={startTutorial} tooltip="Обучение" color="text-muted-foreground" />
             <NavButton icon={<Heart className="w-4 h-4" />} onClick={() => navigate("/desires")} tooltip="Вектора" color="text-secondary" />
-            {isAdmin && <NavButton icon={<Shield className="w-4 h-4" />} onClick={() => navigate("/admin")} tooltip="Админ" color="text-destructive" />}
           </div>
         </motion.div>
 
-        {profile && <XPBar current={profile.xp} max={profile.xp_to_next} level={profile.level} displayName={profile.display_name} />}
-        {profile && <StatsRow energy={profile.energy} maxEnergy={profile.max_energy} streak={profile.streak} totalMissions={profile.total_missions_completed} dreamsLogged={profile.total_dreams_logged} coins={profile.coins} />}
+        {/* XP + Stats */}
+        <div id="tutorial-xp">
+          {profile && <XPBar current={profile.xp} max={profile.xp_to_next} level={profile.level} displayName={profile.display_name} />}
+        </div>
+        <div id="tutorial-stats">
+          {profile && <StatsRow energy={profile.energy} maxEnergy={profile.max_energy} streak={profile.streak} totalMissions={profile.total_missions_completed} dreamsLogged={profile.total_dreams_logged} coins={profile.coins} />}
+        </div>
+
+        {/* Glyph - integrated into Hub */}
+        <div id="tutorial-glyph">
+          {profile && (
+            <GlyphVisualizer
+              level={profile.level}
+              xp={profile.xp}
+              xpToNext={profile.xp_to_next}
+              energy={profile.energy}
+              maxEnergy={profile.max_energy}
+              streak={profile.streak}
+              balance={lifeBalance}
+              missionsCompleted={profile.total_missions_completed}
+              dreamsLogged={profile.total_dreams_logged}
+            />
+          )}
+        </div>
 
         {/* Insights */}
         <InsightsPanel />
 
         {/* Missions */}
-        <div>
+        <div id="tutorial-missions">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-sm font-semibold text-foreground flex items-center gap-2"><span>⚡</span> Протоколы сжатия</h2>
             <span className="text-xs font-mono text-muted-foreground">{completedCount}/{missions.length}</span>
@@ -197,14 +227,13 @@ const Index = () => {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-4">
+        <div id="tutorial-mood" className="grid md:grid-cols-2 gap-4">
           <MoodCheckin onSubmit={handleMoodSubmit} />
           <DreamJournal onSubmit={handleDreamSubmit} />
         </div>
 
         {achievements.length > 0 && <AchievementsList achievements={achievements} />}
 
-        {/* Philosophy hint */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
           className="text-center py-6 space-y-1">
           <p className="text-[10px] text-muted-foreground/40 font-mono">

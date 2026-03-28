@@ -10,7 +10,7 @@ import BottomNav from "@/components/BottomNav";
 import PostCard from "@/components/PostCard";
 import CreatePost from "@/components/CreatePost";
 import CommentsSheet from "@/components/CommentsSheet";
-import { ArrowLeft, Trophy, Target, Moon, Flame, TrendingUp, Calendar, Coins, Settings, LogOut, Edit3 } from "lucide-react";
+import { ArrowLeft, Trophy, Target, Moon, Flame, TrendingUp, Calendar, Coins, Settings, LogOut, Edit3, Shield } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
 
@@ -36,6 +36,7 @@ const ProfilePage = () => {
   const [followingCount, setFollowingCount] = useState(0);
   const [activeComments, setActiveComments] = useState<string | null>(null);
   const [tab, setTab] = useState<"posts" | "stats">("posts");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const fetchPosts = useCallback(async () => {
     if (!user) return;
@@ -49,6 +50,8 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (!user) return;
+    supabase.from("user_roles").select("role").eq("user_id", user.id).eq("role", "admin")
+      .then(({ data }) => setIsAdmin(!!(data && data.length > 0)));
     const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
     Promise.all([
       supabase.from("mood_entries").select("mood, energy_level").eq("user_id", user.id).gte("created_at", weekAgo),
@@ -126,10 +129,18 @@ const ProfilePage = () => {
         {/* Header with sign out */}
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
           <h1 className="text-lg font-bold text-foreground">Мой профиль</h1>
-          <motion.button whileTap={{ scale: 0.9 }} onClick={signOut}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-muted-foreground hover:text-destructive transition-colors">
-            <LogOut className="w-3.5 h-3.5" /> Выход
-          </motion.button>
+          <div className="flex items-center gap-2">
+            {isAdmin && (
+              <motion.button whileTap={{ scale: 0.9 }} onClick={() => navigate("/admin")}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-destructive/70 hover:text-destructive bg-destructive/5 border border-destructive/10 transition-colors">
+                <Shield className="w-3.5 h-3.5" /> Админ
+              </motion.button>
+            )}
+            <motion.button whileTap={{ scale: 0.9 }} onClick={signOut}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-muted-foreground hover:text-destructive transition-colors">
+              <LogOut className="w-3.5 h-3.5" /> Выход
+            </motion.button>
+          </div>
         </motion.div>
 
         {/* Profile Card */}
