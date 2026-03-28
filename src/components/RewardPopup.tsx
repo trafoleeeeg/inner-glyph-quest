@@ -69,8 +69,8 @@ const RewardPopup = ({ reward, onClose }: RewardPopupProps) => {
               transition={{ delay: 0.5, type: "spring" }}
               className="mt-4 p-3 rounded-xl bg-secondary/10 border border-secondary/20">
               <span className="text-2xl">{reward.mysteryBox.icon}</span>
-              <p className="text-sm font-semibold text-secondary mt-1">Аномалия данных</p>
-              <p className="text-xs font-mono text-muted-foreground">+{reward.mysteryBox.amount} негэнтропии</p>
+              <p className="text-sm font-semibold text-secondary mt-1">Бонус дня!</p>
+              <p className="text-xs font-mono text-muted-foreground">+{reward.mysteryBox.amount} опыта</p>
             </motion.div>
           )}
 
