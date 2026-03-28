@@ -140,11 +140,35 @@ const FeedPage = () => {
       <div className="relative z-10 max-w-2xl mx-auto px-4 py-6 space-y-4">
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
           <div className="text-center flex-1">
-            <h1 className="text-xl font-bold text-primary text-glow-primary font-display">Сигнальная Сеть</h1>
-            <p className="text-[10px] text-muted-foreground font-mono">трансляции нейронавтов</p>
+            <h1 className="text-xl font-bold text-primary text-glow-primary font-display">Лента</h1>
+            <p className="text-[10px] text-muted-foreground font-mono">посты сообщества</p>
           </div>
           <NotificationBell />
         </motion.div>
+
+        {/* Search bar */}
+        <div className="relative">
+          <div className="glass-card rounded-xl p-1 border border-border/30 flex items-center gap-2">
+            <Search className="w-4 h-4 text-muted-foreground ml-3" />
+            <input value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder="Найти людей..."
+              className="flex-1 bg-transparent py-2 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none" />
+          </div>
+          {searchResults.length > 0 && (
+            <div className="absolute top-full left-0 right-0 mt-1 glass-card rounded-xl border border-border/30 z-20 overflow-hidden">
+              {searchResults.map((u: any) => (
+                <button key={u.user_id} onClick={() => { navigate(`/user/${u.user_id}`); setSearchQuery(""); }}
+                  className="w-full flex items-center gap-2 p-2.5 hover:bg-muted/20 transition-colors text-left">
+                  <Avatar className="w-7 h-7 border border-primary/15">
+                    {u.avatar_url && <AvatarImage src={u.avatar_url} />}
+                    <AvatarFallback className="bg-primary/10 text-primary text-[9px] font-mono">{u.display_name?.slice(0, 2).toUpperCase()}</AvatarFallback>
+                  </Avatar>
+                  <span className="text-xs text-foreground flex-1">{u.display_name}</span>
+                  <span className="text-[9px] font-mono text-muted-foreground">Lv.{u.level}</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
 
         <div className="flex items-center gap-2 justify-center">
           {(["all", "following"] as const).map(t => (
