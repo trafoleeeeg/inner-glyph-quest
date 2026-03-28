@@ -52,6 +52,15 @@ const RECURRENCE_OPTIONS = [
   { value: "monthly", label: "Раз в месяц" },
 ];
 
+const QUICK_PRESETS = [
+  { title: "Записать сон", icon: "🌙" },
+  { title: "Отметить настроение", icon: "📡" },
+  { title: "Прогулка 30 мин", icon: "🚶" },
+  { title: "Чтение 20 мин", icon: "📖" },
+  { title: "Медитация", icon: "🧘" },
+  { title: "Тренировка", icon: "💪" },
+];
+
 const TasksPage = () => {
   const { user } = useAuth();
   const [tasks, setTasks] = useState<Task[]>([]);
