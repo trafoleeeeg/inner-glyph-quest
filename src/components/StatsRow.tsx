@@ -14,19 +14,16 @@ const StatsRow = ({ energy, maxEnergy, streak, totalMissions, dreamsLogged, coin
   const energyPercent = Math.round((energy / maxEnergy) * 100);
   
   const stats = [
-    { label: "Энергия", value: `${energyPercent}%`, icon: Zap, color: "text-energy", bg: "bg-energy/10", borderColor: "border-energy/20", glowColor: "glow-energy" },
-    { label: "Стрик", value: `${streak}д`, icon: Flame, color: "text-streak", bg: "bg-streak/10", borderColor: "border-streak/20", glowColor: "" },
-    { label: "Миссии", value: totalMissions, icon: Target, color: "text-primary", bg: "bg-primary/10", borderColor: "border-primary/20", glowColor: "glow-primary" },
-    { label: "Сны", value: dreamsLogged, icon: Moon, color: "text-dream", bg: "bg-dream/10", borderColor: "border-dream/20", glowColor: "glow-secondary" },
-    { label: "Коины", value: coins, icon: Coins, color: "text-energy", bg: "bg-energy/10", borderColor: "border-energy/20", glowColor: "" },
+    { label: "Ресурс", value: `${energyPercent}%`, icon: Zap, color: "text-energy", borderColor: "border-energy/20" },
+    { label: "Поток", value: `${streak}д`, icon: Flame, color: "text-streak", borderColor: "border-streak/20" },
+    { label: "Сжато", value: totalMissions, icon: Target, color: "text-primary", borderColor: "border-primary/20" },
+    { label: "Синхр", value: dreamsLogged, icon: Moon, color: "text-dream", borderColor: "border-dream/20" },
+    { label: "Коины", value: coins, icon: Coins, color: "text-energy", borderColor: "border-energy/20" },
   ];
 
   const container = {
     hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: { staggerChildren: 0.06 },
-    },
+    show: { opacity: 1, transition: { staggerChildren: 0.06 } },
   };
 
   const item = {
@@ -35,12 +32,7 @@ const StatsRow = ({ energy, maxEnergy, streak, totalMissions, dreamsLogged, coin
   };
 
   return (
-    <motion.div
-      variants={container}
-      initial="hidden"
-      animate="show"
-      className="grid grid-cols-5 gap-2"
-    >
+    <motion.div variants={container} initial="hidden" animate="show" className="grid grid-cols-5 gap-2">
       {stats.map((stat) => (
         <motion.div
           key={stat.label}

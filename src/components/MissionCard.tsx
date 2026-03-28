@@ -15,6 +15,7 @@ interface MissionCardProps {
   mission: MissionData;
   onComplete: (id: string) => void;
   index: number;
+  devaluation?: number; // 0-1, how much XP is reduced
 }
 
 const categoryColors: Record<string, { border: string; text: string; bg: string }> = {
@@ -27,12 +28,15 @@ const categoryColors: Record<string, { border: string; text: string; bg: string 
 };
 
 const categoryLabels: Record<string, string> = {
-  habit: 'Привычка', mood: 'Настроение', dream: 'Сон',
-  desire: 'Желание', health: 'Здоровье', custom: 'Своё',
+  habit: 'Ритуал', mood: 'Сканер', dream: 'Синхр.',
+  desire: 'Вектор', health: 'Каркас', custom: 'Своё',
 };
 
-const MissionCard = ({ mission, onComplete, index }: MissionCardProps) => {
+const MissionCard = ({ mission, onComplete, index, devaluation }: MissionCardProps) => {
   const colors = categoryColors[mission.category] || categoryColors.custom;
+  const effectiveXP = devaluation && devaluation > 0
+    ? Math.max(Math.floor(mission.xp_reward * (1 - devaluation)), Math.floor(mission.xp_reward * 0.3))
+    : mission.xp_reward;
 
   return (
     <motion.div
@@ -56,11 +60,7 @@ const MissionCard = ({ mission, onComplete, index }: MissionCardProps) => {
           } : {}}
           transition={{ duration: 3, repeat: Infinity, delay: index * 0.5 }}
         >
-          {mission.completed ? (
-            <Check className="w-5 h-5 text-accent" />
-          ) : (
-            mission.icon
-          )}
+          {mission.completed ? <Check className="w-5 h-5 text-accent" /> : mission.icon}
         </motion.div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-0.5">
@@ -75,11 +75,18 @@ const MissionCard = ({ mission, onComplete, index }: MissionCardProps) => {
             <p className="text-xs text-muted-foreground truncate">{mission.description}</p>
           )}
         </div>
-        <div className="flex items-center gap-1 shrink-0">
-          {!mission.completed && <Sparkles className={`w-3 h-3 ${colors.text} opacity-50`} />}
-          <span className={`font-mono text-sm font-bold ${mission.completed ? 'text-muted-foreground' : colors.text}`}>
-            +{mission.xp_reward}
-          </span>
+        <div className="flex flex-col items-end gap-0.5 shrink-0">
+          <div className="flex items-center gap-1">
+            {!mission.completed && <Sparkles className={`w-3 h-3 ${colors.text} opacity-50`} />}
+            <span className={`font-mono text-sm font-bold ${mission.completed ? 'text-muted-foreground' : colors.text}`}>
+              +{effectiveXP}
+            </span>
+          </div>
+          {devaluation && devaluation > 0.1 && !mission.completed && (
+            <span className="text-[8px] font-mono text-muted-foreground/50">
+              энтропия↓
+            </span>
+          )}
         </div>
       </div>
     </motion.div>

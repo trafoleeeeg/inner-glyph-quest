@@ -40,7 +40,7 @@ const DesireTracker = () => {
     if (data) {
       setDesires(prev => [data, ...prev]);
       setTitle(""); setDescription(""); setPriority(3); setShowAdd(false);
-      toast.success("+20 XP", { description: "Желание записано" });
+      toast.success("+20 негэнтропии", { description: "Вектор зафиксирован" });
       await supabase.from("profiles").update({
         xp: (await supabase.from("profiles").select("xp").eq("user_id", user.id).single()).data?.xp! + 20
       }).eq("user_id", user.id);
@@ -49,11 +49,10 @@ const DesireTracker = () => {
 
   const toggleFulfill = async (id: string, current: boolean) => {
     await supabase.from("desires").update({
-      is_fulfilled: !current,
-      fulfilled_at: !current ? new Date().toISOString() : null,
+      is_fulfilled: !current, fulfilled_at: !current ? new Date().toISOString() : null,
     }).eq("id", id);
     setDesires(prev => prev.map(d => d.id === id ? { ...d, is_fulfilled: !current } : d));
-    if (!current) toast.success("🎉 Желание исполнено!", { duration: 3000 });
+    if (!current) toast.success("🎯 Вектор реализован!", { description: "Катарсис — глобальный минимум достигнут", duration: 3000 });
   };
 
   const deleteDesire = async (id: string) => {
@@ -72,7 +71,10 @@ const DesireTracker = () => {
             className="w-9 h-9 rounded-xl bg-muted/50 border border-border/50 flex items-center justify-center text-muted-foreground hover:text-foreground transition-all">
             <ArrowLeft className="w-4 h-4" />
           </motion.button>
-          <h1 className="text-lg font-bold text-foreground">✨ Трекер желаний</h1>
+          <div>
+            <h1 className="text-lg font-bold text-foreground">🎯 Вектора намерений</h1>
+            <p className="text-[10px] text-muted-foreground font-mono">куда направлен твой Интерпретатор?</p>
+          </div>
           <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => setShowAdd(!showAdd)}
             className="ml-auto w-9 h-9 rounded-xl bg-secondary/20 border border-secondary/30 flex items-center justify-center text-secondary hover:bg-secondary/30 transition-all">
             <Plus className="w-4 h-4" />
@@ -82,12 +84,12 @@ const DesireTracker = () => {
         {showAdd && (
           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
             className="glass-card rounded-2xl p-5 border border-secondary/10">
-            <input placeholder="Чего ты хочешь?" value={title} onChange={e => setTitle(e.target.value)}
+            <input placeholder="Чего добивается твой Интерпретатор?" value={title} onChange={e => setTitle(e.target.value)}
               className="w-full bg-muted/30 border border-border/50 rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground mb-3 focus:outline-none focus:border-secondary/50" />
-            <textarea placeholder="Подробнее (опционально)" value={description} onChange={e => setDescription(e.target.value)}
+            <textarea placeholder="Контекст (опционально)" value={description} onChange={e => setDescription(e.target.value)}
               className="w-full bg-muted/30 border border-border/50 rounded-xl p-3 text-sm text-foreground placeholder:text-muted-foreground resize-none h-16 mb-3 focus:outline-none focus:border-secondary/50" />
             <div className="mb-3">
-              <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider mb-2">Приоритет</p>
+              <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider mb-2">Интенсивность сигнала</p>
               <div className="flex gap-1">
                 {[1,2,3,4,5].map(p => (
                   <motion.button key={p} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => setPriority(p)}
@@ -99,7 +101,7 @@ const DesireTracker = () => {
             </div>
             <motion.button onClick={addDesire} disabled={!title.trim()} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
               className="w-full bg-gradient-to-r from-secondary/20 to-dream/20 text-secondary border border-secondary/20 rounded-xl py-2.5 text-sm font-semibold transition-all disabled:opacity-30">
-              Записать желание +20 XP
+              Зафиксировать вектор
             </motion.button>
           </motion.div>
         )}
@@ -112,7 +114,7 @@ const DesireTracker = () => {
               <div className="flex items-center gap-3">
                 <motion.button whileTap={{ scale: 0.8 }} onClick={() => toggleFulfill(d.id, d.is_fulfilled)}
                   className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${d.is_fulfilled ? 'bg-accent/20 border border-accent/30' : 'bg-muted/50 border border-border/50'}`}>
-                  {d.is_fulfilled ? <Check className="w-4 h-4 text-accent" /> : <span className="text-sm">✨</span>}
+                  {d.is_fulfilled ? <Check className="w-4 h-4 text-accent" /> : <span className="text-sm">🎯</span>}
                 </motion.button>
                 <div className="flex-1 min-w-0">
                   <h3 className={`text-sm font-semibold ${d.is_fulfilled ? 'line-through text-muted-foreground' : 'text-foreground'}`}>{d.title}</h3>
@@ -133,8 +135,11 @@ const DesireTracker = () => {
           ))}
           {desires.length === 0 && (
             <div className="text-center py-12 text-muted-foreground text-sm">
-              <p className="text-3xl mb-2">✨</p>
-              <p>Запиши своё первое желание</p>
+              <p className="text-3xl mb-2">🎯</p>
+              <p>Зафиксируй первый вектор намерения</p>
+              <p className="text-[10px] font-mono mt-1 text-muted-foreground/50">
+                желание = направленная негэнтропия
+              </p>
             </div>
           )}
         </div>
