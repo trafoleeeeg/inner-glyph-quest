@@ -52,6 +52,15 @@ const RECURRENCE_OPTIONS = [
   { value: "monthly", label: "Раз в месяц" },
 ];
 
+const QUICK_PRESETS = [
+  { title: "Записать сон", icon: "🌙" },
+  { title: "Отметить настроение", icon: "📡" },
+  { title: "Прогулка 30 мин", icon: "🚶" },
+  { title: "Чтение 20 мин", icon: "📖" },
+  { title: "Медитация", icon: "🧘" },
+  { title: "Тренировка", icon: "💪" },
+];
+
 const TasksPage = () => {
   const { user } = useAuth();
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -78,12 +87,13 @@ const TasksPage = () => {
 
   useEffect(() => { fetchTasks(); }, [fetchTasks]);
 
-  const addTask = async (parentId?: string) => {
-    if (!user || !newTaskTitle.trim()) return;
+  const addTask = async (parentId?: string, titleOverride?: string) => {
+    const title = titleOverride || newTaskTitle;
+    if (!user || !title.trim()) return;
     const today = new Date().toISOString().split("T")[0];
     const { error } = await supabase.from("user_tasks").insert({
       user_id: user.id,
-      title: newTaskTitle.trim(),
+      title: title.trim(),
       category: parentId ? "inbox" : activeCategory,
       priority: newTaskPriority,
       scheduled_date: activeCategory === "today" && !parentId ? today : null,
@@ -249,8 +259,7 @@ const TasksPage = () => {
                   onToggleSubtask={(st) => toggleComplete(st)}
                   onDeleteSubtask={(id) => deleteTask(id)}
                   onAddSubtask={(parentId, title) => {
-                    setNewTaskTitle(title);
-                    addTask(parentId);
+                    addTask(parentId, title);
                   }}
                   activeCategory={activeCategory}
                 />
@@ -275,6 +284,18 @@ const TasksPage = () => {
                 onKeyDown={e => e.key === "Enter" && addTask()}
                 placeholder="Что нужно сделать?" autoFocus
                 className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none" />
+
+              {/* Quick presets */}
+              {!newTaskTitle && (
+                <div className="flex flex-wrap gap-1">
+                  {QUICK_PRESETS.map(p => (
+                    <button key={p.title} onClick={() => addTask(undefined, p.title)}
+                      className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-mono text-muted-foreground hover:text-foreground bg-muted/20 hover:bg-muted/40 transition-colors border border-border/20">
+                      <span>{p.icon}</span> {p.title}
+                    </button>
+                  ))}
+                </div>
+              )}
               
               {/* Priority */}
               <div className="flex items-center gap-1">

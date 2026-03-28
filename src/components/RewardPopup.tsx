@@ -37,23 +37,23 @@ const RewardPopup = ({ reward, onClose }: RewardPopupProps) => {
 
           {reward.leveledUp && (
             <motion.div initial={{ scale: 0 }} animate={{ scale: [0, 1.3, 1] }} transition={{ delay: 0.1, duration: 0.6 }} className="mb-4">
-              <p className="text-xs font-mono text-primary uppercase tracking-widest">Калибровка завершена</p>
+              <p className="text-xs font-mono text-primary uppercase tracking-widest">Новый уровень!</p>
               <p className="text-5xl font-bold text-primary text-glow-primary">{reward.newLevel}</p>
-              <p className="text-[10px] font-mono text-muted-foreground mt-1">Интерпретатор усилен</p>
+              <p className="text-[10px] font-mono text-muted-foreground mt-1">Ты стал сильнее</p>
             </motion.div>
           )}
 
           {!reward.leveledUp && (
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
               <p className="text-3xl font-bold text-accent text-glow-accent mb-1">+{reward.totalXP}</p>
-              <p className="text-[10px] font-mono text-muted-foreground">негэнтропия</p>
+              <p className="text-[10px] font-mono text-muted-foreground">опыт</p>
             </motion.div>
           )}
 
           {reward.isCriticalHit && (
             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
               className="text-sm font-semibold text-energy text-glow-energy mb-2 mt-2">
-              🎯 РЕЗОНАНС! x2 сжатие
+              🎯 Удачный момент! x2 опыта
             </motion.p>
           )}
 
@@ -69,8 +69,8 @@ const RewardPopup = ({ reward, onClose }: RewardPopupProps) => {
               transition={{ delay: 0.5, type: "spring" }}
               className="mt-4 p-3 rounded-xl bg-secondary/10 border border-secondary/20">
               <span className="text-2xl">{reward.mysteryBox.icon}</span>
-              <p className="text-sm font-semibold text-secondary mt-1">Аномалия данных</p>
-              <p className="text-xs font-mono text-muted-foreground">+{reward.mysteryBox.amount} негэнтропии</p>
+              <p className="text-sm font-semibold text-secondary mt-1">Бонус дня!</p>
+              <p className="text-xs font-mono text-muted-foreground">+{reward.mysteryBox.amount} опыта</p>
             </motion.div>
           )}
 

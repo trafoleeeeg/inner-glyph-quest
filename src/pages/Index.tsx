@@ -163,6 +163,20 @@ const Index = () => {
     }
   }, [user]);
 
+  const handleEditMission = useCallback(async (id: string, data: { title: string; description: string; icon: string }) => {
+    if (!user) return;
+    await supabase.from("missions").update(data).eq("id", id).eq("user_id", user.id);
+    setMissions(prev => prev.map(m => m.id === id ? { ...m, ...data } : m));
+    toast.success("Привычка обновлена");
+  }, [user]);
+
+  const handleDeleteMission = useCallback(async (id: string) => {
+    if (!user) return;
+    await supabase.from("missions").delete().eq("id", id).eq("user_id", user.id);
+    setMissions(prev => prev.filter(m => m.id !== id));
+    toast.success("Привычка удалена");
+  }, [user]);
+
   const completedCount = missions.filter(m => m.completed).length;
 
   return (
@@ -229,7 +243,9 @@ const Index = () => {
           </div>
           <div className="space-y-2">
             {missions.map((mission, i) => (
-              <MissionCard key={mission.id} mission={mission} onComplete={completeMission} index={i} devaluation={getDevaluation(mission.id)} />
+              <MissionCard key={mission.id} mission={mission} onComplete={completeMission}
+                onEdit={handleEditMission} onDelete={handleDeleteMission}
+                index={i} devaluation={getDevaluation(mission.id)} />
             ))}
           </div>
           <div className="mt-3">

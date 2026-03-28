@@ -14,8 +14,8 @@ import { toast } from "sonner";
 const PUBLIC_PROFILES_TABLE = "public_profiles";
 
 const LEVEL_TITLES: Record<number, string> = {
-  1: "Спящий агент", 2: "Пробуждённый", 3: "Дешифратор", 4: "Компрессор",
-  5: "Мета-Дипломат", 6: "Архитектор", 7: "Провидец", 8: "Нейромант", 9: "Трансцендент", 10: "Демиург",
+  1: "Новичок", 2: "Исследователь", 3: "Практик", 4: "Стратег",
+  5: "Наставник", 6: "Архитектор", 7: "Мастер", 8: "Эксперт", 9: "Гуру", 10: "Легенда",
 };
 
 const UserProfilePage = () => {
@@ -176,7 +176,7 @@ const UserProfilePage = () => {
           {/* Game stats */}
           <div className="grid grid-cols-4 gap-2 mt-5">
             {[
-              { icon: Target, label: "Протоколов", value: profile.total_missions_completed, color: "text-primary" },
+              { icon: Target, label: "Привычек", value: profile.total_missions_completed, color: "text-primary" },
               { icon: Flame, label: "Поток", value: `${profile.streak}д`, color: "text-streak" },
               { icon: Moon, label: "Снов", value: profile.total_dreams_logged, color: "text-dream" },
               { icon: Calendar, label: "Уровень", value: profile.level, color: "text-energy" },

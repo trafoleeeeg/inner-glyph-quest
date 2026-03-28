@@ -9,58 +9,58 @@
     --font-display: 'Space Grotesk', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
 
-    --background: 220 20% 6%;
-    --foreground: 180 10% 90%;
+    --background: 222 20% 7%;
+    --foreground: 210 15% 85%;
 
-    --card: 220 18% 10%;
-    --card-foreground: 180 10% 90%;
+    --card: 222 18% 11%;
+    --card-foreground: 210 15% 85%;
 
-    --popover: 220 18% 10%;
-    --popover-foreground: 180 10% 90%;
+    --popover: 222 18% 11%;
+    --popover-foreground: 210 15% 85%;
 
-    --primary: 180 100% 50%;
-    --primary-foreground: 220 20% 6%;
+    --primary: 200 60% 50%;
+    --primary-foreground: 222 20% 7%;
 
-    --secondary: 260 80% 60%;
+    --secondary: 250 40% 55%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 15% 15%;
-    --muted-foreground: 220 10% 55%;
+    --muted: 222 15% 15%;
+    --muted-foreground: 215 12% 50%;
 
-    --accent: 140 70% 50%;
-    --accent-foreground: 220 20% 6%;
+    --accent: 155 45% 45%;
+    --accent-foreground: 222 20% 7%;
 
-    --destructive: 0 70% 55%;
+    --destructive: 0 55% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 15% 18%;
-    --input: 220 15% 15%;
-    --ring: 180 100% 50%;
+    --border: 222 12% 17%;
+    --input: 222 15% 15%;
+    --ring: 200 60% 50%;
 
     --radius: 0.75rem;
 
-    --energy: 45 100% 55%;
-    --energy-foreground: 220 20% 6%;
-    --xp: 140 70% 50%;
-    --xp-foreground: 220 20% 6%;
-    --dream: 270 80% 65%;
+    --energy: 40 70% 55%;
+    --energy-foreground: 222 20% 7%;
+    --xp: 155 45% 45%;
+    --xp-foreground: 222 20% 7%;
+    --dream: 260 50% 60%;
     --dream-foreground: 0 0% 100%;
-    --streak: 25 95% 55%;
+    --streak: 25 65% 50%;
     --streak-foreground: 0 0% 100%;
 
-    --glow-primary: 0 0 20px hsl(180 100% 50% / 0.3), 0 0 60px hsl(180 100% 50% / 0.1);
-    --glow-accent: 0 0 20px hsl(140 70% 50% / 0.3), 0 0 60px hsl(140 70% 50% / 0.1);
-    --glow-secondary: 0 0 20px hsl(260 80% 60% / 0.3), 0 0 60px hsl(260 80% 60% / 0.1);
-    --glow-energy: 0 0 20px hsl(45 100% 55% / 0.3), 0 0 60px hsl(45 100% 55% / 0.1);
+    --glow-primary: 0 0 12px hsl(200 60% 50% / 0.15), 0 0 40px hsl(200 60% 50% / 0.05);
+    --glow-accent: 0 0 12px hsl(155 45% 45% / 0.15), 0 0 40px hsl(155 45% 45% / 0.05);
+    --glow-secondary: 0 0 12px hsl(250 40% 55% / 0.15), 0 0 40px hsl(250 40% 55% / 0.05);
+    --glow-energy: 0 0 12px hsl(40 70% 55% / 0.15), 0 0 40px hsl(40 70% 55% / 0.05);
 
-    --sidebar-background: 220 18% 8%;
-    --sidebar-foreground: 180 10% 90%;
-    --sidebar-primary: 180 100% 50%;
-    --sidebar-primary-foreground: 220 20% 6%;
-    --sidebar-accent: 220 15% 15%;
-    --sidebar-accent-foreground: 180 10% 90%;
-    --sidebar-border: 220 15% 18%;
-    --sidebar-ring: 180 100% 50%;
+    --sidebar-background: 222 18% 9%;
+    --sidebar-foreground: 210 15% 85%;
+    --sidebar-primary: 200 60% 50%;
+    --sidebar-primary-foreground: 222 20% 7%;
+    --sidebar-accent: 222 15% 15%;
+    --sidebar-accent-foreground: 210 15% 85%;
+    --sidebar-border: 222 12% 17%;
+    --sidebar-ring: 200 60% 50%;
   }
 }
 
@@ -93,43 +93,43 @@
     box-shadow: var(--glow-energy);
   }
   .text-glow-primary {
-    text-shadow: 0 0 10px hsl(180 100% 50% / 0.5), 0 0 30px hsl(180 100% 50% / 0.2);
+    text-shadow: 0 0 8px hsl(200 60% 50% / 0.3);
   }
   .text-glow-accent {
-    text-shadow: 0 0 10px hsl(140 70% 50% / 0.5), 0 0 30px hsl(140 70% 50% / 0.2);
+    text-shadow: 0 0 8px hsl(155 45% 45% / 0.3);
   }
   .text-glow-secondary {
-    text-shadow: 0 0 10px hsl(260 80% 60% / 0.5), 0 0 30px hsl(260 80% 60% / 0.2);
+    text-shadow: 0 0 8px hsl(250 40% 55% / 0.3);
   }
   .text-glow-energy {
-    text-shadow: 0 0 10px hsl(45 100% 55% / 0.5), 0 0 30px hsl(45 100% 55% / 0.2);
+    text-shadow: 0 0 8px hsl(40 70% 55% / 0.3);
   }
   .glass {
-    @apply bg-card/60 backdrop-blur-xl border border-border/50;
+    @apply bg-card/60 backdrop-blur-xl border border-border/40;
   }
   .glass-card {
     background: linear-gradient(
       135deg,
-      hsl(220 18% 10% / 0.8) 0%,
-      hsl(220 18% 8% / 0.9) 100%
+      hsl(222 18% 11% / 0.85) 0%,
+      hsl(222 18% 9% / 0.9) 100%
     );
-    backdrop-filter: blur(20px) saturate(1.5);
-    border: 1px solid hsl(180 100% 50% / 0.08);
+    backdrop-filter: blur(16px) saturate(1.2);
+    border: 1px solid hsl(200 60% 50% / 0.06);
   }
   .glass-card-hover {
     background: linear-gradient(
       135deg,
-      hsl(220 18% 12% / 0.8) 0%,
-      hsl(220 18% 10% / 0.9) 100%
+      hsl(222 18% 13% / 0.85) 0%,
+      hsl(222 18% 11% / 0.9) 100%
     );
-    backdrop-filter: blur(20px) saturate(1.5);
-    border: 1px solid hsl(180 100% 50% / 0.15);
+    backdrop-filter: blur(16px) saturate(1.2);
+    border: 1px solid hsl(200 60% 50% / 0.1);
   }
   .cyber-grid {
     background-image: 
-      linear-gradient(hsl(180 100% 50% / 0.02) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(180 100% 50% / 0.02) 1px, transparent 1px);
-    background-size: 40px 40px;
+      linear-gradient(hsl(200 60% 50% / 0.01) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(200 60% 50% / 0.01) 1px, transparent 1px);
+    background-size: 48px 48px;
   }
   .gradient-border {
     position: relative;
@@ -140,7 +140,7 @@
     inset: 0;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(135deg, hsl(180 100% 50% / 0.3), hsl(260 80% 60% / 0.3), hsl(140 70% 50% / 0.3));
+    background: linear-gradient(135deg, hsl(200 60% 50% / 0.15), hsl(250 40% 55% / 0.15), hsl(155 45% 45% / 0.15));
     mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     mask-composite: exclude;
     -webkit-mask-composite: xor;
@@ -150,11 +150,11 @@
     background: linear-gradient(
       110deg,
       transparent 25%,
-      hsl(180 100% 50% / 0.05) 50%,
+      hsl(200 60% 50% / 0.03) 50%,
       transparent 75%
     );
     background-size: 200% 100%;
-    animation: shimmer 3s ease-in-out infinite;
+    animation: shimmer 4s ease-in-out infinite;
   }
 }
 
@@ -165,7 +165,7 @@
 
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+  50% { transform: translateY(-6px); }
 }
 
 @keyframes orbit {

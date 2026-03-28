@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { Check, Sparkles } from "lucide-react";
+import { Check, Sparkles, Edit3, Trash2, X } from "lucide-react";
+import { useState } from "react";
 
 export interface MissionData {
   id: string;
@@ -14,17 +15,19 @@ export interface MissionData {
 interface MissionCardProps {
   mission: MissionData;
   onComplete: (id: string) => void;
+  onEdit?: (id: string, data: { title: string; description: string; icon: string }) => void;
+  onDelete?: (id: string) => void;
   index: number;
   devaluation?: number;
 }
 
 const categoryColors: Record<string, { border: string; text: string; bg: string }> = {
-  habit: { border: 'border-primary/20 hover:border-primary/50', text: 'text-primary', bg: 'bg-primary/10' },
-  mood: { border: 'border-energy/20 hover:border-energy/50', text: 'text-energy', bg: 'bg-energy/10' },
-  dream: { border: 'border-dream/20 hover:border-dream/50', text: 'text-dream', bg: 'bg-dream/10' },
-  desire: { border: 'border-secondary/20 hover:border-secondary/50', text: 'text-secondary', bg: 'bg-secondary/10' },
-  health: { border: 'border-accent/20 hover:border-accent/50', text: 'text-accent', bg: 'bg-accent/10' },
-  custom: { border: 'border-primary/20 hover:border-primary/50', text: 'text-primary', bg: 'bg-primary/10' },
+  habit: { border: 'border-primary/15 hover:border-primary/30', text: 'text-primary', bg: 'bg-primary/8' },
+  mood: { border: 'border-energy/15 hover:border-energy/30', text: 'text-energy', bg: 'bg-energy/8' },
+  dream: { border: 'border-dream/15 hover:border-dream/30', text: 'text-dream', bg: 'bg-dream/8' },
+  desire: { border: 'border-secondary/15 hover:border-secondary/30', text: 'text-secondary', bg: 'bg-secondary/8' },
+  health: { border: 'border-accent/15 hover:border-accent/30', text: 'text-accent', bg: 'bg-accent/8' },
+  custom: { border: 'border-primary/15 hover:border-primary/30', text: 'text-primary', bg: 'bg-primary/8' },
 };
 
 const categoryLabels: Record<string, string> = {
@@ -32,64 +35,121 @@ const categoryLabels: Record<string, string> = {
   desire: 'Цель', health: 'Здоровье', custom: 'Своё',
 };
 
-const MissionCard = ({ mission, onComplete, index, devaluation }: MissionCardProps) => {
+const MissionCard = ({ mission, onComplete, onEdit, onDelete, index, devaluation }: MissionCardProps) => {
+  const [editing, setEditing] = useState(false);
+  const [editTitle, setEditTitle] = useState(mission.title);
+  const [editDesc, setEditDesc] = useState(mission.description || "");
+  const [editIcon, setEditIcon] = useState(mission.icon);
+  const [dragX, setDragX] = useState(0);
+
   const colors = categoryColors[mission.category] || categoryColors.custom;
   const effectiveXP = devaluation && devaluation > 0
     ? Math.max(Math.floor(mission.xp_reward * (1 - devaluation)), Math.floor(mission.xp_reward * 0.3))
     : mission.xp_reward;
 
+  const handleSaveEdit = () => {
+    if (onEdit && editTitle.trim()) {
+      onEdit(mission.id, { title: editTitle.trim(), description: editDesc.trim(), icon: editIcon });
+      setEditing(false);
+    }
+  };
+
+  if (editing) {
+    return (
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+        className="glass-card rounded-xl p-4 border border-primary/15 space-y-2">
+        <div className="flex items-center gap-2">
+          <input value={editIcon} onChange={e => setEditIcon(e.target.value)} maxLength={2}
+            className="w-10 h-10 text-center text-lg bg-muted/30 rounded-lg border border-border/30 focus:outline-none" />
+          <input value={editTitle} onChange={e => setEditTitle(e.target.value)}
+            className="flex-1 bg-transparent text-sm font-semibold text-foreground focus:outline-none"
+            placeholder="Название" autoFocus />
+        </div>
+        <input value={editDesc} onChange={e => setEditDesc(e.target.value)}
+          className="w-full bg-transparent text-xs text-muted-foreground focus:outline-none"
+          placeholder="Описание (необязательно)" />
+        <div className="flex justify-end gap-2">
+          <button onClick={() => setEditing(false)} className="text-xs text-muted-foreground hover:text-foreground">Отмена</button>
+          <button onClick={handleSaveEdit} className="text-xs text-primary font-semibold">Сохранить</button>
+        </div>
+      </motion.div>
+    );
+  }
+
   return (
-    <motion.div
-      initial={{ opacity: 0, x: -30 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: index * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className={`glass-card rounded-xl p-4 border transition-all duration-300 cursor-pointer group ${
-        mission.completed ? 'opacity-40 border-accent/10' : colors.border
-      }`}
-      onClick={() => !mission.completed && onComplete(mission.id)}
-      whileHover={!mission.completed ? { scale: 1.01, y: -1 } : {}}
-      whileTap={!mission.completed ? { scale: 0.98 } : {}}
-    >
-      <div className="flex items-center gap-3">
-        <motion.div
-          className={`w-11 h-11 rounded-xl flex items-center justify-center text-lg shrink-0 ${
-            mission.completed ? 'bg-accent/20' : colors.bg
-          }`}
-          animate={!mission.completed ? {
-            boxShadow: ['0 0 0px transparent', '0 0 12px hsl(180 100% 50% / 0.15)', '0 0 0px transparent']
-          } : {}}
-          transition={{ duration: 3, repeat: Infinity, delay: index * 0.5 }}
-        >
-          {mission.completed ? <Check className="w-5 h-5 text-accent" /> : mission.icon}
+    <div className="relative overflow-hidden rounded-xl">
+      {/* Delete background on swipe */}
+      {onDelete && dragX < -30 && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+          className="absolute inset-y-0 right-0 w-20 bg-destructive/20 flex items-center justify-center rounded-r-xl">
+          <Trash2 className="w-5 h-5 text-destructive" />
         </motion.div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-0.5">
-            <h3 className={`text-sm font-semibold ${mission.completed ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
-              {mission.title}
-            </h3>
-            <span className={`text-[9px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded-md ${colors.bg} ${colors.text}`}>
-              {categoryLabels[mission.category] || mission.category}
-            </span>
+      )}
+
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: index * 0.04, duration: 0.4 }}
+        drag={onDelete ? "x" : false}
+        dragConstraints={{ left: -100, right: 0 }}
+        dragElastic={0.3}
+        onDrag={(_, info) => setDragX(info.offset.x)}
+        onDragEnd={(_, info) => {
+          if (info.offset.x < -80 && onDelete) {
+            onDelete(mission.id);
+          }
+          setDragX(0);
+        }}
+        className={`glass-card rounded-xl p-3.5 border transition-all duration-200 cursor-pointer group relative ${
+          mission.completed ? 'opacity-35 border-accent/8' : colors.border
+        }`}
+        onClick={() => !mission.completed && onComplete(mission.id)}
+        whileHover={!mission.completed ? { y: -1 } : {}}
+        whileTap={!mission.completed ? { scale: 0.98 } : {}}
+      >
+        <div className="flex items-center gap-3">
+          <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-base shrink-0 ${
+            mission.completed ? 'bg-accent/15' : colors.bg
+          }`}>
+            {mission.completed ? <Check className="w-4 h-4 text-accent" /> : mission.icon}
           </div>
-          {mission.description && (
-            <p className="text-xs text-muted-foreground truncate">{mission.description}</p>
-          )}
-        </div>
-        <div className="flex flex-col items-end gap-0.5 shrink-0">
-          <div className="flex items-center gap-1">
-            {!mission.completed && <Sparkles className={`w-3 h-3 ${colors.text} opacity-50`} />}
-            <span className={`font-mono text-sm font-bold ${mission.completed ? 'text-muted-foreground' : colors.text}`}>
-              +{effectiveXP}
-            </span>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-0.5">
+              <h3 className={`text-sm font-medium ${mission.completed ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
+                {mission.title}
+              </h3>
+              <span className={`text-[8px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded-md ${colors.bg} ${colors.text}`}>
+                {categoryLabels[mission.category] || mission.category}
+              </span>
+            </div>
+            {mission.description && (
+              <p className="text-[11px] text-muted-foreground truncate">{mission.description}</p>
+            )}
           </div>
-          {devaluation && devaluation > 0.1 && !mission.completed && (
-            <span className="text-[8px] font-mono text-muted-foreground/50">
-              убывает
-            </span>
-          )}
+          <div className="flex flex-col items-end gap-1 shrink-0">
+            <div className="flex items-center gap-1">
+              {!mission.completed && <Sparkles className={`w-3 h-3 ${colors.text} opacity-40`} />}
+              <span className={`font-mono text-xs font-bold ${mission.completed ? 'text-muted-foreground' : colors.text}`}>
+                +{effectiveXP}
+              </span>
+            </div>
+            {!mission.completed && onEdit && (
+              <button
+                onClick={(e) => { e.stopPropagation(); setEditing(true); }}
+                className="opacity-0 group-hover:opacity-100 text-muted-foreground/30 hover:text-primary transition-all"
+              >
+                <Edit3 className="w-3 h-3" />
+              </button>
+            )}
+          </div>
         </div>
-      </div>
-    </motion.div>
+        {onDelete && !mission.completed && (
+          <p className="text-[8px] text-muted-foreground/20 font-mono mt-1 text-right md:hidden">
+            ← свайпни для удаления
+          </p>
+        )}
+      </motion.div>
+    </div>
   );
 };
 
