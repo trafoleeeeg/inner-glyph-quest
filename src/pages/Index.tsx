@@ -17,7 +17,8 @@ import CreateMission from "@/components/CreateMission";
 import InsightsPanel from "@/components/InsightsPanel";
 import Onboarding from "@/components/Onboarding";
 import { toast } from "sonner";
-import { LogOut, User, MessageCircle, Heart, Shield } from "lucide-react";
+import { Heart, Shield } from "lucide-react";
+import BottomNav from "@/components/BottomNav";
 
 const DEFAULT_MISSIONS = [
   { title: 'Утренняя калибровка', description: '10 минут тишины — перезагрузка фильтров', xp_reward: 30, category: 'habit', icon: '🧘' },
