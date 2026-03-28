@@ -36,11 +36,15 @@ interface PublicProfile {
 
 const FeedPage = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [posts, setPosts] = useState<PostWithAuthor[]>([]);
   const [likedPosts, setLikedPosts] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [activeComments, setActiveComments] = useState<string | null>(null);
   const [tab, setTab] = useState<"all" | "following">("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searching, setSearching] = useState(false);
 
   const fetchPosts = useCallback(async () => {
     if (!user) return;
