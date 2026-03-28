@@ -65,7 +65,7 @@ const Auth = () => {
     try {
       const result = isLogin
         ? await signIn(email.trim(), password)
-        : await signUp(email.trim(), password, displayName.trim() || "Нейронавт");
+        : await signUp(email.trim(), password, displayName.trim() || "Участник");
       if (result.error) {
         setGeneralError(result.error.message);
       } else {
