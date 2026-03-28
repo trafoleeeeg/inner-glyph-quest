@@ -302,6 +302,26 @@ const Index = () => {
           </motion.div>
         )}
 
+        {/* Discover yourself — accent block */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+          className="rounded-2xl p-4 border-2 border-primary/30 bg-gradient-to-r from-primary/10 to-accent/10 cursor-pointer hover:border-primary/50 transition-all"
+          onClick={() => navigate("/life-analysis")}
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-primary/15 flex items-center justify-center text-2xl">
+              🎯
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-semibold text-foreground">Подбери привычки под свои цели</p>
+              <p className="text-[10px] text-muted-foreground mt-0.5">
+                AI проанализирует твой образ жизни и предложит план действий
+              </p>
+            </div>
+            <span className="text-primary text-lg">→</span>
+          </div>
+        </motion.div>
+
         {/* XP + Stats */}
         <div id="tutorial-xp">
           {profile && <XPBar current={profile.xp} max={profile.xp_to_next} level={profile.level} displayName={profile.display_name} />}
@@ -374,23 +394,12 @@ const Index = () => {
           <DreamJournal onSubmit={handleDreamSubmit} />
         </div>
 
-        {/* Discover yourself button */}
-        <motion.button
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={() => navigate("/life-analysis")}
-          className="w-full glass-card rounded-2xl p-4 border border-primary/20 flex items-center gap-3 hover:border-primary/40 transition-all"
-        >
-          <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-            <Compass className="w-5 h-5 text-primary" />
-          </div>
-          <div className="text-left flex-1">
-            <p className="text-sm font-semibold text-foreground">Узнай себя</p>
-            <p className="text-[10px] text-muted-foreground">AI подберёт привычки под твои цели</p>
-          </div>
-          <span className="text-muted-foreground text-lg">→</span>
-        </motion.button>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
+          className="text-center py-4">
+          <p className="text-[10px] text-muted-foreground/40 font-mono">
+            каждый день — шаг к лучшей версии себя
+          </p>
+        </motion.div>
 
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
           className="text-center py-6 space-y-1">

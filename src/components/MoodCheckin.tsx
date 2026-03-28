@@ -47,9 +47,12 @@ const MoodCheckin = ({ onSubmit }: MoodCheckinProps) => {
 
   return (
     <div className="glass-card rounded-2xl p-5 border border-energy/10">
-      <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
+      <h3 className="text-sm font-semibold mb-1 flex items-center gap-2">
         <span className="text-energy">📡</span> Как ты сейчас?
       </h3>
+      <p className="text-[9px] text-muted-foreground/60 font-mono mb-3 leading-relaxed">
+        Записывай каждый день — через неделю AI покажет, какие привычки улучшают твоё состояние
+      </p>
       
       <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider mb-2">Настроение</p>
       <div className="flex justify-between mb-4 gap-1">

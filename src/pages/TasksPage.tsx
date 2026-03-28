@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { motion, AnimatePresence, Reorder } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Check, Trash2, Calendar, Flag, ChevronDown, ChevronRight, Inbox, Sun, Archive, Repeat, Link2, GripVertical, ChevronUp } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -173,9 +173,15 @@ const TasksPage = () => {
   const filteredTasks = tasks.filter(t => {
     if (t.parent_task_id) return false;
     if (activeCategory === "today") {
-      return (t.category === "today" || t.scheduled_date === today) && !t.is_completed;
+      return (t.category === "today" || t.scheduled_date === today);
     }
-    return t.category === activeCategory && !t.is_completed;
+    return t.category === activeCategory;
+  });
+
+  // Sort: incomplete first, then completed
+  const sortedTasks = [...filteredTasks].sort((a, b) => {
+    if (a.is_completed === b.is_completed) return a.sort_order - b.sort_order;
+    return a.is_completed ? 1 : -1;
   });
 
   const getSubtasks = (parentId: string) => tasks.filter(t => t.parent_task_id === parentId);
@@ -244,11 +250,14 @@ const TasksPage = () => {
           ))}
         </div>
 
-        {/* Drag & drop task list */}
-        <Reorder.Group axis="y" values={filteredTasks} onReorder={handleReorder} className="space-y-1.5">
+        {/* Task list — incomplete first, completed at bottom */}
+        <div className="space-y-1.5">
           <AnimatePresence>
-            {filteredTasks.map((task, i) => (
-              <Reorder.Item key={task.id} value={task} className="list-none">
+            {sortedTasks.map((task, i) => (
+              <motion.div key={task.id}
+                initial={{ opacity: 0 }} animate={{ opacity: task.is_completed ? 0.5 : 1 }}
+                className={task.is_completed ? "opacity-50" : ""}
+              >
                 <TaskItem
                   task={task}
                   index={i}
@@ -265,12 +274,12 @@ const TasksPage = () => {
                   }}
                   activeCategory={activeCategory}
                 />
-              </Reorder.Item>
+              </motion.div>
             ))}
           </AnimatePresence>
-        </Reorder.Group>
+        </div>
 
-        {filteredTasks.length === 0 && !loading && (
+        {sortedTasks.length === 0 && !loading && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-12">
             <activeCat.icon className={`w-10 h-10 ${activeCat.color} mx-auto mb-3 opacity-30`} />
             <p className="text-xs text-muted-foreground font-mono">Нет задач</p>
@@ -355,28 +364,6 @@ const TasksPage = () => {
           )}
         </AnimatePresence>
 
-        {/* Completed today */}
-        {todayCompleted.length > 0 && (
-          <div>
-            <button onClick={() => setCollapsedCompleted(!collapsedCompleted)}
-              className="flex items-center gap-2 text-xs text-muted-foreground/50 font-mono mb-2 hover:text-muted-foreground transition-colors">
-              {collapsedCompleted ? <ChevronRight className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-              Выполнено сегодня ({todayCompleted.length})
-            </button>
-            <AnimatePresence>
-              {!collapsedCompleted && todayCompleted.map(task => (
-                <motion.div key={task.id} initial={{ opacity: 0, height: 0 }} animate={{ opacity: 0.5, height: "auto" }} exit={{ opacity: 0, height: 0 }}
-                  className="flex items-center gap-3 p-3 rounded-xl bg-muted/10 mb-1">
-                  <button onClick={() => toggleComplete(task)}
-                    className="w-5 h-5 rounded-md bg-accent/20 border border-accent/30 flex items-center justify-center shrink-0">
-                    <Check className="w-3 h-3 text-accent" />
-                  </button>
-                  <span className="text-xs text-muted-foreground line-through flex-1">{task.title}</span>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-        )}
       </div>
       <BottomNav />
     </div>
