@@ -8,8 +8,10 @@ import CommentsSheet from "@/components/CommentsSheet";
 import BottomNav from "@/components/BottomNav";
 import NotificationBell from "@/components/NotificationBell";
 import ParticleField from "@/components/ParticleField";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, Search } from "lucide-react";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const PUBLIC_PROFILES_TABLE = "public_profiles";
 
