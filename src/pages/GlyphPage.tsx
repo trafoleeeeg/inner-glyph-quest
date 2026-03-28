@@ -6,8 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import ParticleField from "@/components/ParticleField";
 import GlyphVisualizer from "@/components/GlyphVisualizer";
 import InnerDrives from "@/components/InnerDrives";
-import LifeBalanceChart from "@/components/LifeBalanceChart";
-import FogOfWarMap from "@/components/FogOfWarMap";
+import LifeOverview from "@/components/LifeOverview";
 import StateRadar from "@/components/StateRadar";
 import BottomNav from "@/components/BottomNav";
 import { Info, X } from "lucide-react";
@@ -54,10 +53,10 @@ const GlyphPage = () => {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-lg font-bold text-foreground flex items-center gap-2">
-                <span className="text-primary text-glow-primary">◈</span> Глиф и баланс
+                <span className="text-primary text-glow-primary">◈</span> Мой Глиф
               </h1>
               <p className="text-[10px] text-muted-foreground font-mono">
-                твоё состояние в цифрах и визуализации
+                визуальное отражение твоей активности
               </p>
             </div>
             <button onClick={() => setShowPageInfo(!showPageInfo)}
@@ -75,23 +74,23 @@ const GlyphPage = () => {
               <button onClick={() => setShowPageInfo(false)} className="absolute top-3 right-3 text-muted-foreground/30 hover:text-foreground">
                 <X className="w-4 h-4" />
               </button>
-              <h3 className="text-sm font-semibold text-foreground mb-2">Что здесь происходит?</h3>
+              <h3 className="text-sm font-semibold text-foreground mb-2">Что такое Глиф?</h3>
               <div className="space-y-2 text-[11px] text-muted-foreground leading-relaxed">
                 <p>
-                  <strong className="text-foreground">Глиф</strong> — геометрическая фигура, которая отражает твою активность. 
-                  Чем больше привычек выполняешь — тем сложнее и ярче она становится. Забросишь — потускнеет.
+                  <strong className="text-foreground">Глиф</strong> — это живой символ, который отражает твою активность. 
+                  Представь его как аватар, который меняется в реальном времени: чем больше ты делаешь для себя, тем сложнее и ярче он становится.
                 </p>
                 <p>
-                  <strong className="text-foreground">Баланс сфер</strong> — радар из 6 направлений жизни (тело, разум, эмоции, связи, рост, сны). 
-                  Показывает, где ты силён, а где стоит уделить внимание. Данные за последние 2 недели.
+                  🔵 <strong className="text-foreground">Кольцо</strong> вокруг — запас энергии. Полное кольцо = ты в отличной форме.
                 </p>
                 <p>
-                  <strong className="text-foreground">Карта осознанности</strong> — визуализация того, насколько ты «видишь» каждую сферу. 
-                  Чем больше записей — тем прозрачнее зона. Цель: открыть все шесть.
+                  ✦ <strong className="text-foreground">Точки</strong> по кругу — серия активных дней подряд.
                 </p>
                 <p>
-                  <strong className="text-foreground">Внутренние силы</strong> — части твоей личности (амбиции, покой, забота и т.д.). 
-                  Настрой баланс между ними, чтобы понять, что для тебя важнее всего.
+                  ◈ <strong className="text-foreground">Геометрия</strong> — чем выше уровень, тем больше граней и слоёв у фигуры.
+                </p>
+                <p className="text-primary/60 font-mono text-[10px] pt-1">
+                  Цель: поддерживай глиф ярким через ежедневные привычки, записи настроения и снов.
                 </p>
               </div>
             </motion.div>
@@ -105,18 +104,8 @@ const GlyphPage = () => {
           missionsCompleted={profile.total_missions_completed} dreamsLogged={profile.total_dreams_logged}
         />
 
-        {/* Merged section: Balance + Awareness */}
-        <div className="space-y-1">
-          <h2 className="text-sm font-semibold text-foreground flex items-center gap-2 px-1">
-            <span>⚖️</span> Баланс и осознанность
-          </h2>
-          <p className="text-[10px] text-muted-foreground px-1 mb-2">
-            Два взгляда на одно и то же: <strong>баланс</strong> показывает силу каждой сферы, <strong>карта</strong> — насколько ты её отслеживаешь
-          </p>
-        </div>
-
-        <LifeBalanceChart />
-        <FogOfWarMap />
+        {/* Unified life overview */}
+        <LifeOverview />
 
         <StateRadar />
 

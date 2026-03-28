@@ -222,9 +222,8 @@ const Index = () => {
 
         {/* Life Map + Balance */}
         <div id="tutorial-fog">
-          <FogOfWarMap />
+          <LifeOverview />
         </div>
-        <LifeBalanceChart />
 
         {/* Adaptive Task Selector */}
         <AdaptiveTaskSelector />
