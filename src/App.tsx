@@ -55,7 +55,7 @@ const App = () => (
                 <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
                 <Route path="/feed" element={<ProtectedRoute><FeedPage /></ProtectedRoute>} />
                 <Route path="/map" element={<ProtectedRoute><MapPage /></ProtectedRoute>} />
-                <Route path="/glyph" element={<ProtectedRoute><GlyphPage /></ProtectedRoute>} />
+                {/* /glyph route removed */}
                 <Route path="/tribes" element={<ProtectedRoute><TribesPage /></ProtectedRoute>} />
                 <Route path="/tasks" element={<ProtectedRoute><TasksPage /></ProtectedRoute>} />
                 <Route path="/search" element={<ProtectedRoute><SearchPage /></ProtectedRoute>} />

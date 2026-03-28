@@ -306,17 +306,34 @@ const Index = () => {
           {profile && <StatsRow energy={profile.energy} maxEnergy={profile.max_energy} streak={profile.streak} longestStreak={profile.longest_streak} totalMissions={profile.total_missions_completed} dreamsLogged={profile.total_dreams_logged} coins={profile.coins} />}
         </div>
 
-        {/* Glyph */}
+        {/* Companion */}
         <div id="tutorial-glyph">
           {profile && (
-            <GlyphVisualizer
-              level={profile.level} xp={profile.xp} xpToNext={profile.xp_to_next}
+            <Companion
+              level={profile.level}
               energy={profile.energy} maxEnergy={profile.max_energy}
-              streak={profile.streak} balance={lifeBalance}
-              missionsCompleted={profile.total_missions_completed} dreamsLogged={profile.total_dreams_logged}
+              streak={profile.streak}
+              totalMissions={profile.total_missions_completed}
             />
           )}
         </div>
+
+        {/* Why this app? - for newcomers */}
+        {profile && profile.level <= 1 && profile.total_missions_completed < 3 && !localStorage.getItem("neuro_why_dismissed") && (
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+            className="rounded-2xl p-4 border border-primary/15 bg-primary/5">
+            <h3 className="text-sm font-semibold text-foreground mb-1.5">💡 Зачем это приложение?</h3>
+            <p className="text-xs text-muted-foreground leading-relaxed mb-3">
+              Записывай привычки, настроение и сны. Приложение покажет, в каких сферах жизни у тебя всё хорошо, а где стоит поработать. Твой компаньон будет расти вместе с тобой — не дай ему загрустить!
+            </p>
+            <button
+              onClick={() => { localStorage.setItem("neuro_why_dismissed", "1"); }}
+              className="text-xs font-medium text-primary hover:text-primary/80 transition-colors"
+            >
+              Понятно ✓
+            </button>
+          </motion.div>
+        )}
 
         {/* Life Overview */}
         <div id="tutorial-fog">

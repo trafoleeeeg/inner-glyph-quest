@@ -5,7 +5,7 @@ import { Home, Compass, Users, CheckSquare, User } from "lucide-react";
 const NAV_ITEMS = [
   { path: "/", icon: Home, label: "Хаб" },
   { path: "/feed", icon: Compass, label: "Лента" },
-  { path: "/tribes", icon: Users, label: "Племена" },
+  { path: "/tribes", icon: Users, label: "Группы" },
   { path: "/tasks", icon: CheckSquare, label: "Задачи" },
   { path: "/profile", icon: User, label: "Я" },
 ];
