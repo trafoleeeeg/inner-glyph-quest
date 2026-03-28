@@ -821,7 +821,11 @@ export type Database = {
           due_date: string | null
           id: string
           is_completed: boolean
+          is_recurring: boolean
+          linked_mission_id: string | null
+          parent_task_id: string | null
           priority: number
+          recurrence_rule: string | null
           scheduled_date: string | null
           sort_order: number
           title: string
@@ -836,7 +840,11 @@ export type Database = {
           due_date?: string | null
           id?: string
           is_completed?: boolean
+          is_recurring?: boolean
+          linked_mission_id?: string | null
+          parent_task_id?: string | null
           priority?: number
+          recurrence_rule?: string | null
           scheduled_date?: string | null
           sort_order?: number
           title: string
@@ -851,14 +859,33 @@ export type Database = {
           due_date?: string | null
           id?: string
           is_completed?: boolean
+          is_recurring?: boolean
+          linked_mission_id?: string | null
+          parent_task_id?: string | null
           priority?: number
+          recurrence_rule?: string | null
           scheduled_date?: string | null
           sort_order?: number
           title?: string
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "user_tasks_linked_mission_id_fkey"
+            columns: ["linked_mission_id"]
+            isOneToOne: false
+            referencedRelation: "missions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_tasks_parent_task_id_fkey"
+            columns: ["parent_task_id"]
+            isOneToOne: false
+            referencedRelation: "user_tasks"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
