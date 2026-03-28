@@ -264,7 +264,7 @@ const ProfilePage = () => {
                   <div className="text-center p-3 rounded-xl bg-primary/5 border border-primary/10">
                     <span className="text-2xl">⚡</span>
                     <p className="text-lg font-bold font-mono text-primary mt-1">{moodStats.avgEnergy}</p>
-                    <p className="text-[9px] text-muted-foreground font-mono uppercase">Ср. ресурс</p>
+                    <p className="text-[9px] text-muted-foreground font-mono uppercase">Ср. энергия</p>
                   </div>
                 </div>
               </motion.div>
