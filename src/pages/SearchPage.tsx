@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Search, TrendingUp, Users } from "lucide-react";
+import { Search, TrendingUp } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import BottomNav from "@/components/BottomNav";
 import ParticleField from "@/components/ParticleField";
 
@@ -31,7 +31,6 @@ const SearchPage = () => {
   const [loading, setLoading] = useState(false);
   const [followingIds, setFollowingIds] = useState<Set<string>>(new Set());
 
-  // Fetch top users (leaderboard) and following list
   useEffect(() => {
     if (!user) return;
     Promise.all([
@@ -43,16 +42,13 @@ const SearchPage = () => {
     });
   }, [user]);
 
-  // Search
   useEffect(() => {
     if (!query.trim()) { setResults([]); return; }
     setLoading(true);
     const timer = setTimeout(async () => {
-      const { data } = await supabase
-        .from("profiles")
+      const { data } = await supabase.from("profiles")
         .select("user_id, display_name, level, avatar_url, total_missions_completed, streak")
-        .ilike("display_name", `%${query.trim()}%`)
-        .limit(20);
+        .ilike("display_name", `%${query.trim()}%`).limit(20);
       setResults((data || []) as UserResult[]);
       setLoading(false);
     }, 300);
@@ -67,6 +63,12 @@ const SearchPage = () => {
     } else {
       await supabase.from("follows").insert({ follower_id: user.id, following_id: targetId });
       setFollowingIds(prev => new Set(prev).add(targetId));
+      // Notification
+      supabase.from("notifications").insert({
+        user_id: targetId, type: "follow",
+        title: "Новый наблюдатель в твоей сети",
+        related_user_id: user.id,
+      });
     }
   };
 
@@ -81,19 +83,13 @@ const SearchPage = () => {
           <p className="text-[10px] text-muted-foreground font-mono">найди тех, кто рассеивает туман</p>
         </motion.div>
 
-        {/* Search bar */}
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
           className="glass-card rounded-2xl p-1 border border-border/30 flex items-center gap-2">
           <Search className="w-4 h-4 text-muted-foreground ml-3" />
-          <input
-            value={query}
-            onChange={e => setQuery(e.target.value)}
-            placeholder="Поиск по имени..."
-            className="flex-1 bg-transparent py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
-          />
+          <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Поиск по имени..."
+            className="flex-1 bg-transparent py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none" />
         </motion.div>
 
-        {/* Section header */}
         <div className="flex items-center gap-2">
           {query.trim() ? (
             <><Search className="w-3.5 h-3.5 text-primary" /><span className="text-xs font-mono text-muted-foreground">Результаты</span></>
@@ -102,7 +98,6 @@ const SearchPage = () => {
           )}
         </div>
 
-        {/* User list */}
         {loading ? (
           <div className="flex justify-center py-12">
             <div className="w-6 h-6 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
@@ -116,20 +111,15 @@ const SearchPage = () => {
               const isFollowing = followingIds.has(u.user_id);
               const initials = u.display_name.slice(0, 2).toUpperCase();
               return (
-                <motion.div
-                  key={u.user_id}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
+                <motion.div key={u.user_id} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.03 }}
                   className="glass-card rounded-xl p-3 flex items-center gap-3 border border-border/20 hover:border-primary/20 transition-colors cursor-pointer"
-                  onClick={() => navigate(`/user/${u.user_id}`)}
-                >
+                  onClick={() => navigate(`/user/${u.user_id}`)}>
                   {!query.trim() && (
-                    <span className={`text-xs font-mono w-5 text-center ${i < 3 ? "text-energy font-bold" : "text-muted-foreground/40"}`}>
-                      {i + 1}
-                    </span>
+                    <span className={`text-xs font-mono w-5 text-center ${i < 3 ? "text-energy font-bold" : "text-muted-foreground/40"}`}>{i + 1}</span>
                   )}
                   <Avatar className="w-9 h-9 border border-primary/15">
+                    {u.avatar_url && <AvatarImage src={u.avatar_url} />}
                     <AvatarFallback className="bg-primary/10 text-primary text-[10px] font-mono">{initials}</AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
@@ -142,15 +132,11 @@ const SearchPage = () => {
                     </p>
                   </div>
                   {!isMe && (
-                    <motion.button
-                      whileTap={{ scale: 0.9 }}
+                    <motion.button whileTap={{ scale: 0.9 }}
                       onClick={e => { e.stopPropagation(); handleFollow(u.user_id); }}
                       className={`px-3 py-1.5 rounded-lg text-[10px] font-mono transition-all ${
-                        isFollowing
-                          ? "bg-muted/50 text-muted-foreground border border-border/30"
-                          : "bg-primary/20 text-primary border border-primary/30 hover:bg-primary/30"
-                      }`}
-                    >
+                        isFollowing ? "bg-muted/50 text-muted-foreground border border-border/30" : "bg-primary/20 text-primary border border-primary/30 hover:bg-primary/30"
+                      }`}>
                       {isFollowing ? "Отписаться" : "Следить"}
                     </motion.button>
                   )}

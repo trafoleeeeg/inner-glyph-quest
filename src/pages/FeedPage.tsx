@@ -6,6 +6,7 @@ import PostCard from "@/components/PostCard";
 import CreatePost from "@/components/CreatePost";
 import CommentsSheet from "@/components/CommentsSheet";
 import BottomNav from "@/components/BottomNav";
+import NotificationBell from "@/components/NotificationBell";
 import ParticleField from "@/components/ParticleField";
 import { RefreshCw } from "lucide-react";
 import { toast } from "sonner";
@@ -17,6 +18,8 @@ interface PostWithAuthor {
   likes_count: number;
   comments_count: number;
   created_at: string;
+  image_url?: string | null;
+  post_type?: string;
   author?: { display_name: string; level: number; avatar_url?: string | null };
 }
 
@@ -44,28 +47,22 @@ const FeedPage = () => {
     const { data: postsData } = await query;
     if (!postsData) { setLoading(false); return; }
 
-    // Fetch profiles for authors
     const userIds = [...new Set(postsData.map(p => p.user_id))];
     const { data: profiles } = await supabase.from("profiles").select("user_id, display_name, level, avatar_url").in("user_id", userIds);
     const profileMap = new Map(profiles?.map(p => [p.user_id, p]) || []);
 
     setPosts(postsData.map(p => ({ ...p, author: profileMap.get(p.user_id) as any })));
 
-    // Fetch user likes
     const { data: likes } = await supabase.from("post_likes").select("post_id").eq("user_id", user.id);
     setLikedPosts(new Set((likes || []).map(l => l.post_id)));
-
     setLoading(false);
   }, [user, tab]);
 
   useEffect(() => { fetchPosts(); }, [fetchPosts]);
 
-  // Realtime subscription
   useEffect(() => {
     const channel = supabase.channel("feed-posts").on(
-      "postgres_changes",
-      { event: "INSERT", schema: "public", table: "posts" },
-      () => fetchPosts()
+      "postgres_changes", { event: "INSERT", schema: "public", table: "posts" }, () => fetchPosts()
     ).subscribe();
     return () => { supabase.removeChannel(channel); };
   }, [fetchPosts]);
@@ -73,6 +70,7 @@ const FeedPage = () => {
   const handleLikeToggle = async (postId: string) => {
     if (!user) return;
     const isLiked = likedPosts.has(postId);
+    const post = posts.find(p => p.id === postId);
 
     if (isLiked) {
       await supabase.from("post_likes").delete().eq("post_id", postId).eq("user_id", user.id);
@@ -82,6 +80,17 @@ const FeedPage = () => {
       await supabase.from("post_likes").insert({ post_id: postId, user_id: user.id });
       setLikedPosts(prev => new Set(prev).add(postId));
       setPosts(prev => prev.map(p => p.id === postId ? { ...p, likes_count: p.likes_count + 1 } : p));
+      // Send notification to post author
+      if (post && post.user_id !== user.id) {
+        supabase.from("notifications").insert({
+          user_id: post.user_id,
+          type: "like",
+          title: "Твой сигнал срезонировал",
+          body: post.content?.slice(0, 50),
+          related_user_id: user.id,
+          related_post_id: postId,
+        });
+      }
     }
   };
 
@@ -95,23 +104,20 @@ const FeedPage = () => {
     <div className="min-h-screen bg-background cyber-grid relative pb-20">
       <ParticleField />
       <div className="relative z-10 max-w-2xl mx-auto px-4 py-6 space-y-4">
-        {/* Header */}
-        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
-          <h1 className="text-xl font-bold text-primary text-glow-primary font-display">Сигнальная Сеть</h1>
-          <p className="text-[10px] text-muted-foreground font-mono">трансляции нейронавтов</p>
+        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
+          <div className="text-center flex-1">
+            <h1 className="text-xl font-bold text-primary text-glow-primary font-display">Сигнальная Сеть</h1>
+            <p className="text-[10px] text-muted-foreground font-mono">трансляции нейронавтов</p>
+          </div>
+          <NotificationBell />
         </motion.div>
 
-        {/* Tabs */}
         <div className="flex items-center gap-2 justify-center">
           {(["all", "following"] as const).map(t => (
-            <motion.button
-              key={t}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setTab(t)}
+            <motion.button key={t} whileTap={{ scale: 0.95 }} onClick={() => setTab(t)}
               className={`px-4 py-1.5 rounded-xl text-xs font-mono transition-all ${
                 tab === t ? "bg-primary/20 text-primary border border-primary/30" : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
+              }`}>
               {t === "all" ? "Все сигналы" : "Подписки"}
             </motion.button>
           ))}
@@ -123,7 +129,6 @@ const FeedPage = () => {
 
         <CreatePost onPostCreated={fetchPosts} />
 
-        {/* Posts */}
         {loading ? (
           <div className="flex justify-center py-12">
             <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
@@ -132,20 +137,14 @@ const FeedPage = () => {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-16">
             <p className="text-4xl mb-3">📡</p>
             <p className="text-sm text-muted-foreground font-mono">
-              {tab === "following" ? "Подпишись на нейронавтов, чтобы видеть их сигналы" : "Эфир пуст. Отправь первый сигнал."}
+              {tab === "following" ? "Подпишись на нейронавтов" : "Эфир пуст. Отправь первый сигнал."}
             </p>
           </motion.div>
         ) : (
           <div className="space-y-3">
             {posts.map(post => (
-              <PostCard
-                key={post.id}
-                post={post}
-                isLiked={likedPosts.has(post.id)}
-                onLikeToggle={handleLikeToggle}
-                onDelete={handleDelete}
-                onCommentClick={setActiveComments}
-              />
+              <PostCard key={post.id} post={post} isLiked={likedPosts.has(post.id)}
+                onLikeToggle={handleLikeToggle} onDelete={handleDelete} onCommentClick={setActiveComments} />
             ))}
           </div>
         )}

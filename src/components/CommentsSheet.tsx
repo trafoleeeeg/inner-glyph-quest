@@ -66,7 +66,20 @@ const CommentsSheet = ({ postId, onClose }: CommentsSheetProps) => {
     if (!error) {
       setInput("");
       fetchComments();
-      // Update comments count on the post (optimistic)
+      // Update comment count
+      await supabase.from("posts").update({ comments_count: comments.length + 1 }).eq("id", postId);
+      // Send notification to post author
+      const { data: post } = await supabase.from("posts").select("user_id, content").eq("id", postId).single();
+      if (post && post.user_id !== user.id) {
+        supabase.from("notifications").insert({
+          user_id: post.user_id,
+          type: "comment",
+          title: "Новый комментарий к твоему сигналу",
+          body: input.trim().slice(0, 50),
+          related_user_id: user.id,
+          related_post_id: postId,
+        });
+      }
     } else {
       toast.error("Ошибка");
     }
