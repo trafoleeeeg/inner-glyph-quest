@@ -17,8 +17,7 @@ import CreateMission from "@/components/CreateMission";
 import InsightsPanel from "@/components/InsightsPanel";
 import Onboarding from "@/components/Onboarding";
 import GlyphVisualizer from "@/components/GlyphVisualizer";
-import LifeBalanceChart from "@/components/LifeBalanceChart";
-import FogOfWarMap from "@/components/FogOfWarMap";
+import LifeOverview from "@/components/LifeOverview";
 import AIInsights from "@/components/AIInsights";
 import AdaptiveTaskSelector from "@/components/AdaptiveTaskSelector";
 import { toast } from "sonner";
@@ -222,9 +221,8 @@ const Index = () => {
 
         {/* Life Map + Balance */}
         <div id="tutorial-fog">
-          <FogOfWarMap />
+          <LifeOverview />
         </div>
-        <LifeBalanceChart />
 
         {/* Adaptive Task Selector */}
         <AdaptiveTaskSelector />

@@ -12,7 +12,8 @@ import BottomNav from "@/components/BottomNav";
 import PostCard from "@/components/PostCard";
 import CreatePost from "@/components/CreatePost";
 import CommentsSheet from "@/components/CommentsSheet";
-import { ArrowLeft, Trophy, Target, Moon, Flame, TrendingUp, Calendar, Coins, Settings, LogOut, Edit3, Shield } from "lucide-react";
+import { ArrowLeft, Trophy, Target, Moon, Flame, TrendingUp, Calendar, Coins, Settings, LogOut, Edit3, Shield, Sun, MoonIcon } from "lucide-react";
+import { useTheme } from "@/components/ThemeProvider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
 
@@ -25,6 +26,7 @@ const ProfilePage = () => {
   const { user, signOut } = useAuth();
   const { profile, updateProfile } = useProfile();
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
   const [moodStats, setMoodStats] = useState({ avgMood: 0, avgEnergy: 0, count: 0 });
   const [recentRewards, setRecentRewards] = useState<any[]>([]);
   const [weeklyCompletions, setWeeklyCompletions] = useState(0);
@@ -132,6 +134,11 @@ const ProfilePage = () => {
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
           <h1 className="text-lg font-bold text-foreground">Мой профиль</h1>
           <div className="flex items-center gap-2">
+            <motion.button whileTap={{ scale: 0.9 }} onClick={toggleTheme}
+              className="w-8 h-8 rounded-lg bg-muted/30 border border-border/30 flex items-center justify-center text-muted-foreground hover:text-primary transition-colors"
+              title={theme === "dark" ? "Светлая тема" : "Тёмная тема"}>
+              {theme === "dark" ? <Sun className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
+            </motion.button>
             {isAdmin && (
               <motion.button whileTap={{ scale: 0.9 }} onClick={() => navigate("/admin")}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-destructive/70 hover:text-destructive bg-destructive/5 border border-destructive/10 transition-colors">
