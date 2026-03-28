@@ -211,7 +211,7 @@ const Index = () => {
             ты — движок негэнтропии. сжимай хаос в ясность.
           </p>
           <p className="text-[9px] text-muted-foreground/20 font-mono">
-            NEURO.LOG • персональный интерпретатор
+            INNER GLYPH QUEST • кибернетическое самоопределение
           </p>
         </motion.div>
       </div>
