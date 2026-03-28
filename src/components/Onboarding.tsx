@@ -1,37 +1,45 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Zap, Eye, Brain, Flame } from "lucide-react";
+import { Zap, Eye, Brain, Flame, Users } from "lucide-react";
 
 const SLIDES = [
   {
     icon: <Eye className="w-8 h-8" />,
-    title: "ТУМАН ВОЙНЫ",
-    subtitle: "Ты видишь лишь 1% реальности",
-    text: "Твоё Эго — это фильтр. Оно отсекает 99.9% информации, чтобы ты выжил. Но оно же скрывает от тебя паттерны, управляющие твоей жизнью.",
+    title: "ТЫ НЕ ВИДИШЬ КАРТИНУ",
+    subtitle: "И это нормально",
+    text: "Каждый день ты принимаешь сотни решений на автопилоте. Почему устал? Почему тревожно? Почему не хочется ничего? Ответы есть — ты просто их не записываешь.",
     color: "text-primary",
     glow: "glow-primary",
   },
   {
     icon: <Brain className="w-8 h-8" />,
-    title: "ИНТЕРПРЕТАТОР",
-    subtitle: "Твой алгоритм сжатия",
-    text: "Каждая запись — акт компрессии хаоса в данные. Чем больше данных — тем точнее калибровка. Тем яснее картина. Тем меньше тумана.",
+    title: "ЗАПИСЫВАЙ — И УВИДИШЬ",
+    subtitle: "Как рентген для твоей жизни",
+    text: "Залогировал настроение → увидел, что после спорта тебе всегда лучше. Записал сон → понял, что тревожишься о работе. Чем больше данных — тем яснее картина.",
     color: "text-accent",
     glow: "glow-accent",
   },
   {
     icon: <Flame className="w-8 h-8" />,
-    title: "НЕГЭНТРОПИЯ",
-    subtitle: "Твоя главная задача",
-    text: "Ты — движок сжатия энтропии. Максимум информации при минимуме затрат. Каждый инсайт — это катарсис. Момент, когда хаос складывается в ясность.",
+    title: "СИСТЕМА РАБОТАЕТ ЗА ТЕБЯ",
+    subtitle: "Паттерны, которые ты пропускаешь",
+    text: "Искусственный интеллект анализирует твои записи и находит связи, которые ты не замечаешь. «В дни без движения твоя энергия падает на 40%» — такие инсайты меняют поведение.",
     color: "text-energy",
     glow: "glow-energy",
   },
   {
+    icon: <Users className="w-8 h-8" />,
+    title: "ТЫ НЕ ОДИН",
+    subtitle: "Сообщество тех, кто растёт",
+    text: "Делись прогрессом, читай других, находи единомышленников. Вместе проще: поддержка и здоровая конкуренция — мощнейшие мотиваторы.",
+    color: "text-secondary",
+    glow: "glow-secondary",
+  },
+  {
     icon: <Zap className="w-8 h-8" />,
     title: "NEURO.LOG",
-    subtitle: "Персональный Интерпретатор",
-    text: "Логируй состояние. Сжимай энтропию. Рассеивай туман. Система покажет паттерны, которые ты не видишь. Награда — не ачивки. Награда — ясность.",
+    subtitle: "Начни видеть свою жизнь",
+    text: "Выполняй протоколы. Логируй состояние. Получай награды. Каждый день — чуть больше ясности. Каждый инсайт — шаг к лучшей версии себя.",
     color: "text-primary",
     glow: "glow-primary",
   },
@@ -62,10 +70,8 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-[100] bg-background flex items-center justify-center"
     >
-      {/* Animated grid bg */}
       <div className="absolute inset-0 cyber-grid opacity-30" />
       
-      {/* Scan line effect */}
       <motion.div
         className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"
         animate={{ top: ["0%", "100%"] }}
@@ -81,7 +87,6 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           className="relative z-10 max-w-md mx-4 text-center"
         >
-          {/* Icon */}
           <motion.div
             className={`w-20 h-20 rounded-2xl bg-muted/30 border border-primary/20 flex items-center justify-center mx-auto mb-6 ${current.color} ${current.glow}`}
             animate={{
@@ -96,19 +101,17 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
             {current.icon}
           </motion.div>
 
-          {/* Terminal header */}
           <motion.p
             className="text-[10px] font-mono text-muted-foreground uppercase tracking-[0.3em] mb-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
-            протокол инициализации [{slide + 1}/{SLIDES.length}]
+            [{slide + 1}/{SLIDES.length}]
           </motion.p>
 
-          {/* Title */}
           <motion.h1
-            className={`text-3xl font-bold ${current.color} font-display tracking-tight mb-1`}
+            className={`text-2xl font-bold ${current.color} font-display tracking-tight mb-1`}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
@@ -125,7 +128,6 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
             {current.subtitle}
           </motion.p>
 
-          {/* Body */}
           <motion.p
             className="text-sm text-foreground/80 leading-relaxed mb-8 max-w-sm mx-auto"
             initial={{ opacity: 0, y: 10 }}
@@ -135,7 +137,6 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
             {current.text}
           </motion.p>
 
-          {/* Progress dots */}
           <div className="flex items-center justify-center gap-2 mb-6">
             {SLIDES.map((_, i) => (
               <motion.div
@@ -147,7 +148,6 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
             ))}
           </div>
 
-          {/* CTA */}
           <motion.button
             onClick={next}
             whileHover={{ scale: 1.03 }}
@@ -157,10 +157,9 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
           >
-            {isLast ? "Инициализировать систему" : "Далее →"}
+            {isLast ? "Начать" : "Далее →"}
           </motion.button>
 
-          {/* Skip */}
           {!isLast && (
             <motion.button
               onClick={() => { localStorage.setItem("neuro_onboarded", "1"); onComplete(); }}

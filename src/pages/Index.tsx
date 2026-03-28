@@ -17,7 +17,8 @@ import CreateMission from "@/components/CreateMission";
 import InsightsPanel from "@/components/InsightsPanel";
 import Onboarding from "@/components/Onboarding";
 import { toast } from "sonner";
-import { LogOut, User, MessageCircle, Heart, Shield } from "lucide-react";
+import { Heart, Shield } from "lucide-react";
+import BottomNav from "@/components/BottomNav";
 
 const DEFAULT_MISSIONS = [
   { title: 'Утренняя калибровка', description: '10 минут тишины — перезагрузка фильтров', xp_reward: 30, category: 'habit', icon: '🧘' },
@@ -186,7 +187,7 @@ const Index = () => {
   const completedCount = missions.filter(m => m.completed).length;
 
   return (
-    <div className="min-h-screen bg-background cyber-grid relative">
+    <div className="min-h-screen bg-background cyber-grid relative pb-20">
       <ParticleField />
 
       <AnimatePresence>
@@ -202,10 +203,7 @@ const Index = () => {
           </div>
           <div className="flex items-center gap-1.5">
             <NavButton icon={<Heart className="w-4 h-4" />} onClick={() => navigate("/desires")} tooltip="Вектора" color="text-secondary" />
-            <NavButton icon={<MessageCircle className="w-4 h-4" />} onClick={() => navigate("/chat")} tooltip="Сеть" color="text-accent" />
-            <NavButton icon={<User className="w-4 h-4" />} onClick={() => navigate("/profile")} tooltip="Кабинет" color="text-primary" />
             {isAdmin && <NavButton icon={<Shield className="w-4 h-4" />} onClick={() => navigate("/admin")} tooltip="Админ" color="text-destructive" />}
-            <NavButton icon={<LogOut className="w-4 h-4" />} onClick={signOut} tooltip="Выход" color="text-muted-foreground" />
           </div>
         </motion.div>
 
@@ -250,6 +248,7 @@ const Index = () => {
         </motion.div>
       </div>
       <RewardPopup reward={reward} onClose={() => setReward(null)} />
+      <BottomNav />
     </div>
   );
 };

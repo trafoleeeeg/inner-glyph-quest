@@ -143,6 +143,27 @@ export type Database = {
         }
         Relationships: []
       }
+      follows: {
+        Row: {
+          created_at: string
+          follower_id: string
+          following_id: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          follower_id: string
+          following_id: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          follower_id?: string
+          following_id?: string
+          id?: string
+        }
+        Relationships: []
+      }
       mission_completions: {
         Row: {
           bonus_xp: number
@@ -250,18 +271,119 @@ export type Database = {
         }
         Relationships: []
       }
+      post_comments: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      post_likes: {
+        Row: {
+          created_at: string
+          id: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_likes_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      posts: {
+        Row: {
+          comments_count: number
+          content: string
+          created_at: string
+          id: string
+          image_url: string | null
+          likes_count: number
+          post_type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          comments_count?: number
+          content: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          likes_count?: number
+          post_type?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          comments_count?: number
+          content?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          likes_count?: number
+          post_type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
+          bio: string | null
           coins: number
           created_at: string
           display_name: string
           energy: number
+          followers_count: number
+          following_count: number
           id: string
           last_active_date: string | null
           level: number
           longest_streak: number
           max_energy: number
+          posts_count: number
           streak: number
           total_dreams_logged: number
           total_missions_completed: number
@@ -272,15 +394,19 @@ export type Database = {
         }
         Insert: {
           avatar_url?: string | null
+          bio?: string | null
           coins?: number
           created_at?: string
           display_name?: string
           energy?: number
+          followers_count?: number
+          following_count?: number
           id?: string
           last_active_date?: string | null
           level?: number
           longest_streak?: number
           max_energy?: number
+          posts_count?: number
           streak?: number
           total_dreams_logged?: number
           total_missions_completed?: number
@@ -291,15 +417,19 @@ export type Database = {
         }
         Update: {
           avatar_url?: string | null
+          bio?: string | null
           coins?: number
           created_at?: string
           display_name?: string
           energy?: number
+          followers_count?: number
+          following_count?: number
           id?: string
           last_active_date?: string | null
           level?: number
           longest_streak?: number
           max_energy?: number
+          posts_count?: number
           streak?: number
           total_dreams_logged?: number
           total_missions_completed?: number
