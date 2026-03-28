@@ -8,6 +8,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import BottomNav from "@/components/BottomNav";
 import ParticleField from "@/components/ParticleField";
 
+const PUBLIC_PROFILES_TABLE = "public_profiles";
+
 interface UserResult {
   user_id: string;
   display_name: string;
@@ -34,7 +36,12 @@ const SearchPage = () => {
   useEffect(() => {
     if (!user) return;
     Promise.all([
-      supabase.from("profiles").select("user_id, display_name, level, avatar_url, total_missions_completed, streak").order("level", { ascending: false }).order("xp", { ascending: false }).limit(20),
+      (supabase as any)
+        .from(PUBLIC_PROFILES_TABLE)
+        .select("user_id, display_name, level, avatar_url, total_missions_completed, streak")
+        .order("level", { ascending: false })
+        .order("total_missions_completed", { ascending: false })
+        .limit(20),
       supabase.from("follows").select("following_id").eq("follower_id", user.id),
     ]).then(([usersRes, followsRes]) => {
       setTopUsers((usersRes.data || []) as UserResult[]);
@@ -46,7 +53,8 @@ const SearchPage = () => {
     if (!query.trim()) { setResults([]); return; }
     setLoading(true);
     const timer = setTimeout(async () => {
-      const { data } = await supabase.from("profiles")
+      const { data } = await (supabase as any)
+        .from(PUBLIC_PROFILES_TABLE)
         .select("user_id, display_name, level, avatar_url, total_missions_completed, streak")
         .ilike("display_name", `%${query.trim()}%`).limit(20);
       setResults((data || []) as UserResult[]);
