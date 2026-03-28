@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Flame, Zap, Moon, Target } from "lucide-react";
+import { Flame, Zap, Moon, Target, Coins } from "lucide-react";
 
 interface StatsRowProps {
   energy: number;
@@ -7,34 +7,53 @@ interface StatsRowProps {
   streak: number;
   totalMissions: number;
   dreamsLogged: number;
+  coins: number;
 }
 
-const StatsRow = ({ energy, maxEnergy, streak, totalMissions, dreamsLogged }: StatsRowProps) => {
+const StatsRow = ({ energy, maxEnergy, streak, totalMissions, dreamsLogged, coins }: StatsRowProps) => {
+  const energyPercent = Math.round((energy / maxEnergy) * 100);
+  
   const stats = [
-    { label: "Энергия", value: `${energy}%`, icon: Zap, color: "text-energy", glow: "glow-energy", bg: "bg-energy/10", border: "border-energy/20" },
-    { label: "Стрик", value: `${streak}д`, icon: Flame, color: "text-streak", glow: "", bg: "bg-streak/10", border: "border-streak/20" },
-    { label: "Миссии", value: totalMissions, icon: Target, color: "text-primary", glow: "glow-primary", bg: "bg-primary/10", border: "border-primary/20" },
-    { label: "Сны", value: dreamsLogged, icon: Moon, color: "text-dream", glow: "glow-secondary", bg: "bg-dream/10", border: "border-dream/20" },
+    { label: "Энергия", value: `${energyPercent}%`, icon: Zap, color: "text-energy", bg: "bg-energy/10", borderColor: "border-energy/20", glowColor: "glow-energy" },
+    { label: "Стрик", value: `${streak}д`, icon: Flame, color: "text-streak", bg: "bg-streak/10", borderColor: "border-streak/20", glowColor: "" },
+    { label: "Миссии", value: totalMissions, icon: Target, color: "text-primary", bg: "bg-primary/10", borderColor: "border-primary/20", glowColor: "glow-primary" },
+    { label: "Сны", value: dreamsLogged, icon: Moon, color: "text-dream", bg: "bg-dream/10", borderColor: "border-dream/20", glowColor: "glow-secondary" },
+    { label: "Коины", value: coins, icon: Coins, color: "text-energy", bg: "bg-energy/10", borderColor: "border-energy/20", glowColor: "" },
   ];
 
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.06 },
+    },
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 20, scale: 0.9 },
+    show: { opacity: 1, y: 0, scale: 1 },
+  };
+
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-      {stats.map((stat, i) => (
+    <motion.div
+      variants={container}
+      initial="hidden"
+      animate="show"
+      className="grid grid-cols-5 gap-2"
+    >
+      {stats.map((stat) => (
         <motion.div
           key={stat.label}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 * i, duration: 0.5 }}
-          className={`glass rounded-lg p-3 ${stat.border} border`}
+          variants={item}
+          className={`glass-card rounded-xl p-3 ${stat.borderColor} border text-center hover:glass-card-hover transition-all duration-300 cursor-default`}
+          whileHover={{ y: -2, transition: { duration: 0.2 } }}
         >
-          <div className="flex items-center gap-2 mb-1">
-            <stat.icon className={`w-4 h-4 ${stat.color}`} />
-            <span className="text-xs text-muted-foreground font-mono uppercase tracking-wider">{stat.label}</span>
-          </div>
-          <p className={`text-xl font-bold font-mono ${stat.color}`}>{stat.value}</p>
+          <stat.icon className={`w-4 h-4 ${stat.color} mx-auto mb-1`} />
+          <p className={`text-lg font-bold font-mono ${stat.color} leading-none`}>{stat.value}</p>
+          <p className="text-[9px] text-muted-foreground font-mono uppercase tracking-wider mt-1">{stat.label}</p>
         </motion.div>
       ))}
-    </div>
+    </motion.div>
   );
 };
 

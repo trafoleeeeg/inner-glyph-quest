@@ -98,13 +98,77 @@
   .text-glow-accent {
     text-shadow: 0 0 10px hsl(140 70% 50% / 0.5), 0 0 30px hsl(140 70% 50% / 0.2);
   }
+  .text-glow-secondary {
+    text-shadow: 0 0 10px hsl(260 80% 60% / 0.5), 0 0 30px hsl(260 80% 60% / 0.2);
+  }
+  .text-glow-energy {
+    text-shadow: 0 0 10px hsl(45 100% 55% / 0.5), 0 0 30px hsl(45 100% 55% / 0.2);
+  }
   .glass {
     @apply bg-card/60 backdrop-blur-xl border border-border/50;
   }
+  .glass-card {
+    background: linear-gradient(
+      135deg,
+      hsl(220 18% 10% / 0.8) 0%,
+      hsl(220 18% 8% / 0.9) 100%
+    );
+    backdrop-filter: blur(20px) saturate(1.5);
+    border: 1px solid hsl(180 100% 50% / 0.08);
+  }
+  .glass-card-hover {
+    background: linear-gradient(
+      135deg,
+      hsl(220 18% 12% / 0.8) 0%,
+      hsl(220 18% 10% / 0.9) 100%
+    );
+    backdrop-filter: blur(20px) saturate(1.5);
+    border: 1px solid hsl(180 100% 50% / 0.15);
+  }
   .cyber-grid {
     background-image: 
-      linear-gradient(hsl(180 100% 50% / 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(180 100% 50% / 0.03) 1px, transparent 1px);
+      linear-gradient(hsl(180 100% 50% / 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(180 100% 50% / 0.02) 1px, transparent 1px);
     background-size: 40px 40px;
   }
+  .gradient-border {
+    position: relative;
+  }
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, hsl(180 100% 50% / 0.3), hsl(260 80% 60% / 0.3), hsl(140 70% 50% / 0.3));
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+    pointer-events: none;
+  }
+  .shimmer {
+    background: linear-gradient(
+      110deg,
+      transparent 25%,
+      hsl(180 100% 50% / 0.05) 50%,
+      transparent 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes orbit {
+  0% { transform: rotate(0deg) translateX(30px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(30px) rotate(-360deg); }
 }
