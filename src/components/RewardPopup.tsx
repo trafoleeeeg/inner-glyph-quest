@@ -53,7 +53,7 @@ const RewardPopup = ({ reward, onClose }: RewardPopupProps) => {
           {reward.isCriticalHit && (
             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
               className="text-sm font-semibold text-energy text-glow-energy mb-2 mt-2">
-              🎯 РЕЗОНАНС! x2 сжатие
+              🎯 Удачный момент! x2 опыта
             </motion.p>
           )}
 
