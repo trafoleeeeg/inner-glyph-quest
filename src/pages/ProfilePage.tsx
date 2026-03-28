@@ -206,7 +206,7 @@ const ProfilePage = () => {
           {/* XP bar */}
           <div className="mt-4">
             <div className="flex items-center justify-between text-[10px] font-mono mb-1">
-              <span className="text-primary">Негэнтропия</span>
+              <span className="text-primary">Опыт</span>
               <span className="text-muted-foreground">{profile.xp}/{profile.xp_to_next}</span>
             </div>
             <div className="h-2 bg-muted/50 rounded-full overflow-hidden">
