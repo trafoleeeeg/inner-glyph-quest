@@ -19,6 +19,7 @@ import MapPage from "./pages/MapPage";
 // GlyphPage removed - replaced by Companion in Hub
 import TribesPage from "./pages/TribesPage";
 import TasksPage from "./pages/TasksPage";
+import LifeAnalysisPage from "./pages/LifeAnalysisPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
