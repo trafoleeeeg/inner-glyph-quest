@@ -43,7 +43,7 @@ const FeedPage = () => {
   const [likedPosts, setLikedPosts] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [activeComments, setActiveComments] = useState<string | null>(null);
-  const [tab, setTab] = useState<"all" | "following" | "rss">("all");
+  const [tab, setTab] = useState<"all" | "following" | "rss" | "leaderboard">("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [searching, setSearching] = useState(false);
