@@ -27,14 +27,6 @@ import { Heart, HelpCircle, Compass } from "lucide-react";
 import BottomNav from "@/components/BottomNav";
 import { useTutorial } from "@/components/TutorialOverlay";
 
-const DEFAULT_MISSIONS = [
-  { title: 'Утренняя медитация', description: '10 минут тишины для ясности ума', xp_reward: 30, category: 'habit', icon: '🧘' },
-  { title: 'Записать сон', description: 'Вспомни и запиши ночные образы', xp_reward: 25, category: 'dream', icon: '🌙' },
-  { title: 'Отметить настроение', description: 'Как ты себя сейчас чувствуешь?', xp_reward: 15, category: 'mood', icon: '📡' },
-  { title: 'Прогулка 30 мин', description: 'Движение для тела и ясности', xp_reward: 35, category: 'health', icon: '🚶' },
-  { title: 'Записать желание', description: 'Чего ты сейчас хочешь больше всего?', xp_reward: 20, category: 'desire', icon: '✨' },
-  { title: 'Холодный душ', description: 'Бодрость и перезагрузка за 2 минуты', xp_reward: 40, category: 'health', icon: '🧊' },
-];
 
 const CHECKIN_KEY = "neuro_daily_checkin_";
 
@@ -128,13 +120,14 @@ const Index = () => {
     if (!user) return;
     const fetchMissions = async () => {
       const { data } = await supabase.from("missions").select("*").eq("user_id", user.id).eq("is_active", true);
-      if (data && data.length > 0) {
+      const missionData = data || [];
+      if (missionData.length > 0) {
         const today = new Date().toISOString().split('T')[0];
         const { data: completions } = await supabase
           .from("mission_completions").select("mission_id").eq("user_id", user.id)
           .gte("completed_at", today + "T00:00:00").lte("completed_at", today + "T23:59:59");
         const completedIds = new Set((completions || []).map(c => c.mission_id));
-        setMissions(data.map(m => ({ ...m, completed: completedIds.has(m.id) })));
+        setMissions(missionData.map(m => ({ ...m, completed: completedIds.has(m.id) })));
         const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
         const { data: weekCompletions } = await supabase
           .from("mission_completions").select("mission_id").eq("user_id", user.id)
@@ -143,9 +136,7 @@ const Index = () => {
         (weekCompletions || []).forEach(c => { counts[c.mission_id] = (counts[c.mission_id] || 0) + 1; });
         setMissionCompletionCounts(counts);
       } else {
-        const toInsert = DEFAULT_MISSIONS.map(m => ({ ...m, user_id: user.id }));
-        const { data: inserted } = await supabase.from("missions").insert(toInsert).select();
-        if (inserted) setMissions(inserted.map(m => ({ ...m, completed: false })));
+        setMissions([]);
       }
     };
     fetchMissions();
@@ -384,18 +375,43 @@ const Index = () => {
         <div id="tutorial-missions">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-sm font-semibold text-foreground flex items-center gap-2"><span>⚡</span> Ежедневные привычки</h2>
-            <span className="text-xs font-mono text-muted-foreground">{completedCount}/{missions.length}</span>
+            {missions.length > 0 && <span className="text-xs font-mono text-muted-foreground">{completedCount}/{missions.length}</span>}
           </div>
-          <div className="space-y-2">
-            {missions.map((mission, i) => (
-              <MissionCard key={mission.id} mission={mission} onComplete={completeMission}
-                onEdit={handleEditMission} onDelete={handleDeleteMission}
-                index={i} devaluation={getDevaluation(mission.id)} />
-            ))}
-          </div>
-          <div className="mt-3">
-            <CreateMission onSubmit={handleCreateMission} />
-          </div>
+          {missions.length > 0 ? (
+            <>
+              <div className="space-y-2">
+                {missions.map((mission, i) => (
+                  <MissionCard key={mission.id} mission={mission} onComplete={completeMission}
+                    onEdit={handleEditMission} onDelete={handleDeleteMission}
+                    index={i} devaluation={getDevaluation(mission.id)} />
+                ))}
+              </div>
+              <div className="mt-3">
+                <CreateMission onSubmit={handleCreateMission} />
+              </div>
+            </>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="rounded-2xl p-6 border-2 border-dashed border-primary/20 bg-primary/5 text-center space-y-3"
+            >
+              <div className="text-4xl">🎯</div>
+              <h3 className="text-sm font-semibold text-foreground">У тебя пока нет привычек</h3>
+              <p className="text-xs text-muted-foreground leading-relaxed max-w-xs mx-auto">
+                Пройди анализ жизни — AI подберёт привычки, которые приведут тебя к твоим целям. Никаких случайных задач — только то, что реально двигает вперёд.
+              </p>
+              <button
+                onClick={() => navigate("/life-analysis")}
+                className="px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors"
+              >
+                Пройти анализ →
+              </button>
+              <div className="pt-2">
+                <CreateMission onSubmit={handleCreateMission} />
+              </div>
+            </motion.div>
+          )}
         </div>
 
         <div id="tutorial-mood" className="grid md:grid-cols-2 gap-4">
@@ -404,14 +420,7 @@ const Index = () => {
         </div>
 
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
-          className="text-center py-4">
-          <p className="text-[10px] text-muted-foreground/40 font-mono">
-            каждый день — шаг к лучшей версии себя
-          </p>
-        </motion.div>
-
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
-          className="text-center py-6 space-y-1">
+          className="text-center py-6">
           <p className="text-[10px] text-muted-foreground/40 font-mono">
             каждый день — шаг к лучшей версии себя
           </p>
