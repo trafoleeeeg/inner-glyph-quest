@@ -98,13 +98,46 @@ const TribesPage = () => {
 
   const selectTribe = async (tribe: Tribe) => {
     setSelectedTribe(tribe);
-    const { data } = await supabase.from("tribe_members").select("user_id, role, joined_at").eq("tribe_id", tribe.id);
-    if (data) {
-      const userIds = data.map(m => m.user_id);
+    const [{ data: members }, { data: tribeChallenges }] = await Promise.all([
+      supabase.from("tribe_members").select("user_id, role, joined_at").eq("tribe_id", tribe.id),
+      supabase.from("tribe_challenges").select("*").eq("tribe_id", tribe.id).eq("is_active", true).order("created_at", { ascending: false }),
+    ]);
+    if (members) {
+      const userIds = members.map(m => m.user_id);
       const { data: profiles } = await supabase.from("public_profiles").select("user_id, display_name, avatar_url, level").in("user_id", userIds);
       const profileMap = new Map((profiles || []).map(p => [p.user_id, p]));
-      setTribeMembers(data.map(m => ({ ...m, profile: profileMap.get(m.user_id) })));
+      setTribeMembers(members.map(m => ({ ...m, profile: profileMap.get(m.user_id) })));
     }
+    setChallenges(tribeChallenges || []);
+  };
+
+  const createChallenge = async () => {
+    if (!user || !selectedTribe || !newChallengeTitle.trim()) return;
+    const { data } = await supabase.from("tribe_challenges").insert({
+      tribe_id: selectedTribe.id,
+      title: newChallengeTitle.trim(),
+      created_by: user.id,
+    }).select().single();
+    if (data) {
+      // Auto-join
+      await supabase.from("tribe_challenge_participants").insert({
+        challenge_id: data.id,
+        user_id: user.id,
+      });
+      setChallenges(prev => [data, ...prev]);
+      setNewChallengeTitle("");
+      setShowNewChallenge(false);
+      toast.success("Вызов создан! 🏆");
+    }
+  };
+
+  const joinChallenge = async (challengeId: string) => {
+    if (!user) return;
+    await supabase.from("tribe_challenge_participants").insert({
+      challenge_id: challengeId,
+      user_id: user.id,
+    });
+    toast.success("Вы приняли вызов!");
   };
 
   const displayTribes = view === "mine" ? tribes.filter(t => myTribeIds.has(t.id)) : tribes;
