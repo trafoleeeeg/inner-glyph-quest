@@ -173,9 +173,15 @@ const TasksPage = () => {
   const filteredTasks = tasks.filter(t => {
     if (t.parent_task_id) return false;
     if (activeCategory === "today") {
-      return (t.category === "today" || t.scheduled_date === today) && !t.is_completed;
+      return (t.category === "today" || t.scheduled_date === today);
     }
-    return t.category === activeCategory && !t.is_completed;
+    return t.category === activeCategory;
+  });
+
+  // Sort: incomplete first, then completed
+  const sortedTasks = [...filteredTasks].sort((a, b) => {
+    if (a.is_completed === b.is_completed) return a.sort_order - b.sort_order;
+    return a.is_completed ? 1 : -1;
   });
 
   const getSubtasks = (parentId: string) => tasks.filter(t => t.parent_task_id === parentId);
