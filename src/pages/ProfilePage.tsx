@@ -229,7 +229,7 @@ const ProfilePage = () => {
                 tab === t ? "bg-primary/20 text-primary border border-primary/30" : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              {t === "posts" ? "Трансляции" : "Аналитика"}
+              {t === "posts" ? "Посты" : "Аналитика"}
             </motion.button>
           ))}
         </div>
