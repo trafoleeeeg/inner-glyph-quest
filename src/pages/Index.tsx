@@ -243,7 +243,9 @@ const Index = () => {
           </div>
           <div className="space-y-2">
             {missions.map((mission, i) => (
-              <MissionCard key={mission.id} mission={mission} onComplete={completeMission} index={i} devaluation={getDevaluation(mission.id)} />
+              <MissionCard key={mission.id} mission={mission} onComplete={completeMission}
+                onEdit={handleEditMission} onDelete={handleDeleteMission}
+                index={i} devaluation={getDevaluation(mission.id)} />
             ))}
           </div>
           <div className="mt-3">
