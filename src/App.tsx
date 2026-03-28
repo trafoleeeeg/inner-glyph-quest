@@ -16,7 +16,7 @@ import FeedPage from "./pages/FeedPage";
 import SearchPage from "./pages/SearchPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import MapPage from "./pages/MapPage";
-import GlyphPage from "./pages/GlyphPage";
+// GlyphPage removed - replaced by Companion in Hub
 import TribesPage from "./pages/TribesPage";
 import TasksPage from "./pages/TasksPage";
 import NotFound from "./pages/NotFound";
