@@ -19,6 +19,7 @@ import MapPage from "./pages/MapPage";
 // GlyphPage removed - replaced by Companion in Hub
 import TribesPage from "./pages/TribesPage";
 import TasksPage from "./pages/TasksPage";
+import LifeAnalysisPage from "./pages/LifeAnalysisPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -58,6 +59,7 @@ const App = () => (
                 {/* /glyph route removed */}
                 <Route path="/tribes" element={<ProtectedRoute><TribesPage /></ProtectedRoute>} />
                 <Route path="/tasks" element={<ProtectedRoute><TasksPage /></ProtectedRoute>} />
+                <Route path="/life-analysis" element={<ProtectedRoute><LifeAnalysisPage /></ProtectedRoute>} />
                 <Route path="/search" element={<ProtectedRoute><SearchPage /></ProtectedRoute>} />
                 <Route path="/user/:userId" element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
                 <Route path="*" element={<NotFound />} />

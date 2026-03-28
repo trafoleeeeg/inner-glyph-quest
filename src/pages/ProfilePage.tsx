@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import ParticleField from "@/components/ParticleField";
+import AchievementsList from "@/components/AchievementsList";
 import AnalyticsCharts from "@/components/AnalyticsCharts";
 import GrowthPathChart from "@/components/GrowthPathChart";
 import InnerDrives from "@/components/InnerDrives";
@@ -39,7 +40,8 @@ const ProfilePage = () => {
   const [followersCount, setFollowersCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
   const [activeComments, setActiveComments] = useState<string | null>(null);
-  const [tab, setTab] = useState<"posts" | "stats">("posts");
+  const [tab, setTab] = useState<"posts" | "stats" | "achievements">("posts");
+  const [achievements, setAchievements] = useState<any[]>([]);
   const [isAdmin, setIsAdmin] = useState(false);
 
   const fetchPosts = useCallback(async () => {
@@ -75,6 +77,18 @@ const ProfilePage = () => {
       setRecentRewards(rewards.data || []);
       setFollowersCount(followers.count || 0);
       setFollowingCount(following.count || 0);
+    });
+    // Fetch achievements
+    Promise.all([
+      supabase.from("achievements").select("*"),
+      supabase.from("user_achievements").select("*").eq("user_id", user.id),
+    ]).then(([achRes, userAchRes]) => {
+      const userAchMap = new Map((userAchRes.data || []).map(ua => [ua.achievement_id, ua]));
+      setAchievements((achRes.data || []).map(a => ({
+        ...a,
+        progress: userAchMap.get(a.id)?.progress || 0,
+        unlocked: userAchMap.get(a.id)?.unlocked || false,
+      })));
     });
   }, [user]);
 
@@ -229,7 +243,7 @@ const ProfilePage = () => {
 
         {/* Tabs */}
         <div className="flex items-center gap-2 justify-center">
-          {(["posts", "stats"] as const).map(t => (
+          {(["posts", "stats", "achievements"] as const).map(t => (
             <motion.button
               key={t}
               whileTap={{ scale: 0.95 }}
@@ -238,12 +252,14 @@ const ProfilePage = () => {
                 tab === t ? "bg-primary/20 text-primary border border-primary/30" : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              {t === "posts" ? "Посты" : "Аналитика"}
+              {t === "posts" ? "Посты" : t === "stats" ? "Аналитика" : "Достижения"}
             </motion.button>
           ))}
         </div>
 
-        {tab === "posts" ? (
+        {tab === "achievements" ? (
+          <AchievementsList achievements={achievements} />
+        ) : tab === "posts" ? (
           <div className="space-y-3">
             <CreatePost onPostCreated={fetchPosts} />
             {posts.length === 0 ? (

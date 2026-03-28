@@ -298,6 +298,33 @@ export type Database = {
         }
         Relationships: []
       }
+      life_profiles: {
+        Row: {
+          ai_recommendations: Json | null
+          answers: Json
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ai_recommendations?: Json | null
+          answers?: Json
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ai_recommendations?: Json | null
+          answers?: Json
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       mission_completions: {
         Row: {
           bonus_xp: number
