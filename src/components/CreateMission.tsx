@@ -3,11 +3,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Plus, X } from "lucide-react";
 
 const CATEGORIES = [
-  { value: 'habit', label: 'Ритуал', icon: '🔄' },
-  { value: 'health', label: 'Каркас', icon: '💪' },
-  { value: 'mood', label: 'Сканер', icon: '📡' },
-  { value: 'dream', label: 'Синхр.', icon: '🌙' },
-  { value: 'desire', label: 'Вектор', icon: '✨' },
+  { value: 'habit', label: 'Привычка', icon: '🔄' },
+  { value: 'health', label: 'Здоровье', icon: '💪' },
+  { value: 'mood', label: 'Настроение', icon: '📡' },
+  { value: 'dream', label: 'Сон', icon: '🌙' },
+  { value: 'desire', label: 'Цель', icon: '✨' },
   { value: 'custom', label: 'Своё', icon: '⚡' },
 ];
 
@@ -38,20 +38,20 @@ const CreateMission = ({ onSubmit }: CreateMissionProps) => {
       <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={() => setIsOpen(!isOpen)}
         className="w-full glass-card rounded-xl p-3 border border-dashed border-primary/20 flex items-center justify-center gap-2 text-primary/60 hover:text-primary hover:border-primary/40 transition-all">
         {isOpen ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
-        <span className="text-sm font-semibold">{isOpen ? 'Отмена' : 'Создать протокол'}</span>
+        <span className="text-sm font-semibold">{isOpen ? 'Отмена' : 'Создать привычку'}</span>
       </motion.button>
 
       <AnimatePresence>
         {isOpen && (
           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="mt-2">
             <div className="glass-card rounded-2xl p-5 border border-primary/10 space-y-3">
-              <input placeholder="Название протокола" value={title} onChange={e => setTitle(e.target.value)}
+              <input placeholder="Название привычки" value={title} onChange={e => setTitle(e.target.value)}
                 className="w-full bg-muted/30 border border-border/50 rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50" />
               <input placeholder="Описание (опционально)" value={description} onChange={e => setDescription(e.target.value)}
                 className="w-full bg-muted/30 border border-border/50 rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50" />
 
               <div>
-                <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider mb-2">Тип</p>
+                <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider mb-2">Категория</p>
                 <div className="grid grid-cols-3 gap-1">
                   {CATEGORIES.map(c => (
                     <button key={c.value} onClick={() => { setCategory(c.value); setIcon(c.icon); }}
@@ -75,7 +75,7 @@ const CreateMission = ({ onSubmit }: CreateMissionProps) => {
               </div>
 
               <div>
-                <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider mb-2">Негэнтропия</p>
+                <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider mb-2">Опыт за выполнение</p>
                 <div className="flex flex-wrap gap-1">
                   {xpOptions.map(xp => (
                     <button key={xp} onClick={() => setXpReward(xp)}
@@ -88,7 +88,7 @@ const CreateMission = ({ onSubmit }: CreateMissionProps) => {
 
               <motion.button onClick={handleSubmit} disabled={!title.trim()} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
                 className="w-full bg-gradient-to-r from-primary/20 to-accent/20 text-primary border border-primary/20 rounded-xl py-2.5 text-sm font-semibold transition-all disabled:opacity-30">
-                Активировать протокол
+                Добавить привычку
               </motion.button>
             </div>
           </motion.div>

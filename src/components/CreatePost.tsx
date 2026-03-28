@@ -144,7 +144,7 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
       setContent("");
       clearMedia();
       setFocused(false);
-      toast.success("Сигнал отправлен в сеть");
+      toast.success("Пост опубликован");
       onPostCreated();
     }
     setSubmitting(false);
@@ -181,7 +181,7 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             onFocus={() => setFocused(true)}
-            placeholder="Что ты сейчас видишь яснее?"
+            placeholder="Чем хочешь поделиться?"
             maxLength={2000}
             rows={focused ? 4 : 2}
             className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground/50 resize-none focus:outline-none leading-relaxed"
@@ -254,7 +254,7 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
                   onClick={handleSubmit} disabled={(!content.trim() && !mediaFile) || submitting}
                   className="flex items-center gap-2 px-4 py-2 rounded-xl bg-primary/20 text-primary text-xs font-semibold disabled:opacity-30 hover:bg-primary/30 transition-all">
                   {submitting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
-                  Транслировать
+                  Опубликовать
                 </motion.button>
               </motion.div>
             )}

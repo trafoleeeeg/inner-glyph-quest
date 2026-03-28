@@ -25,7 +25,7 @@ const DreamJournal = ({ onSubmit }: DreamJournalProps) => {
         className="w-full p-5 flex items-center justify-between hover:bg-dream/5 transition-colors">
         <div className="flex items-center gap-2">
           <Moon className="w-4 h-4 text-dream" />
-          <span className="text-sm font-semibold">Ночная синхронизация</span>
+          <span className="text-sm font-semibold">Дневник снов</span>
         </div>
         <motion.div animate={{ rotate: isOpen ? 45 : 0 }}>
           {isOpen ? <X className="w-4 h-4 text-muted-foreground" /> : <Plus className="w-4 h-4 text-dream" />}
@@ -37,15 +37,15 @@ const DreamJournal = ({ onSubmit }: DreamJournalProps) => {
             exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="px-5 pb-5">
             <p className="text-[10px] text-muted-foreground font-mono mb-2">
-              Сон = оффлайн-обновление весов. Бессознательное распаковывает архивы.
+              Записывай сны — мозг обрабатывает важное во время сна.
             </p>
-            <input placeholder="Ключевой образ / сценарий..." value={title} onChange={(e) => setTitle(e.target.value)}
+            <input placeholder="Что тебе приснилось?" value={title} onChange={(e) => setTitle(e.target.value)}
               className="w-full bg-muted/30 border border-border/50 rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground mb-3 focus:outline-none focus:border-dream/50 transition-all" />
-            <textarea placeholder="Дешифровка: что транслировал Интерпретатор?" value={description} onChange={(e) => setDescription(e.target.value)}
+            <textarea placeholder="Опиши подробности сна..." value={description} onChange={(e) => setDescription(e.target.value)}
               className="w-full bg-muted/30 border border-border/50 rounded-xl p-3 text-sm text-foreground placeholder:text-muted-foreground resize-none h-24 mb-3 focus:outline-none focus:border-dream/50 transition-all" />
             
             <div className="mb-3">
-              <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider mb-2">Глубина синхронизации</p>
+              <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider mb-2">Яркость сна</p>
               <div className="flex gap-1">
                 {[1, 2, 3, 4, 5].map((l) => (
                   <motion.button key={l} onClick={() => setLucidity(l)} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
@@ -60,7 +60,7 @@ const DreamJournal = ({ onSubmit }: DreamJournalProps) => {
 
             <motion.button onClick={handleSubmit} disabled={!title.trim()} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
               className="w-full bg-gradient-to-r from-dream/20 to-secondary/20 hover:from-dream/30 hover:to-secondary/30 text-dream border border-dream/20 rounded-xl py-2.5 text-sm font-semibold transition-all disabled:opacity-30 disabled:cursor-not-allowed">
-              Дешифровать · распаковать архив
+              Записать сон
             </motion.button>
           </motion.div>
         )}

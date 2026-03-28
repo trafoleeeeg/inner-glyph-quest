@@ -20,8 +20,8 @@ interface UserResult {
 }
 
 const LEVEL_TITLES: Record<number, string> = {
-  1: "Спящий агент", 2: "Пробуждённый", 3: "Дешифратор", 4: "Компрессор",
-  5: "Мета-Дипломат", 6: "Архитектор", 7: "Провидец", 8: "Нейромант", 9: "Трансцендент", 10: "Демиург",
+  1: "Новичок", 2: "Практик", 3: "Исследователь", 4: "Стратег",
+  5: "Наставник", 6: "Архитектор", 7: "Мастер", 8: "Эксперт", 9: "Легенда", 10: "Создатель",
 };
 
 const SearchPage = () => {
@@ -74,7 +74,7 @@ const SearchPage = () => {
       // Notification
       supabase.rpc('send_notification', {
         p_target_user_id: targetId, p_type: "follow",
-        p_title: "Новый наблюдатель в твоей сети",
+        p_title: "На тебя подписались",
         p_related_user_id: user.id,
       });
     }
@@ -87,8 +87,8 @@ const SearchPage = () => {
       <ParticleField />
       <div className="relative z-10 max-w-2xl mx-auto px-4 py-6 space-y-4">
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-2">
-          <h1 className="text-xl font-bold text-primary text-glow-primary font-display">Нейронавты</h1>
-          <p className="text-[10px] text-muted-foreground font-mono">найди тех, кто рассеивает туман</p>
+          <h1 className="text-xl font-bold text-primary text-glow-primary font-display">Участники</h1>
+          <p className="text-[10px] text-muted-foreground font-mono">найди единомышленников</p>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
@@ -111,7 +111,7 @@ const SearchPage = () => {
             <div className="w-6 h-6 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
           </div>
         ) : displayList.length === 0 ? (
-          <p className="text-center text-xs text-muted-foreground font-mono py-12">Агенты не найдены</p>
+          <p className="text-center text-xs text-muted-foreground font-mono py-12">Никого не найдено</p>
         ) : (
           <div className="space-y-2">
             {displayList.map((u, i) => {
@@ -136,7 +136,7 @@ const SearchPage = () => {
                       <span className="text-[9px] font-mono text-primary/60 bg-primary/5 px-1.5 py-0.5 rounded">LVL {u.level}</span>
                     </div>
                     <p className="text-[10px] text-muted-foreground font-mono">
-                      {LEVEL_TITLES[u.level] || LEVEL_TITLES[10]} • 🔥{u.streak}д • {u.total_missions_completed} протоколов
+                      {LEVEL_TITLES[u.level] || LEVEL_TITLES[10]} • 🔥{u.streak}д • {u.total_missions_completed} привычек
                     </p>
                   </div>
                   {!isMe && (
