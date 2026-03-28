@@ -8,16 +8,16 @@ interface XPBarProps {
 }
 
 const LEVEL_TITLES: Record<number, string> = {
-  1: "Спящий агент",
-  2: "Пробуждённый",
-  3: "Дешифратор",
-  4: "Компрессор",
-  5: "Мета-Дипломат",
+  1: "Новичок",
+  2: "Исследователь",
+  3: "Практик",
+  4: "Стратег",
+  5: "Наставник",
   6: "Архитектор",
-  7: "Провидец",
-  8: "Нейромант",
-  9: "Трансцендент",
-  10: "Демиург",
+  7: "Мастер",
+  8: "Эксперт",
+  9: "Гуру",
+  10: "Легенда",
 };
 
 const XPBar = ({ current, max, level, displayName }: XPBarProps) => {
@@ -41,7 +41,7 @@ const XPBar = ({ current, max, level, displayName }: XPBarProps) => {
             <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent" />
           </motion.div>
           <div>
-            <p className="text-sm font-semibold text-foreground">{displayName || 'Агент'}</p>
+            <p className="text-sm font-semibold text-foreground">{displayName || 'Пользователь'}</p>
             <p className="text-xs text-primary font-mono">{title}</p>
           </div>
         </div>
@@ -49,7 +49,7 @@ const XPBar = ({ current, max, level, displayName }: XPBarProps) => {
           <p className="font-mono text-sm text-primary font-bold">
             {current} <span className="text-muted-foreground">/ {max}</span>
           </p>
-          <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider">негэнтропия</p>
+          <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider">опыт</p>
         </div>
       </div>
       

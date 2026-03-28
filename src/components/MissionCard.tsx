@@ -15,7 +15,7 @@ interface MissionCardProps {
   mission: MissionData;
   onComplete: (id: string) => void;
   index: number;
-  devaluation?: number; // 0-1, how much XP is reduced
+  devaluation?: number;
 }
 
 const categoryColors: Record<string, { border: string; text: string; bg: string }> = {
@@ -28,8 +28,8 @@ const categoryColors: Record<string, { border: string; text: string; bg: string 
 };
 
 const categoryLabels: Record<string, string> = {
-  habit: 'Ритуал', mood: 'Сканер', dream: 'Синхр.',
-  desire: 'Вектор', health: 'Каркас', custom: 'Своё',
+  habit: 'Привычка', mood: 'Настрой', dream: 'Сон',
+  desire: 'Цель', health: 'Здоровье', custom: 'Своё',
 };
 
 const MissionCard = ({ mission, onComplete, index, devaluation }: MissionCardProps) => {
@@ -84,7 +84,7 @@ const MissionCard = ({ mission, onComplete, index, devaluation }: MissionCardPro
           </div>
           {devaluation && devaluation > 0.1 && !mission.completed && (
             <span className="text-[8px] font-mono text-muted-foreground/50">
-              энтропия↓
+              убывает
             </span>
           )}
         </div>
