@@ -49,6 +49,7 @@ const Index = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [missionCompletionCounts, setMissionCompletionCounts] = useState<Record<string, number>>({});
   const [lifeBalance, setLifeBalance] = useState(50);
+  const [companionFed, setCompanionFed] = useState(false);
 
   // Daily checkin state
   const [showDailyCheckin, setShowDailyCheckin] = useState(false);
