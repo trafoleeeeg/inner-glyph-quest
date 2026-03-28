@@ -64,10 +64,10 @@ const SearchPage = () => {
       await supabase.from("follows").insert({ follower_id: user.id, following_id: targetId });
       setFollowingIds(prev => new Set(prev).add(targetId));
       // Notification
-      supabase.from("notifications").insert({
-        user_id: targetId, type: "follow",
-        title: "Новый наблюдатель в твоей сети",
-        related_user_id: user.id,
+      supabase.rpc('send_notification', {
+        p_target_user_id: targetId, p_type: "follow",
+        p_title: "Новый наблюдатель в твоей сети",
+        p_related_user_id: user.id,
       });
     }
   };
