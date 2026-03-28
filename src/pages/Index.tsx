@@ -211,6 +211,15 @@ const Index = () => {
           )}
         </div>
 
+        {/* Fog of War + Balance */}
+        <div id="tutorial-fog">
+          <FogOfWarMap />
+        </div>
+        <LifeBalanceChart />
+
+        {/* AI Insights */}
+        <AIInsights />
+
         {/* Insights */}
         <InsightsPanel />
 
