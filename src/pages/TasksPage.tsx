@@ -259,8 +259,7 @@ const TasksPage = () => {
                   onToggleSubtask={(st) => toggleComplete(st)}
                   onDeleteSubtask={(id) => deleteTask(id)}
                   onAddSubtask={(parentId, title) => {
-                    setNewTaskTitle(title);
-                    addTask(parentId);
+                    addTask(parentId, title);
                   }}
                   activeCategory={activeCategory}
                 />
