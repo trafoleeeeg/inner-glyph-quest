@@ -27,14 +27,6 @@ import { Heart, HelpCircle, Compass } from "lucide-react";
 import BottomNav from "@/components/BottomNav";
 import { useTutorial } from "@/components/TutorialOverlay";
 
-const DEFAULT_MISSIONS = [
-  { title: 'Утренняя медитация', description: '10 минут тишины для ясности ума', xp_reward: 30, category: 'habit', icon: '🧘' },
-  { title: 'Записать сон', description: 'Вспомни и запиши ночные образы', xp_reward: 25, category: 'dream', icon: '🌙' },
-  { title: 'Отметить настроение', description: 'Как ты себя сейчас чувствуешь?', xp_reward: 15, category: 'mood', icon: '📡' },
-  { title: 'Прогулка 30 мин', description: 'Движение для тела и ясности', xp_reward: 35, category: 'health', icon: '🚶' },
-  { title: 'Записать желание', description: 'Чего ты сейчас хочешь больше всего?', xp_reward: 20, category: 'desire', icon: '✨' },
-  { title: 'Холодный душ', description: 'Бодрость и перезагрузка за 2 минуты', xp_reward: 40, category: 'health', icon: '🧊' },
-];
 
 const CHECKIN_KEY = "neuro_daily_checkin_";
 
