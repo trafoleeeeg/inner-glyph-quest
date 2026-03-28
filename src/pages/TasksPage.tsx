@@ -250,11 +250,14 @@ const TasksPage = () => {
           ))}
         </div>
 
-        {/* Drag & drop task list */}
-        <Reorder.Group axis="y" values={filteredTasks} onReorder={handleReorder} className="space-y-1.5">
+        {/* Task list — incomplete first, completed at bottom */}
+        <div className="space-y-1.5">
           <AnimatePresence>
-            {filteredTasks.map((task, i) => (
-              <Reorder.Item key={task.id} value={task} className="list-none">
+            {sortedTasks.map((task, i) => (
+              <motion.div key={task.id}
+                initial={{ opacity: 0 }} animate={{ opacity: task.is_completed ? 0.5 : 1 }}
+                className={task.is_completed ? "opacity-50" : ""}
+              >
                 <TaskItem
                   task={task}
                   index={i}
@@ -271,10 +274,10 @@ const TasksPage = () => {
                   }}
                   activeCategory={activeCategory}
                 />
-              </Reorder.Item>
+              </motion.div>
             ))}
           </AnimatePresence>
-        </Reorder.Group>
+        </div>
 
         {filteredTasks.length === 0 && !loading && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-12">
