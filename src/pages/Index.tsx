@@ -366,7 +366,16 @@ const Index = () => {
           <StreakBadges streak={profile.streak} longestStreak={profile.longest_streak} />
         )}
 
-        {/* Why this app — motivational block */}
+        {/* Phantom Competitor */}
+        {profile && missions.length > 0 && (
+          <PhantomCompetitor
+            userCompletedToday={completedCount}
+            userTotalCompleted={profile.total_missions_completed}
+            userStreak={profile.streak}
+            totalMissions={missions.length}
+          />
+        )}
+
         <AnimatePresence>
           {showWhyBlock && (
             <motion.div
