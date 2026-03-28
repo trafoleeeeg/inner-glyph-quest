@@ -36,6 +36,7 @@ const ProfilePage = () => {
   const [followingCount, setFollowingCount] = useState(0);
   const [activeComments, setActiveComments] = useState<string | null>(null);
   const [tab, setTab] = useState<"posts" | "stats">("posts");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const fetchPosts = useCallback(async () => {
     if (!user) return;
