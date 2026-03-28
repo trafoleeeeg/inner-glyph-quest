@@ -363,8 +363,13 @@ export type Database = {
       missions: {
         Row: {
           category: string
+          consecutive_failures: number
+          consecutive_successes: number
           created_at: string
           description: string | null
+          difficulty_multiplier: number
+          elo_rating: number
+          glyph_type: string
           icon: string
           id: string
           is_active: boolean
@@ -376,8 +381,13 @@ export type Database = {
         }
         Insert: {
           category?: string
+          consecutive_failures?: number
+          consecutive_successes?: number
           created_at?: string
           description?: string | null
+          difficulty_multiplier?: number
+          elo_rating?: number
+          glyph_type?: string
           icon?: string
           id?: string
           is_active?: boolean
@@ -389,8 +399,13 @@ export type Database = {
         }
         Update: {
           category?: string
+          consecutive_failures?: number
+          consecutive_successes?: number
           created_at?: string
           description?: string | null
+          difficulty_multiplier?: number
+          elo_rating?: number
+          glyph_type?: string
           icon?: string
           id?: string
           is_active?: boolean
@@ -1022,6 +1037,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      apply_daily_failure_check: { Args: never; Returns: undefined }
       apply_energy_decay: { Args: never; Returns: undefined }
       award_activity_xp: {
         Args: { p_activity?: string; p_amount: number }
