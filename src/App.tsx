@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { TutorialProvider } from "@/components/TutorialOverlay";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import ProfilePage from "./pages/ProfilePage";
@@ -15,6 +16,7 @@ import SearchPage from "./pages/SearchPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import MapPage from "./pages/MapPage";
 import GlyphPage from "./pages/GlyphPage";
+import TasksPage from "./pages/TasksPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,20 +42,23 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
-          <Routes>
-            <Route path="/auth" element={<PublicRoute><Auth /></PublicRoute>} />
-            <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
-            <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-            <Route path="/desires" element={<ProtectedRoute><DesireTracker /></ProtectedRoute>} />
-            <Route path="/chat" element={<ProtectedRoute><CommunityChat /></ProtectedRoute>} />
-            <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
-            <Route path="/feed" element={<ProtectedRoute><FeedPage /></ProtectedRoute>} />
-            <Route path="/map" element={<ProtectedRoute><MapPage /></ProtectedRoute>} />
-            <Route path="/glyph" element={<ProtectedRoute><GlyphPage /></ProtectedRoute>} />
-            <Route path="/search" element={<ProtectedRoute><SearchPage /></ProtectedRoute>} />
-            <Route path="/user/:userId" element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <TutorialProvider>
+            <Routes>
+              <Route path="/auth" element={<PublicRoute><Auth /></PublicRoute>} />
+              <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
+              <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+              <Route path="/desires" element={<ProtectedRoute><DesireTracker /></ProtectedRoute>} />
+              <Route path="/chat" element={<ProtectedRoute><CommunityChat /></ProtectedRoute>} />
+              <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
+              <Route path="/feed" element={<ProtectedRoute><FeedPage /></ProtectedRoute>} />
+              <Route path="/map" element={<ProtectedRoute><MapPage /></ProtectedRoute>} />
+              <Route path="/glyph" element={<ProtectedRoute><GlyphPage /></ProtectedRoute>} />
+              <Route path="/tasks" element={<ProtectedRoute><TasksPage /></ProtectedRoute>} />
+              <Route path="/search" element={<ProtectedRoute><SearchPage /></ProtectedRoute>} />
+              <Route path="/user/:userId" element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </TutorialProvider>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
