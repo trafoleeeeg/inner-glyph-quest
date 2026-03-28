@@ -172,18 +172,20 @@ const FeedPage = () => {
         </div>
 
         <div className="flex items-center gap-2 justify-center">
-          {(["all", "following"] as const).map(t => (
+          {(["all", "following", "rss"] as const).map(t => (
             <motion.button key={t} whileTap={{ scale: 0.95 }} onClick={() => setTab(t)}
               className={`px-4 py-1.5 rounded-xl text-xs font-mono transition-all ${
                 tab === t ? "bg-primary/20 text-primary border border-primary/30" : "text-muted-foreground hover:text-foreground"
               }`}>
-              {t === "all" ? "Все посты" : "Подписки"}
+              {t === "all" ? "Все посты" : t === "following" ? "Подписки" : "📚 Читать"}
             </motion.button>
           ))}
-          <motion.button whileTap={{ scale: 0.9, rotate: 180 }} onClick={fetchPosts}
-            className="p-1.5 text-muted-foreground hover:text-primary transition-colors">
-            <RefreshCw className="w-4 h-4" />
-          </motion.button>
+          {tab !== "rss" && (
+            <motion.button whileTap={{ scale: 0.9, rotate: 180 }} onClick={fetchPosts}
+              className="p-1.5 text-muted-foreground hover:text-primary transition-colors">
+              <RefreshCw className="w-4 h-4" />
+            </motion.button>
+          )}
         </div>
 
         <CreatePost onPostCreated={fetchPosts} />
