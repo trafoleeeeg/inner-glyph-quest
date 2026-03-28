@@ -291,7 +291,7 @@ const ProfilePage = () => {
             {recentRewards.length > 0 && (
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
                 className="glass-card rounded-2xl p-5 border border-secondary/10">
-                <h3 className="text-sm font-semibold mb-3 flex items-center gap-2"><span>🎁</span> Аномалии данных</h3>
+                <h3 className="text-sm font-semibold mb-3 flex items-center gap-2"><span>🎁</span> Бонусы</h3>
                 <div className="space-y-2">
                   {recentRewards.map(r => (
                     <div key={r.id} className="flex items-center gap-3 p-2 rounded-lg bg-muted/20">
