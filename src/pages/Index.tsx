@@ -137,12 +137,11 @@ const Index = () => {
   }, [user, refetchProfile]);
 
   const handleDreamSubmit = useCallback(async (title: string, description: string, lucidity: number) => {
-    if (!user || !profile) return;
-    await supabase.from("dream_entries").insert({ user_id: user.id, title, description: description || null, lucidity });
-    await supabase.from("profiles").update({ xp: profile.xp + 25, total_dreams_logged: profile.total_dreams_logged + 1 }).eq("user_id", user.id);
+    if (!user) return;
+    await supabase.rpc('submit_dream_entry', { p_title: title, p_description: description || null, p_lucidity: lucidity });
     toast.success("+25 негэнтропии", { description: `Архив "${title}" распакован` });
     await refetchProfile();
-  }, [user, profile, refetchProfile]);
+  }, [user, refetchProfile]);
 
   const handleCreateMission = useCallback(async (data: { title: string; description: string; category: string; icon: string; xp_reward: number }) => {
     if (!user) return;
