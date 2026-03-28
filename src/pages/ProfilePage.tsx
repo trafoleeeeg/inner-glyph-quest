@@ -129,10 +129,18 @@ const ProfilePage = () => {
         {/* Header with sign out */}
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
           <h1 className="text-lg font-bold text-foreground">Мой профиль</h1>
-          <motion.button whileTap={{ scale: 0.9 }} onClick={signOut}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-muted-foreground hover:text-destructive transition-colors">
-            <LogOut className="w-3.5 h-3.5" /> Выход
-          </motion.button>
+          <div className="flex items-center gap-2">
+            {isAdmin && (
+              <motion.button whileTap={{ scale: 0.9 }} onClick={() => navigate("/admin")}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-destructive/70 hover:text-destructive bg-destructive/5 border border-destructive/10 transition-colors">
+                <Shield className="w-3.5 h-3.5" /> Админ
+              </motion.button>
+            )}
+            <motion.button whileTap={{ scale: 0.9 }} onClick={signOut}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-muted-foreground hover:text-destructive transition-colors">
+              <LogOut className="w-3.5 h-3.5" /> Выход
+            </motion.button>
+          </div>
         </motion.div>
 
         {/* Profile Card */}
