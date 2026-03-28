@@ -375,18 +375,43 @@ const Index = () => {
         <div id="tutorial-missions">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-sm font-semibold text-foreground flex items-center gap-2"><span>⚡</span> Ежедневные привычки</h2>
-            <span className="text-xs font-mono text-muted-foreground">{completedCount}/{missions.length}</span>
+            {missions.length > 0 && <span className="text-xs font-mono text-muted-foreground">{completedCount}/{missions.length}</span>}
           </div>
-          <div className="space-y-2">
-            {missions.map((mission, i) => (
-              <MissionCard key={mission.id} mission={mission} onComplete={completeMission}
-                onEdit={handleEditMission} onDelete={handleDeleteMission}
-                index={i} devaluation={getDevaluation(mission.id)} />
-            ))}
-          </div>
-          <div className="mt-3">
-            <CreateMission onSubmit={handleCreateMission} />
-          </div>
+          {missions.length > 0 ? (
+            <>
+              <div className="space-y-2">
+                {missions.map((mission, i) => (
+                  <MissionCard key={mission.id} mission={mission} onComplete={completeMission}
+                    onEdit={handleEditMission} onDelete={handleDeleteMission}
+                    index={i} devaluation={getDevaluation(mission.id)} />
+                ))}
+              </div>
+              <div className="mt-3">
+                <CreateMission onSubmit={handleCreateMission} />
+              </div>
+            </>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="rounded-2xl p-6 border-2 border-dashed border-primary/20 bg-primary/5 text-center space-y-3"
+            >
+              <div className="text-4xl">🎯</div>
+              <h3 className="text-sm font-semibold text-foreground">У тебя пока нет привычек</h3>
+              <p className="text-xs text-muted-foreground leading-relaxed max-w-xs mx-auto">
+                Пройди анализ жизни — AI подберёт привычки, которые приведут тебя к твоим целям. Никаких случайных задач — только то, что реально двигает вперёд.
+              </p>
+              <button
+                onClick={() => navigate("/life-analysis")}
+                className="px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors"
+              >
+                Пройти анализ →
+              </button>
+              <div className="pt-2">
+                <CreateMission onSubmit={handleCreateMission} />
+              </div>
+            </motion.div>
+          )}
         </div>
 
         <div id="tutorial-mood" className="grid md:grid-cols-2 gap-4">
