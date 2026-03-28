@@ -11,14 +11,14 @@ interface TutorialStep {
 }
 
 const TUTORIAL_STEPS: TutorialStep[] = [
-  { id: "welcome", emoji: "👋", title: "Добро пожаловать в Inner Glyph!", text: "Это твой центр управления. Давай быстро разберёмся, что тут к чему." },
-  { id: "xp-bar", emoji: "📊", title: "Прогресс и уровень", text: "Твой уровень и шкала опыта. Выполняй задачи — полоска заполняется, уровень растёт.", targetId: "tutorial-xp" },
-  { id: "stats", emoji: "⚡", title: "Твои показатели", text: "Энергия, серия дней, привычки, сны и монеты. Энергия снижается каждый день — отмечай активность.", targetId: "tutorial-stats" },
-  { id: "glyph", emoji: "◈", title: "Глиф — твоё отражение", text: "Символ твоего прогресса. Цвет и форма меняются от энергии и баланса. Забросишь — потускнеет.", targetId: "tutorial-glyph" },
-  { id: "fog", emoji: "🗺️", title: "Карта осознанности", text: "Карта с зонами жизни. Отмечай активность — зоны открываются и ты видишь полную картину.", targetId: "tutorial-fog" },
-  { id: "missions", emoji: "🎯", title: "Привычки", text: "Ежедневные привычки с наградой XP. Повторяй одну слишком часто — награда снижается.", targetId: "tutorial-missions" },
-  { id: "mood", emoji: "📡", title: "Настроение и дневник снов", text: "Записывай настроение и сны. Система находит закономерности, которые ты не замечаешь.", targetId: "tutorial-mood" },
-  { id: "nav", emoji: "🧭", title: "Навигация", text: "Хаб → Лента → Племена → Задачи → Профиль. Всё под рукой.", targetId: "tutorial-nav" },
+  { id: "welcome", emoji: "👋", title: "Добро пожаловать!", text: "Это твой центр управления жизнью. Давай быстро покажу, что тут есть." },
+  { id: "xp-bar", emoji: "📊", title: "Уровень и опыт", text: "За каждую привычку и запись ты получаешь опыт. Полоска заполняется — уровень растёт.", targetId: "tutorial-xp" },
+  { id: "stats", emoji: "⚡", title: "Твои показатели", text: "Энергия, серия активных дней, монеты. Энергия снижается, если не отмечать активность.", targetId: "tutorial-stats" },
+  { id: "glyph", emoji: "◈", title: "Глиф — твой аватар", text: "Живая геометрическая фигура. Чем больше делаешь — тем ярче и сложнее она становится.", targetId: "tutorial-glyph" },
+  { id: "life", emoji: "🔭", title: "Обзор жизни", text: "Диаграмма 6 сфер: тело, разум, эмоции, общение, рост, сны. Показывает, где всё хорошо, а где стоит подтянуть.", targetId: "tutorial-fog" },
+  { id: "missions", emoji: "🎯", title: "Ежедневные привычки", text: "Отмечай привычки каждый день. За повторение XP снижается — добавляй разнообразие.", targetId: "tutorial-missions" },
+  { id: "mood", emoji: "😊", title: "Настроение и сны", text: "Записывай, как себя чувствуешь. Со временем увидишь закономерности.", targetId: "tutorial-mood" },
+  { id: "nav", emoji: "🧭", title: "Навигация", text: "Внизу 5 вкладок: Хаб · Лента · Племена · Задачи · Я.", targetId: "tutorial-nav" },
 ];
 
 interface SpotlightRect { top: number; left: number; width: number; height: number; }
@@ -42,23 +42,22 @@ export const TutorialProvider = ({ children }: { children: ReactNode }) => {
 
   const updateSpotlight = useCallback(() => {
     const current = TUTORIAL_STEPS[step];
-    if (!current.targetId) { setSpotlight(null); return; }
+    if (!current?.targetId) { setSpotlight(null); return; }
     const el = document.getElementById(current.targetId);
     if (!el) { setSpotlight(null); return; }
     const rect = el.getBoundingClientRect();
     const pad = 8;
     setSpotlight({ top: rect.top - pad + window.scrollY, left: rect.left - pad, width: rect.width + pad * 2, height: rect.height + pad * 2 });
-    // Position tooltip above or below based on element position
     setTooltipPos(rect.top > window.innerHeight * 0.5 ? "top" : "bottom");
-    // Scroll element into view
     el.scrollIntoView({ behavior: "smooth", block: "center" });
   }, [step]);
 
   useEffect(() => {
     if (!active) return;
-    updateSpotlight();
+    // Small delay to let layout settle after scroll
+    const timer = setTimeout(updateSpotlight, 300);
     window.addEventListener("resize", updateSpotlight);
-    return () => window.removeEventListener("resize", updateSpotlight);
+    return () => { clearTimeout(timer); window.removeEventListener("resize", updateSpotlight); };
   }, [active, step, updateSpotlight]);
 
   const startTutorial = () => { setStep(0); setActive(true); };
@@ -76,27 +75,25 @@ export const TutorialProvider = ({ children }: { children: ReactNode }) => {
         {active && (
           <>
             {/* Dark overlay with spotlight cutout */}
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[90]" onClick={skip}>
-              <svg className="absolute inset-0 w-full h-full" style={{ height: document.documentElement.scrollHeight }}>
-                <defs>
-                  <mask id="spotlight-mask">
-                    <rect x="0" y="0" width="100%" height="100%" fill="white" />
-                    {spotlight && (
-                      <rect x={spotlight.left} y={spotlight.top} width={spotlight.width} height={spotlight.height} rx="12" fill="black" />
-                    )}
-                  </mask>
-                </defs>
-                <rect x="0" y="0" width="100%" height="100%" fill="rgba(0,0,0,0.75)" mask="url(#spotlight-mask)" />
-              </svg>
-              {/* Spotlight border glow */}
-              {spotlight && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="absolute rounded-xl border-2 border-primary/50 pointer-events-none"
-                  style={{ top: spotlight.top, left: spotlight.left, width: spotlight.width, height: spotlight.height, boxShadow: "0 0 20px hsl(var(--primary) / 0.3), inset 0 0 20px hsl(var(--primary) / 0.1)" }}
-                />
-              )}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[90]" onClick={skip}
+              style={{ position: "fixed" }}>
+              <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.75)" }}>
+                {spotlight && (
+                  <div
+                    className="absolute rounded-xl"
+                    style={{
+                      top: spotlight.top - window.scrollY,
+                      left: spotlight.left,
+                      width: spotlight.width,
+                      height: spotlight.height,
+                      boxShadow: "0 0 0 9999px rgba(0,0,0,0.75)",
+                      background: "transparent",
+                      border: "2px solid hsl(var(--primary) / 0.5)",
+                    }}
+                  />
+                )}
+              </div>
             </motion.div>
 
             {/* Tooltip */}
@@ -107,7 +104,13 @@ export const TutorialProvider = ({ children }: { children: ReactNode }) => {
               exit={{ opacity: 0, y: 20, scale: 0.95 }}
               transition={{ type: "spring", stiffness: 300, damping: 25 }}
               className="fixed left-4 right-4 z-[95] max-w-md mx-auto"
-              style={spotlight ? (tooltipPos === "bottom" ? { top: Math.min(spotlight.top + spotlight.height + 16, window.innerHeight - 200) } : { top: Math.max(spotlight.top - 180, 20) }) : { bottom: 100 }}
+              style={
+                spotlight
+                  ? (tooltipPos === "bottom"
+                    ? { top: Math.min((spotlight.top - window.scrollY) + spotlight.height + 16, window.innerHeight - 220) }
+                    : { top: Math.max((spotlight.top - window.scrollY) - 200, 20) })
+                  : { bottom: 100 }
+              }
             >
               <div className="glass-card rounded-2xl p-5 border border-primary/20 shadow-xl shadow-primary/5" onClick={e => e.stopPropagation()}>
                 <div className="flex items-center gap-1 mb-3">

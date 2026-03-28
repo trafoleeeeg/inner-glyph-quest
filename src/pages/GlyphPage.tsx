@@ -1,22 +1,18 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfile } from "@/hooks/useProfile";
 import { supabase } from "@/integrations/supabase/client";
 import ParticleField from "@/components/ParticleField";
 import GlyphVisualizer from "@/components/GlyphVisualizer";
-import InnerDrives from "@/components/InnerDrives";
 import LifeOverview from "@/components/LifeOverview";
-import StateRadar from "@/components/StateRadar";
+import InnerDrives from "@/components/InnerDrives";
 import BottomNav from "@/components/BottomNav";
-import { Info, X } from "lucide-react";
-import { AnimatePresence } from "framer-motion";
 
 const GlyphPage = () => {
   const { user } = useAuth();
   const { profile } = useProfile();
   const [lifeBalance, setLifeBalance] = useState(50);
-  const [showPageInfo, setShowPageInfo] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -50,52 +46,13 @@ const GlyphPage = () => {
       <ParticleField />
       <div className="relative z-10 max-w-2xl mx-auto px-4 py-6 space-y-4">
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-lg font-bold text-foreground flex items-center gap-2">
-                <span className="text-primary text-glow-primary">◈</span> Мой Глиф
-              </h1>
-              <p className="text-[10px] text-muted-foreground font-mono">
-                визуальное отражение твоей активности
-              </p>
-            </div>
-            <button onClick={() => setShowPageInfo(!showPageInfo)}
-              className="w-8 h-8 rounded-lg bg-muted/20 border border-border/20 flex items-center justify-center text-muted-foreground/50 hover:text-primary transition-colors">
-              <Info className="w-4 h-4" />
-            </button>
-          </div>
+          <h1 className="text-lg font-bold text-foreground flex items-center gap-2">
+            <span className="text-primary text-glow-primary">◈</span> Мой Глиф
+          </h1>
+          <p className="text-[10px] text-muted-foreground font-mono">
+            визуальное отражение твоей активности
+          </p>
         </motion.div>
-
-        {/* Page explanation */}
-        <AnimatePresence>
-          {showPageInfo && (
-            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
-              className="glass-card rounded-2xl p-5 border border-primary/10 relative">
-              <button onClick={() => setShowPageInfo(false)} className="absolute top-3 right-3 text-muted-foreground/30 hover:text-foreground">
-                <X className="w-4 h-4" />
-              </button>
-              <h3 className="text-sm font-semibold text-foreground mb-2">Что такое Глиф?</h3>
-              <div className="space-y-2 text-[11px] text-muted-foreground leading-relaxed">
-                <p>
-                  <strong className="text-foreground">Глиф</strong> — это живой символ, который отражает твою активность. 
-                  Представь его как аватар, который меняется в реальном времени: чем больше ты делаешь для себя, тем сложнее и ярче он становится.
-                </p>
-                <p>
-                  🔵 <strong className="text-foreground">Кольцо</strong> вокруг — запас энергии. Полное кольцо = ты в отличной форме.
-                </p>
-                <p>
-                  ✦ <strong className="text-foreground">Точки</strong> по кругу — серия активных дней подряд.
-                </p>
-                <p>
-                  ◈ <strong className="text-foreground">Геометрия</strong> — чем выше уровень, тем больше граней и слоёв у фигуры.
-                </p>
-                <p className="text-primary/60 font-mono text-[10px] pt-1">
-                  Цель: поддерживай глиф ярким через ежедневные привычки, записи настроения и снов.
-                </p>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
 
         <GlyphVisualizer
           level={profile.level} xp={profile.xp} xpToNext={profile.xp_to_next}
@@ -104,10 +61,8 @@ const GlyphPage = () => {
           missionsCompleted={profile.total_missions_completed} dreamsLogged={profile.total_dreams_logged}
         />
 
-        {/* Unified life overview */}
+        {/* Life Overview integrated here */}
         <LifeOverview />
-
-        <StateRadar />
 
         <InnerDrives />
       </div>

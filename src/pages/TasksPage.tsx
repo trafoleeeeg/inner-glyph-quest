@@ -87,13 +87,12 @@ const TasksPage = () => {
 
   useEffect(() => { fetchTasks(); }, [fetchTasks]);
 
-  const addTask = async (parentId?: string, titleOverride?: string) => {
-    const title = titleOverride || newTaskTitle;
-    if (!user || !title.trim()) return;
+  const addTask = async (parentId?: string) => {
+    if (!user || !newTaskTitle.trim()) return;
     const today = new Date().toISOString().split("T")[0];
     const { error } = await supabase.from("user_tasks").insert({
       user_id: user.id,
-      title: title.trim(),
+      title: newTaskTitle.trim(),
       category: parentId ? "inbox" : activeCategory,
       priority: newTaskPriority,
       scheduled_date: activeCategory === "today" && !parentId ? today : null,
@@ -113,6 +112,11 @@ const TasksPage = () => {
     }
   };
 
+  // Quick preset just prefills the title — user can then set params and confirm
+  const handlePresetClick = (presetTitle: string) => {
+    setNewTaskTitle(presetTitle);
+  };
+
   const toggleComplete = async (task: Task) => {
     const newCompleted = !task.is_completed;
     await supabase.from("user_tasks").update({
@@ -123,7 +127,6 @@ const TasksPage = () => {
     if (newCompleted) {
       toast.success("✓ Выполнено", { description: task.title, duration: 1500 });
       await supabase.rpc("award_activity_xp", { p_amount: 10, p_activity: "task_complete" });
-      // If recurring, create next occurrence
       if (task.is_recurring && task.recurrence_rule) {
         const nextDate = getNextDate(task.recurrence_rule);
         await supabase.from("user_tasks").insert({
@@ -160,7 +163,6 @@ const TasksPage = () => {
       const otherTasks = prev.filter(t => !reordered.find(r => r.id === t.id));
       return [...reordered, ...otherTasks];
     });
-    // Update sort orders
     for (let i = 0; i < reordered.length; i++) {
       await supabase.from("user_tasks").update({ sort_order: i }).eq("id", reordered[i].id);
     }
@@ -169,7 +171,7 @@ const TasksPage = () => {
   const today = new Date().toISOString().split("T")[0];
 
   const filteredTasks = tasks.filter(t => {
-    if (t.parent_task_id) return false; // subtasks shown inside parent
+    if (t.parent_task_id) return false;
     if (activeCategory === "today") {
       return (t.category === "today" || t.scheduled_date === today) && !t.is_completed;
     }
@@ -208,7 +210,6 @@ const TasksPage = () => {
               <p className="text-[9px] text-muted-foreground font-mono">сегодня</p>
             </div>
           </div>
-          {/* Progress bar */}
           <div className="h-2 bg-muted/30 rounded-full overflow-hidden">
             <motion.div className="h-full rounded-full bg-gradient-to-r from-primary/60 to-accent/60"
               initial={{ width: 0 }} animate={{ width: `${progressPercent}%` }} transition={{ duration: 0.8 }} />
@@ -259,7 +260,8 @@ const TasksPage = () => {
                   onToggleSubtask={(st) => toggleComplete(st)}
                   onDeleteSubtask={(id) => deleteTask(id)}
                   onAddSubtask={(parentId, title) => {
-                    addTask(parentId, title);
+                    setNewTaskTitle(title);
+                    addTask(parentId);
                   }}
                   activeCategory={activeCategory}
                 />
@@ -285,11 +287,11 @@ const TasksPage = () => {
                 placeholder="Что нужно сделать?" autoFocus
                 className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none" />
 
-              {/* Quick presets */}
+              {/* Quick presets — now they just prefill the title */}
               {!newTaskTitle && (
                 <div className="flex flex-wrap gap-1">
                   {QUICK_PRESETS.map(p => (
-                    <button key={p.title} onClick={() => addTask(undefined, p.title)}
+                    <button key={p.title} onClick={() => handlePresetClick(p.title)}
                       className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-mono text-muted-foreground hover:text-foreground bg-muted/20 hover:bg-muted/40 transition-colors border border-border/20">
                       <span>{p.icon}</span> {p.title}
                     </button>
@@ -341,7 +343,8 @@ const TasksPage = () => {
               <div className="flex items-center justify-between">
                 <button onClick={() => { setShowInput(false); setNewTaskTitle(""); setNewRecurrence(null); setNewLinkedMission(null); }}
                   className="text-xs text-muted-foreground hover:text-foreground">Отмена</button>
-                <button onClick={() => addTask()} className="text-xs text-primary font-semibold hover:text-primary/80">Добавить</button>
+                <button onClick={() => addTask()} disabled={!newTaskTitle.trim()}
+                  className="text-xs text-primary font-semibold hover:text-primary/80 disabled:opacity-30">Добавить</button>
               </div>
             </motion.div>
           ) : (
@@ -369,9 +372,6 @@ const TasksPage = () => {
                     <Check className="w-3 h-3 text-accent" />
                   </button>
                   <span className="text-xs text-muted-foreground line-through flex-1">{task.title}</span>
-                  <button onClick={() => deleteTask(task.id)} className="text-muted-foreground/20 hover:text-destructive transition-colors">
-                    <Trash2 className="w-3 h-3" />
-                  </button>
                 </motion.div>
               ))}
             </AnimatePresence>
@@ -383,143 +383,136 @@ const TasksPage = () => {
   );
 };
 
-// Helper
-function getNextDate(rule: string): string {
-  const d = new Date();
-  switch (rule) {
-    case "daily": d.setDate(d.getDate() + 1); break;
-    case "weekdays":
-      do { d.setDate(d.getDate() + 1); } while (d.getDay() === 0 || d.getDay() === 6);
-      break;
-    case "weekly": d.setDate(d.getDate() + 7); break;
-    case "monthly": d.setMonth(d.getMonth() + 1); break;
-  }
-  return d.toISOString().split("T")[0];
-}
+// --- TaskItem component ---
 
-const TaskItem = ({ task, index, subtasks, missions, onToggle, onDelete, onMove, onToggleSubtask, onDeleteSubtask, onAddSubtask, activeCategory }: {
-  task: Task; index: number; subtasks: Task[]; missions: Mission[];
-  onToggle: () => void; onDelete: () => void;
+const getNextDate = (rule: string) => {
+  const now = new Date();
+  switch (rule) {
+    case "daily": now.setDate(now.getDate() + 1); break;
+    case "weekdays": {
+      let d = now; d.setDate(d.getDate() + 1);
+      while (d.getDay() === 0 || d.getDay() === 6) d.setDate(d.getDate() + 1);
+      return d.toISOString().split("T")[0];
+    }
+    case "weekly": now.setDate(now.getDate() + 7); break;
+    case "monthly": now.setMonth(now.getMonth() + 1); break;
+  }
+  return now.toISOString().split("T")[0];
+};
+
+interface TaskItemProps {
+  task: Task;
+  index: number;
+  subtasks: Task[];
+  missions: Mission[];
+  onToggle: () => void;
+  onDelete: () => void;
   onMove: (id: string, cat: string) => void;
-  onToggleSubtask: (t: Task) => void;
+  onToggleSubtask: (task: Task) => void;
   onDeleteSubtask: (id: string) => void;
   onAddSubtask: (parentId: string, title: string) => void;
   activeCategory: string;
-}) => {
-  const [showActions, setShowActions] = useState(false);
+}
+
+const TaskItem = ({ task, index, subtasks, missions, onToggle, onDelete, onMove, onToggleSubtask, onDeleteSubtask, onAddSubtask, activeCategory }: TaskItemProps) => {
   const [expanded, setExpanded] = useState(false);
-  const [subtaskInput, setSubtaskInput] = useState("");
-  const [showSubtaskInput, setShowSubtaskInput] = useState(false);
-  const prio = PRIORITY_COLORS[task.priority] || PRIORITY_COLORS[3];
-  const linkedMission = missions.find(m => m.id === task.linked_mission_id);
+  const [subInput, setSubInput] = useState("");
+  const [showSub, setShowSub] = useState(false);
+  const [showActions, setShowActions] = useState(false);
+
+  const priority = PRIORITY_COLORS[task.priority] || PRIORITY_COLORS[3];
+  const linkedMission = task.linked_mission_id ? missions.find(m => m.id === task.linked_mission_id) : null;
   const completedSubs = subtasks.filter(s => s.is_completed).length;
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: 20, height: 0 }}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, x: -100 }}
       transition={{ delay: index * 0.03 }}
-      className={`glass-card rounded-xl border transition-all ${prio.bg} group`}
     >
-      <div className="p-3.5 flex items-start gap-2">
-        <GripVertical className="w-3.5 h-3.5 text-muted-foreground/20 mt-1 shrink-0 cursor-grab active:cursor-grabbing" />
-        <motion.button whileTap={{ scale: 0.8 }} onClick={e => { e.stopPropagation(); onToggle(); }}
-          className={`w-5 h-5 rounded-md border-2 ${prio.text} border-current/30 flex items-center justify-center shrink-0 mt-0.5 hover:bg-accent/20 transition-colors`} />
-        <div className="flex-1 min-w-0" onClick={() => setShowActions(!showActions)}>
-          <div className="flex items-center gap-1.5">
-            <p className="text-sm text-foreground leading-snug">{task.title}</p>
-            {task.is_recurring && <Repeat className="w-3 h-3 text-accent/50 shrink-0" />}
-            {linkedMission && <span className="text-[10px] shrink-0">{linkedMission.icon}</span>}
+      <div className={`glass-card rounded-xl p-3 border ${priority.bg} group`}>
+        <div className="flex items-center gap-3">
+          <div className="cursor-grab active:cursor-grabbing text-muted-foreground/20 hover:text-muted-foreground/50">
+            <GripVertical className="w-3.5 h-3.5" />
           </div>
-          <div className="flex items-center gap-2 mt-0.5">
-            {task.due_date && (
-              <p className="text-[10px] font-mono text-muted-foreground flex items-center gap-1">
-                <Calendar className="w-2.5 h-2.5" /> {new Date(task.due_date).toLocaleDateString("ru-RU", { day: "numeric", month: "short" })}
-              </p>
-            )}
+          <motion.button whileTap={{ scale: 0.8 }} onClick={onToggle}
+            className={`w-5 h-5 rounded-md border-2 shrink-0 flex items-center justify-center transition-all ${priority.bg} ${priority.text}`}>
+          </motion.button>
+          <div className="flex-1 min-w-0" onClick={() => setShowActions(!showActions)}>
+            <p className="text-sm text-foreground truncate">{task.title}</p>
+            <div className="flex items-center gap-2 mt-0.5">
+              {task.is_recurring && <span className="text-[9px] font-mono text-accent">🔄 повтор</span>}
+              {linkedMission && <span className="text-[9px] font-mono text-primary">{linkedMission.icon} {linkedMission.title.slice(0, 12)}</span>}
+              {subtasks.length > 0 && <span className="text-[9px] font-mono text-muted-foreground">{completedSubs}/{subtasks.length} подзадач</span>}
+            </div>
+          </div>
+          <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
             {subtasks.length > 0 && (
-              <button onClick={e => { e.stopPropagation(); setExpanded(!expanded); }}
-                className="text-[10px] font-mono text-muted-foreground/60 flex items-center gap-0.5 hover:text-muted-foreground">
-                {expanded ? <ChevronUp className="w-2.5 h-2.5" /> : <ChevronDown className="w-2.5 h-2.5" />}
-                {completedSubs}/{subtasks.length}
+              <button onClick={() => setExpanded(!expanded)} className="p-1 text-muted-foreground/40 hover:text-foreground">
+                {expanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
               </button>
             )}
+            <button onClick={onDelete} className="p-1 text-muted-foreground/30 hover:text-destructive"><Trash2 className="w-3.5 h-3.5" /></button>
           </div>
         </div>
-        <div className="flex items-center gap-1 shrink-0">
-          {task.priority <= 2 && <Flag className={`w-3 h-3 ${prio.text}`} />}
-          <button onClick={e => { e.stopPropagation(); onDelete(); }}
-            className="opacity-0 group-hover:opacity-100 text-muted-foreground/20 hover:text-destructive transition-all">
-            <Trash2 className="w-3 h-3" />
-          </button>
-        </div>
+
+        {/* Actions row */}
+        <AnimatePresence>
+          {showActions && (
+            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
+              className="mt-2 pt-2 border-t border-border/20 flex items-center gap-1 flex-wrap">
+              {CATEGORIES.filter(c => c.id !== activeCategory).map(cat => (
+                <button key={cat.id} onClick={() => { onMove(task.id, cat.id); setShowActions(false); }}
+                  className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-mono text-muted-foreground hover:text-foreground bg-muted/10 hover:bg-muted/30 transition-colors">
+                  <cat.icon className="w-3 h-3" /> {cat.label}
+                </button>
+              ))}
+              <button onClick={() => { setShowSub(!showSub); setShowActions(false); }}
+                className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-mono text-primary bg-primary/5 hover:bg-primary/10 transition-colors">
+                <Plus className="w-3 h-3" /> Подзадача
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Subtask input */}
+        <AnimatePresence>
+          {showSub && (
+            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
+              className="mt-2 flex items-center gap-2">
+              <input value={subInput} onChange={e => setSubInput(e.target.value)}
+                onKeyDown={e => { if (e.key === "Enter" && subInput.trim()) { onAddSubtask(task.id, subInput.trim()); setSubInput(""); setShowSub(false); } }}
+                placeholder="Подзадача..." autoFocus
+                className="flex-1 bg-muted/20 rounded-lg px-3 py-1.5 text-xs text-foreground placeholder:text-muted-foreground/30 focus:outline-none" />
+              <button onClick={() => { if (subInput.trim()) { onAddSubtask(task.id, subInput.trim()); setSubInput(""); setShowSub(false); } }}
+                className="text-xs text-primary font-mono">+</button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Subtasks */}
+        <AnimatePresence>
+          {(expanded || subtasks.length <= 3) && subtasks.length > 0 && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="mt-2 ml-6 space-y-1">
+              {subtasks.map(sub => (
+                <div key={sub.id} className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-muted/10 group/sub">
+                  <motion.button whileTap={{ scale: 0.8 }} onClick={() => onToggleSubtask(sub)}
+                    className={`w-4 h-4 rounded border shrink-0 flex items-center justify-center ${
+                      sub.is_completed ? "bg-accent/20 border-accent/30" : "border-border/30"
+                    }`}>
+                    {sub.is_completed && <Check className="w-2.5 h-2.5 text-accent" />}
+                  </motion.button>
+                  <span className={`text-xs flex-1 ${sub.is_completed ? "line-through text-muted-foreground" : "text-foreground"}`}>{sub.title}</span>
+                  <button onClick={() => onDeleteSubtask(sub.id)} className="opacity-0 group-hover/sub:opacity-100 text-muted-foreground/30 hover:text-destructive">
+                    <Trash2 className="w-3 h-3" />
+                  </button>
+                </div>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-
-      {/* Subtasks */}
-      <AnimatePresence>
-        {expanded && (
-          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}
-            className="px-4 pb-3 space-y-1 ml-7 border-t border-border/10 pt-2">
-            {subtasks.map(st => (
-              <div key={st.id} className="flex items-center gap-2">
-                <button onClick={() => onToggleSubtask(st)}
-                  className={`w-4 h-4 rounded shrink-0 flex items-center justify-center border ${st.is_completed ? "bg-accent/20 border-accent/30" : "border-muted-foreground/20"}`}>
-                  {st.is_completed && <Check className="w-2.5 h-2.5 text-accent" />}
-                </button>
-                <span className={`text-xs flex-1 ${st.is_completed ? "line-through text-muted-foreground/50" : "text-foreground/80"}`}>{st.title}</span>
-                <button onClick={() => onDeleteSubtask(st.id)} className="text-muted-foreground/15 hover:text-destructive">
-                  <Trash2 className="w-2.5 h-2.5" />
-                </button>
-              </div>
-            ))}
-            {showSubtaskInput ? (
-              <div className="flex items-center gap-2">
-                <input value={subtaskInput} onChange={e => setSubtaskInput(e.target.value)}
-                  onKeyDown={e => {
-                    if (e.key === "Enter" && subtaskInput.trim()) {
-                      onAddSubtask(task.id, subtaskInput.trim());
-                      setSubtaskInput("");
-                    }
-                  }}
-                  placeholder="Подзадача..." autoFocus
-                  className="flex-1 bg-transparent text-xs text-foreground placeholder:text-muted-foreground/30 focus:outline-none" />
-                <button onClick={() => setShowSubtaskInput(false)} className="text-[10px] text-muted-foreground">✕</button>
-              </div>
-            ) : (
-              <button onClick={() => setShowSubtaskInput(true)}
-                className="text-[10px] text-muted-foreground/40 hover:text-primary font-mono flex items-center gap-1">
-                <Plus className="w-2.5 h-2.5" /> подзадача
-              </button>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* No subtasks — show add subtask button */}
-      {subtasks.length === 0 && !expanded && (
-        <div className="px-4 pb-2 ml-7">
-          <button onClick={e => { e.stopPropagation(); setExpanded(true); setShowSubtaskInput(true); }}
-            className="text-[10px] text-muted-foreground/25 hover:text-primary/50 font-mono flex items-center gap-1 transition-colors">
-            <Plus className="w-2.5 h-2.5" /> подзадача
-          </button>
-        </div>
-      )}
-
-      {/* Quick move actions */}
-      <AnimatePresence>
-        {showActions && (
-          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
-            className="flex gap-1.5 px-3.5 pb-3 pt-1 border-t border-border/20 ml-5">
-            {CATEGORIES.filter(c => c.id !== activeCategory).map(cat => (
-              <button key={cat.id} onClick={e => { e.stopPropagation(); onMove(task.id, cat.id); setShowActions(false); }}
-                className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-mono text-muted-foreground hover:text-foreground bg-muted/20 hover:bg-muted/40 transition-colors">
-                <cat.icon className="w-3 h-3" /> {cat.label}
-              </button>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
     </motion.div>
   );
 };
