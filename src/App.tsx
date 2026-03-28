@@ -16,7 +16,7 @@ import FeedPage from "./pages/FeedPage";
 import SearchPage from "./pages/SearchPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import MapPage from "./pages/MapPage";
-import GlyphPage from "./pages/GlyphPage";
+// GlyphPage removed - replaced by Companion in Hub
 import TribesPage from "./pages/TribesPage";
 import TasksPage from "./pages/TasksPage";
 import NotFound from "./pages/NotFound";
@@ -55,7 +55,7 @@ const App = () => (
                 <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
                 <Route path="/feed" element={<ProtectedRoute><FeedPage /></ProtectedRoute>} />
                 <Route path="/map" element={<ProtectedRoute><MapPage /></ProtectedRoute>} />
-                <Route path="/glyph" element={<ProtectedRoute><GlyphPage /></ProtectedRoute>} />
+                {/* /glyph route removed */}
                 <Route path="/tribes" element={<ProtectedRoute><TribesPage /></ProtectedRoute>} />
                 <Route path="/tasks" element={<ProtectedRoute><TasksPage /></ProtectedRoute>} />
                 <Route path="/search" element={<ProtectedRoute><SearchPage /></ProtectedRoute>} />
