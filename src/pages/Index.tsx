@@ -25,6 +25,7 @@ import WeeklyReport from "@/components/WeeklyReport";
 import { toast } from "sonner";
 import { Heart, HelpCircle, Compass } from "lucide-react";
 import BottomNav from "@/components/BottomNav";
+import StreakBadges from "@/components/StreakBadges";
 import { useTutorial } from "@/components/TutorialOverlay";
 
 
