@@ -114,12 +114,12 @@ const ProfilePage = () => {
   const initials = profile.display_name.slice(0, 2).toUpperCase();
 
   const statCards = [
-    { icon: Target, label: "Протоколов", value: profile.total_missions_completed, color: "text-primary" },
-    { icon: Moon, label: "Синхронизаций", value: profile.total_dreams_logged, color: "text-dream" },
-    { icon: Flame, label: "Поток", value: `${profile.streak}д`, color: "text-streak" },
-    { icon: Trophy, label: "Макс. поток", value: `${profile.longest_streak}д`, color: "text-energy" },
+    { icon: Target, label: "Привычек", value: profile.total_missions_completed, color: "text-primary" },
+    { icon: Moon, label: "Снов", value: profile.total_dreams_logged, color: "text-dream" },
+    { icon: Flame, label: "Серия", value: `${profile.streak}д`, color: "text-streak" },
+    { icon: Trophy, label: "Макс. серия", value: `${profile.longest_streak}д`, color: "text-energy" },
     { icon: Calendar, label: "За неделю", value: weeklyCompletions, color: "text-accent" },
-    { icon: Coins, label: "Коины", value: profile.coins, color: "text-energy" },
+    { icon: Coins, label: "Монеты", value: profile.coins, color: "text-energy" },
   ];
 
   return (
