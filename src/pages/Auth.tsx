@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Zap } from "lucide-react";
 import ParticleField from "@/components/ParticleField";
+import { lovable } from "@/integrations/lovable/index";
 import { z } from "zod";
 
 const loginSchema = z.object({
