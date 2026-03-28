@@ -134,6 +134,11 @@ const ProfilePage = () => {
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
           <h1 className="text-lg font-bold text-foreground">Мой профиль</h1>
           <div className="flex items-center gap-2">
+            <motion.button whileTap={{ scale: 0.9 }} onClick={toggleTheme}
+              className="w-8 h-8 rounded-lg bg-muted/30 border border-border/30 flex items-center justify-center text-muted-foreground hover:text-primary transition-colors"
+              title={theme === "dark" ? "Светлая тема" : "Тёмная тема"}>
+              {theme === "dark" ? <Sun className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
+            </motion.button>
             {isAdmin && (
               <motion.button whileTap={{ scale: 0.9 }} onClick={() => navigate("/admin")}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-destructive/70 hover:text-destructive bg-destructive/5 border border-destructive/10 transition-colors">
