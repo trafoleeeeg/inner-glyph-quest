@@ -41,7 +41,7 @@ const Auth = () => {
       if (isLogin) {
         loginSchema.parse({ email, password });
       } else {
-        signupSchema.parse({ displayName: displayName || "Нейронавт", email, password });
+        signupSchema.parse({ displayName: displayName || "Участник", email, password });
       }
       return true;
     } catch (err) {
