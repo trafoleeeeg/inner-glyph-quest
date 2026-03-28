@@ -11,6 +11,8 @@ import BottomNav from "@/components/BottomNav";
 import ParticleField from "@/components/ParticleField";
 import { toast } from "sonner";
 
+const PUBLIC_PROFILES_TABLE = "public_profiles";
+
 const LEVEL_TITLES: Record<number, string> = {
   1: "Спящий агент", 2: "Пробуждённый", 3: "Дешифратор", 4: "Компрессор",
   5: "Мета-Дипломат", 6: "Архитектор", 7: "Провидец", 8: "Нейромант", 9: "Трансцендент", 10: "Демиург",
@@ -35,7 +37,11 @@ const UserProfilePage = () => {
     setLoading(true);
 
     const [profileRes, postsRes, followersRes, followingRes, isFollowingRes, likesRes] = await Promise.all([
-      supabase.from("profiles").select("*").eq("user_id", userId).single(),
+      (supabase as any)
+        .from(PUBLIC_PROFILES_TABLE)
+        .select("user_id, display_name, level, avatar_url, bio, total_missions_completed, total_dreams_logged, streak")
+        .eq("user_id", userId)
+        .single(),
       supabase.from("posts").select("*").eq("user_id", userId).order("created_at", { ascending: false }).limit(50),
       supabase.from("follows").select("*", { count: "exact", head: true }).eq("following_id", userId),
       supabase.from("follows").select("*", { count: "exact", head: true }).eq("follower_id", userId),

@@ -9,6 +9,8 @@ import { formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
 import { toast } from "sonner";
 
+const PUBLIC_PROFILES_TABLE = "public_profiles";
+
 interface Comment {
   id: string;
   user_id: string;
@@ -46,8 +48,8 @@ const CommentsSheet = ({ postId, onClose }: CommentsSheetProps) => {
     if (data) {
       // Fetch author profiles
       const userIds = [...new Set(data.map(c => c.user_id))];
-      const { data: profiles } = await supabase
-        .from("profiles")
+      const { data: profiles } = await (supabase as any)
+        .from(PUBLIC_PROFILES_TABLE)
         .select("user_id, display_name")
         .in("user_id", userIds);
       const profileMap = new Map(profiles?.map(p => [p.user_id, p]) || []);

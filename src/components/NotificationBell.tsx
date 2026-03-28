@@ -8,6 +8,8 @@ import { formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
+const PUBLIC_PROFILES_TABLE = "public_profiles";
+
 interface Notification {
   id: string;
   type: string;
@@ -45,7 +47,10 @@ const NotificationBell = () => {
         const relatedIds = [...new Set(data.filter(n => n.related_user_id).map(n => n.related_user_id!))];
         let profileMap = new Map<string, { display_name: string; avatar_url: string | null }>();
         if (relatedIds.length > 0) {
-          const { data: profiles } = await supabase.from("profiles").select("user_id, display_name, avatar_url").in("user_id", relatedIds);
+          const { data: profiles } = await (supabase as any)
+            .from(PUBLIC_PROFILES_TABLE)
+            .select("user_id, display_name, avatar_url")
+            .in("user_id", relatedIds);
           profileMap = new Map(profiles?.map(p => [p.user_id, p]) || []);
         }
         setNotifications(data.map(n => ({ ...n, related_user: n.related_user_id ? profileMap.get(n.related_user_id) || null : null })));
