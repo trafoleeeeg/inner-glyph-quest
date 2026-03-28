@@ -274,7 +274,7 @@ const ProfilePage = () => {
 
             {/* Stats Grid */}
             <div>
-              <h3 className="text-sm font-semibold mb-3 flex items-center gap-2"><span>📊</span> Метрики сжатия</h3>
+              <h3 className="text-sm font-semibold mb-3 flex items-center gap-2"><span>📊</span> Показатели</h3>
               <div className="grid grid-cols-3 gap-2">
                 {statCards.map((stat, i) => (
                   <motion.div key={stat.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.05 }}
