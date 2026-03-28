@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Check, Sparkles, Edit3, Trash2, X } from "lucide-react";
+import { Check, Sparkles, Edit3, Trash2, TrendingUp, TrendingDown } from "lucide-react";
 import { useState } from "react";
 
 export interface MissionData {
@@ -10,6 +10,11 @@ export interface MissionData {
   category: string;
   xp_reward: number;
   completed?: boolean;
+  difficulty_multiplier?: number;
+  consecutive_successes?: number;
+  consecutive_failures?: number;
+  glyph_type?: string;
+  elo_rating?: number;
 }
 
 interface MissionCardProps {
@@ -35,6 +40,12 @@ const categoryLabels: Record<string, string> = {
   desire: 'Цель', health: 'Здоровье', custom: 'Своё',
 };
 
+const glyphTypeLabels: Record<string, { label: string; color: string }> = {
+  cognitive_constraint: { label: 'КОГНИТИВ', color: 'text-primary bg-primary/10' },
+  physical_shock: { label: 'ФИЗИКА', color: 'text-destructive bg-destructive/10' },
+  dynamic_complexity: { label: 'ДИНАМИКА', color: 'text-accent bg-accent/10' },
+};
+
 const MissionCard = ({ mission, onComplete, onEdit, onDelete, index, devaluation }: MissionCardProps) => {
   const [editing, setEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(mission.title);
@@ -43,9 +54,14 @@ const MissionCard = ({ mission, onComplete, onEdit, onDelete, index, devaluation
   const [dragX, setDragX] = useState(0);
 
   const colors = categoryColors[mission.category] || categoryColors.custom;
+  const diffMult = mission.difficulty_multiplier || 1;
   const effectiveXP = devaluation && devaluation > 0
-    ? Math.max(Math.floor(mission.xp_reward * (1 - devaluation)), Math.floor(mission.xp_reward * 0.3))
-    : mission.xp_reward;
+    ? Math.max(Math.floor(mission.xp_reward * diffMult * (1 - devaluation)), Math.floor(mission.xp_reward * 0.3))
+    : Math.floor(mission.xp_reward * diffMult);
+
+  const glyphInfo = mission.glyph_type ? glyphTypeLabels[mission.glyph_type] : null;
+  const isEscalated = diffMult > 1.1;
+  const isReduced = diffMult < 0.9;
 
   const handleSaveEdit = () => {
     if (onEdit && editTitle.trim()) {
@@ -78,7 +94,6 @@ const MissionCard = ({ mission, onComplete, onEdit, onDelete, index, devaluation
 
   return (
     <div className="relative overflow-hidden rounded-xl">
-      {/* Delete background on swipe */}
       {onDelete && dragX < -30 && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
           className="absolute inset-y-0 right-0 w-20 bg-destructive/20 flex items-center justify-center rounded-r-xl">
@@ -102,7 +117,7 @@ const MissionCard = ({ mission, onComplete, onEdit, onDelete, index, devaluation
         }}
         className={`glass-card rounded-xl p-3.5 border transition-all duration-200 cursor-pointer group relative ${
           mission.completed ? 'opacity-35 border-accent/8' : colors.border
-        }`}
+        } ${isEscalated && !mission.completed ? 'ring-1 ring-accent/20' : ''} ${isReduced && !mission.completed ? 'ring-1 ring-destructive/15' : ''}`}
         onClick={() => !mission.completed && onComplete(mission.id)}
         whileHover={!mission.completed ? { y: -1 } : {}}
         whileTap={!mission.completed ? { scale: 0.98 } : {}}
@@ -114,16 +129,36 @@ const MissionCard = ({ mission, onComplete, onEdit, onDelete, index, devaluation
             {mission.completed ? <Check className="w-4 h-4 text-accent" /> : mission.icon}
           </div>
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-0.5">
+            <div className="flex items-center gap-1.5 mb-0.5 flex-wrap">
               <h3 className={`text-sm font-medium ${mission.completed ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
                 {mission.title}
               </h3>
-              <span className={`text-[8px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded-md ${colors.bg} ${colors.text}`}>
-                {categoryLabels[mission.category] || mission.category}
-              </span>
+              {glyphInfo && !mission.completed && (
+                <span className={`text-[7px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded-md ${glyphInfo.color}`}>
+                  {glyphInfo.label}
+                </span>
+              )}
             </div>
             {mission.description && (
               <p className="text-[11px] text-muted-foreground truncate">{mission.description}</p>
+            )}
+            {/* Elo difficulty indicator */}
+            {!mission.completed && diffMult !== 1 && (
+              <div className="flex items-center gap-1 mt-1">
+                {isEscalated ? (
+                  <TrendingUp className="w-3 h-3 text-accent" />
+                ) : (
+                  <TrendingDown className="w-3 h-3 text-destructive/60" />
+                )}
+                <span className={`text-[9px] font-mono ${isEscalated ? 'text-accent' : 'text-destructive/60'}`}>
+                  {isEscalated ? `+${Math.round((diffMult - 1) * 100)}% сложность` : `${Math.round((1 - diffMult) * 100)}% упрощение`}
+                </span>
+                {mission.consecutive_successes !== undefined && mission.consecutive_successes > 0 && (
+                  <span className="text-[8px] text-muted-foreground/50 font-mono">
+                    ({mission.consecutive_successes}/5 до эскалации)
+                  </span>
+                )}
+              </div>
             )}
           </div>
           <div className="flex flex-col items-end gap-1 shrink-0">
