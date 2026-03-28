@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, UserPlus, UserMinus, Target, Flame, Moon, Calendar } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import PostCard from "@/components/PostCard";
 import CommentsSheet from "@/components/CommentsSheet";
 import BottomNav from "@/components/BottomNav";
