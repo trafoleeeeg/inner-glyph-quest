@@ -676,6 +676,82 @@ export type Database = {
         }
         Relationships: []
       }
+      tribe_challenge_participants: {
+        Row: {
+          challenge_id: string
+          id: string
+          joined_at: string
+          score: number
+          user_id: string
+        }
+        Insert: {
+          challenge_id: string
+          id?: string
+          joined_at?: string
+          score?: number
+          user_id: string
+        }
+        Update: {
+          challenge_id?: string
+          id?: string
+          joined_at?: string
+          score?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tribe_challenge_participants_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "tribe_challenges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tribe_challenges: {
+        Row: {
+          challenge_type: string
+          created_at: string
+          created_by: string
+          end_date: string
+          id: string
+          is_active: boolean
+          start_date: string
+          title: string
+          tribe_id: string
+        }
+        Insert: {
+          challenge_type?: string
+          created_at?: string
+          created_by: string
+          end_date?: string
+          id?: string
+          is_active?: boolean
+          start_date?: string
+          title: string
+          tribe_id: string
+        }
+        Update: {
+          challenge_type?: string
+          created_at?: string
+          created_by?: string
+          end_date?: string
+          id?: string
+          is_active?: boolean
+          start_date?: string
+          title?: string
+          tribe_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tribe_challenges_tribe_id_fkey"
+            columns: ["tribe_id"]
+            isOneToOne: false
+            referencedRelation: "tribes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tribe_members: {
         Row: {
           id: string
@@ -886,6 +962,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      weekly_reports: {
+        Row: {
+          ai_summary: string | null
+          created_at: string
+          id: string
+          stats: Json
+          user_id: string
+          week_start: string
+        }
+        Insert: {
+          ai_summary?: string | null
+          created_at?: string
+          id?: string
+          stats?: Json
+          user_id: string
+          week_start: string
+        }
+        Update: {
+          ai_summary?: string | null
+          created_at?: string
+          id?: string
+          stats?: Json
+          user_id?: string
+          week_start?: string
+        }
+        Relationships: []
       }
     }
     Views: {
