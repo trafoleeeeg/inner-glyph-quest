@@ -87,12 +87,13 @@ const TasksPage = () => {
 
   useEffect(() => { fetchTasks(); }, [fetchTasks]);
 
-  const addTask = async (parentId?: string) => {
-    if (!user || !newTaskTitle.trim()) return;
+  const addTask = async (parentId?: string, titleOverride?: string) => {
+    const title = titleOverride || newTaskTitle;
+    if (!user || !title.trim()) return;
     const today = new Date().toISOString().split("T")[0];
     const { error } = await supabase.from("user_tasks").insert({
       user_id: user.id,
-      title: newTaskTitle.trim(),
+      title: title.trim(),
       category: parentId ? "inbox" : activeCategory,
       priority: newTaskPriority,
       scheduled_date: activeCategory === "today" && !parentId ? today : null,
