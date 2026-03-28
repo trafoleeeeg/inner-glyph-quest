@@ -319,6 +319,11 @@ const Index = () => {
           {profile && <StatsRow energy={profile.energy} maxEnergy={profile.max_energy} streak={profile.streak} longestStreak={profile.longest_streak} totalMissions={profile.total_missions_completed} dreamsLogged={profile.total_dreams_logged} coins={profile.coins} />}
         </div>
 
+        {/* Streak Badges */}
+        {profile && profile.streak >= 1 && (
+          <StreakBadges streak={profile.streak} longestStreak={profile.longest_streak} />
+        )}
+
         {/* Why this app — motivational block */}
         <AnimatePresence>
           {showWhyBlock && (
