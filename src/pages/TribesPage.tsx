@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { Users, Plus, X, LogIn, LogOut, Target, Crown, Trophy, TrendingUp, Flame } from "lucide-react";
+import { Users, Plus, X, LogIn, LogOut, Target, Crown, Trophy, TrendingUp, Flame, Swords, Award } from "lucide-react";
 import { toast } from "sonner";
 import ParticleField from "@/components/ParticleField";
 import BottomNav from "@/components/BottomNav";
