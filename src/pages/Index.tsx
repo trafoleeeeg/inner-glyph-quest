@@ -25,6 +25,7 @@ import WeeklyReport from "@/components/WeeklyReport";
 import { toast } from "sonner";
 import { Heart, HelpCircle, Compass } from "lucide-react";
 import BottomNav from "@/components/BottomNav";
+import StreakBadges from "@/components/StreakBadges";
 import { useTutorial } from "@/components/TutorialOverlay";
 
 
@@ -317,6 +318,11 @@ const Index = () => {
         <div id="tutorial-stats">
           {profile && <StatsRow energy={profile.energy} maxEnergy={profile.max_energy} streak={profile.streak} longestStreak={profile.longest_streak} totalMissions={profile.total_missions_completed} dreamsLogged={profile.total_dreams_logged} coins={profile.coins} />}
         </div>
+
+        {/* Streak Badges */}
+        {profile && profile.streak >= 1 && (
+          <StreakBadges streak={profile.streak} longestStreak={profile.longest_streak} />
+        )}
 
         {/* Why this app — motivational block */}
         <AnimatePresence>

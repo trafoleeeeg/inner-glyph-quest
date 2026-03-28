@@ -13,7 +13,7 @@ import BottomNav from "@/components/BottomNav";
 import PostCard from "@/components/PostCard";
 import CreatePost from "@/components/CreatePost";
 import CommentsSheet from "@/components/CommentsSheet";
-import { ArrowLeft, Trophy, Target, Moon, Flame, TrendingUp, Calendar, Coins, Settings, LogOut, Edit3, Shield, Sun, MoonIcon } from "lucide-react";
+import { ArrowLeft, Trophy, Target, Moon, Flame, TrendingUp, Calendar, Coins, Settings, LogOut, Edit3, Shield, Sun, MoonIcon, Camera } from "lucide-react";
 import { useTheme } from "@/components/ThemeProvider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
@@ -95,10 +95,17 @@ const ProfilePage = () => {
   useEffect(() => { fetchPosts(); }, [fetchPosts]);
 
   const handleNameSave = async () => {
-    if (nameInput.trim() && nameInput.trim().length <= 30) {
-      await updateProfile({ display_name: nameInput.trim() } as any);
-      setEditingName(false);
+    const trimmed = nameInput.trim();
+    if (!trimmed || trimmed.length > 30) return;
+    // Allow English letters, numbers, spaces, underscores, dots
+    const isValid = /^[a-zA-Z0-9_.\s]+$/.test(trimmed);
+    if (!isValid) {
+      toast.error("Никнейм должен быть на английском (буквы, цифры, _)");
+      return;
     }
+    await updateProfile({ display_name: trimmed } as any);
+    setEditingName(false);
+    toast.success("Никнейм обновлён");
   };
 
   const handleBioSave = async () => {
@@ -169,10 +176,26 @@ const ProfilePage = () => {
         {/* Profile Card */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
           className="glass-card rounded-2xl p-6 gradient-border text-center">
-          <Avatar className="w-20 h-20 mx-auto mb-3 border-2 border-primary/20">
-            {profile.avatar_url && <AvatarImage src={profile.avatar_url} />}
-            <AvatarFallback className="bg-primary/10 text-primary text-xl font-mono">{initials}</AvatarFallback>
-          </Avatar>
+          <div className="relative inline-block">
+            <Avatar className="w-20 h-20 mx-auto mb-3 border-2 border-primary/20">
+              {profile.avatar_url && <AvatarImage src={profile.avatar_url} />}
+              <AvatarFallback className="bg-primary/10 text-primary text-xl font-mono">{initials}</AvatarFallback>
+            </Avatar>
+            <label className="absolute bottom-2 right-0 w-7 h-7 rounded-full bg-primary/80 flex items-center justify-center cursor-pointer hover:bg-primary transition-colors border-2 border-background">
+              <Camera className="w-3.5 h-3.5 text-primary-foreground" />
+              <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file || !user) return;
+                const ext = file.name.split('.').pop();
+                const path = `avatars/${user.id}.${ext}`;
+                const { error: uploadErr } = await supabase.storage.from("media").upload(path, file, { upsert: true });
+                if (uploadErr) { toast.error("Не удалось загрузить фото"); return; }
+                const { data: urlData } = supabase.storage.from("media").getPublicUrl(path);
+                await updateProfile({ avatar_url: urlData.publicUrl + "?t=" + Date.now() } as any);
+                toast.success("Аватарка обновлена!");
+              }} />
+            </label>
+          </div>
           
           {editingName ? (
             <div className="flex items-center gap-2 justify-center mb-1">

@@ -59,8 +59,38 @@ const LifeAnalysisPage = () => {
         body: { spheres, hobbies: selectedHobbies.join(", "), goals },
       });
       if (error) throw error;
-      setSuggestions(data.habits || []);
+      const habits = data.habits || [];
+      setSuggestions(habits);
       setSummary(data.summary || "");
+      
+      // Auto-add all habits as missions
+      if (user && habits.length > 0) {
+        const missionsToInsert = habits.map((h: HabitSuggestion) => ({
+          user_id: user.id,
+          title: h.title,
+          description: h.description,
+          category: h.category === "health" ? "health" : "habit",
+          icon: h.icon,
+          xp_reward: 25,
+          is_daily: true,
+          is_active: true,
+        }));
+        const { error: insertError } = await supabase.from("missions").insert(missionsToInsert);
+        if (!insertError) {
+          setAddedHabits(new Set(habits.map((_: any, i: number) => i)));
+          toast.success(`${habits.length} привычек добавлено на главную!`);
+        }
+      }
+
+      // Save life profile
+      if (user) {
+        await supabase.from("life_profiles").upsert({
+          user_id: user.id,
+          answers: { spheres, hobbies: selectedHobbies, goals },
+          ai_recommendations: data,
+        }, { onConflict: "user_id" });
+      }
+
       setStep(3);
     } catch (e: any) {
       toast.error(e.message || "Не удалось получить рекомендации");
@@ -193,9 +223,12 @@ const LifeAnalysisPage = () => {
           </motion.div>
         ))}
       </div>
-      <Button onClick={() => navigate("/")} className="w-full" variant="outline">
-        Вернуться на главную
-      </Button>
+      <div className="text-center">
+        <p className="text-xs text-accent font-medium mb-3">✅ Все привычки уже добавлены на главную</p>
+        <Button onClick={() => navigate("/")} className="w-full" variant="default">
+          Перейти к привычкам →
+        </Button>
+      </div>
     </motion.div>,
   ];
 

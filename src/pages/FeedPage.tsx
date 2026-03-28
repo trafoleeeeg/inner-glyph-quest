@@ -9,6 +9,7 @@ import BottomNav from "@/components/BottomNav";
 import NotificationBell from "@/components/NotificationBell";
 import ParticleField from "@/components/ParticleField";
 import { RefreshCw, Search } from "lucide-react";
+import RSSFeed from "@/components/RSSFeed";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -41,7 +42,7 @@ const FeedPage = () => {
   const [likedPosts, setLikedPosts] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [activeComments, setActiveComments] = useState<string | null>(null);
-  const [tab, setTab] = useState<"all" | "following">("all");
+  const [tab, setTab] = useState<"all" | "following" | "rss">("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [searching, setSearching] = useState(false);
@@ -171,40 +172,48 @@ const FeedPage = () => {
         </div>
 
         <div className="flex items-center gap-2 justify-center">
-          {(["all", "following"] as const).map(t => (
+          {(["all", "following", "rss"] as const).map(t => (
             <motion.button key={t} whileTap={{ scale: 0.95 }} onClick={() => setTab(t)}
               className={`px-4 py-1.5 rounded-xl text-xs font-mono transition-all ${
                 tab === t ? "bg-primary/20 text-primary border border-primary/30" : "text-muted-foreground hover:text-foreground"
               }`}>
-              {t === "all" ? "Все посты" : "Подписки"}
+              {t === "all" ? "Все посты" : t === "following" ? "Подписки" : "📚 Читать"}
             </motion.button>
           ))}
-          <motion.button whileTap={{ scale: 0.9, rotate: 180 }} onClick={fetchPosts}
-            className="p-1.5 text-muted-foreground hover:text-primary transition-colors">
-            <RefreshCw className="w-4 h-4" />
-          </motion.button>
+          {tab !== "rss" && (
+            <motion.button whileTap={{ scale: 0.9, rotate: 180 }} onClick={fetchPosts}
+              className="p-1.5 text-muted-foreground hover:text-primary transition-colors">
+              <RefreshCw className="w-4 h-4" />
+            </motion.button>
+          )}
         </div>
 
-        <CreatePost onPostCreated={fetchPosts} />
-
-        {loading ? (
-          <div className="flex justify-center py-12">
-            <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
-          </div>
-        ) : posts.length === 0 ? (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-16">
-            <p className="text-4xl mb-3">📡</p>
-            <p className="text-sm text-muted-foreground font-mono">
-              {tab === "following" ? "Подпишись на интересных людей" : "Пока нет постов. Напиши первый!"}
-            </p>
-          </motion.div>
+        {tab === "rss" ? (
+          <RSSFeed />
         ) : (
-          <div className="space-y-3">
-            {posts.map(post => (
-              <PostCard key={post.id} post={post} isLiked={likedPosts.has(post.id)}
-                onLikeToggle={handleLikeToggle} onDelete={handleDelete} onCommentClick={setActiveComments} />
-            ))}
-          </div>
+          <>
+            <CreatePost onPostCreated={fetchPosts} />
+
+            {loading ? (
+              <div className="flex justify-center py-12">
+                <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+              </div>
+            ) : posts.length === 0 ? (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-16">
+                <p className="text-4xl mb-3">📡</p>
+                <p className="text-sm text-muted-foreground font-mono">
+                  {tab === "following" ? "Подпишись на интересных людей" : "Пока нет постов. Напиши первый!"}
+                </p>
+              </motion.div>
+            ) : (
+              <div className="space-y-3">
+                {posts.map(post => (
+                  <PostCard key={post.id} post={post} isLiked={likedPosts.has(post.id)}
+                    onLikeToggle={handleLikeToggle} onDelete={handleDelete} onCommentClick={setActiveComments} />
+                ))}
+              </div>
+            )}
+          </>
         )}
       </div>
 
