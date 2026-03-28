@@ -13,7 +13,7 @@ import BottomNav from "@/components/BottomNav";
 import PostCard from "@/components/PostCard";
 import CreatePost from "@/components/CreatePost";
 import CommentsSheet from "@/components/CommentsSheet";
-import { ArrowLeft, Trophy, Target, Moon, Flame, TrendingUp, Calendar, Coins, Settings, LogOut, Edit3, Shield, Sun, MoonIcon } from "lucide-react";
+import { ArrowLeft, Trophy, Target, Moon, Flame, TrendingUp, Calendar, Coins, Settings, LogOut, Edit3, Shield, Sun, MoonIcon, Camera } from "lucide-react";
 import { useTheme } from "@/components/ThemeProvider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
