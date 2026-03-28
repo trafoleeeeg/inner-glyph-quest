@@ -191,6 +191,8 @@ const FeedPage = () => {
 
         {tab === "rss" ? (
           <RSSFeed />
+        ) : tab === "leaderboard" ? (
+          <Leaderboard />
         ) : (
           <>
             <CreatePost onPostCreated={fetchPosts} />
