@@ -1,6 +1,5 @@
-import { useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Info, X } from "lucide-react";
+import { useMemo } from "react";
+import { motion } from "framer-motion";
 
 interface GlyphProps {
   level: number;
@@ -15,7 +14,6 @@ interface GlyphProps {
 }
 
 const GlyphVisualizer = ({ level, xp, xpToNext, energy, maxEnergy, streak, balance, missionsCompleted, dreamsLogged }: GlyphProps) => {
-  const [showInfo, setShowInfo] = useState(false);
   const healthPercent = energy / maxEnergy;
   const xpPercent = xp / xpToNext;
   const isLow = healthPercent < 0.3;
@@ -46,6 +44,21 @@ const GlyphVisualizer = ({ level, xp, xpToNext, energy, maxEnergy, streak, balan
 
   return (
     <div className="glass-card rounded-2xl p-5 border border-border/30 relative overflow-hidden">
+      {/* Always-visible explanation */}
+      <div className="mb-3">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
+            <span>◈</span> Мой Глиф
+          </h3>
+          <span className="text-[9px] font-mono text-muted-foreground">
+            {isLow ? "⚠ нужна подзарядка" : isStrong ? "✦ отличная форма" : "◇ в норме"}
+          </span>
+        </div>
+        <p className="text-[10px] text-muted-foreground/70 mt-1 leading-relaxed">
+          Глиф — это живая фигура, которая отражает твоё состояние. Кольцо = энергия, точки = серия дней, форма = уровень. Чем активнее ты — тем ярче и сложнее глиф.
+        </p>
+      </div>
+
       {/* XP ring */}
       {xpPercent < 1 && (
         <div className="absolute top-3 right-3 flex items-center gap-1.5">
@@ -62,45 +75,9 @@ const GlyphVisualizer = ({ level, xp, xpToNext, energy, maxEnergy, streak, balan
         </div>
       )}
 
-      <div className="flex items-center gap-2 mb-1">
-        <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
-          <span>◈</span> Мой Глиф
-        </h3>
-        <button onClick={() => setShowInfo(!showInfo)} className="text-muted-foreground/50 hover:text-primary transition-colors">
-          <Info className="w-3.5 h-3.5" />
-        </button>
-        <span className="text-[9px] font-mono text-muted-foreground ml-auto">
-          {isLow ? "⚠ нужна подзарядка" : isStrong ? "✦ отличная форма" : "◇ в норме"}
-        </span>
-      </div>
-
-      {/* Info tooltip */}
-      <AnimatePresence>
-        {showInfo && (
-          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
-            className="mb-3 p-3 rounded-xl bg-primary/5 border border-primary/10 relative">
-            <button onClick={() => setShowInfo(false)} className="absolute top-2 right-2 text-muted-foreground/30 hover:text-foreground">
-              <X className="w-3 h-3" />
-            </button>
-            <p className="text-xs text-foreground/80 leading-relaxed mb-2">
-              <strong>Глиф</strong> — это живая геометрическая фигура, которая отражает твоё текущее состояние.
-            </p>
-            <ul className="text-[11px] text-muted-foreground space-y-1">
-              <li>◈ Чем больше привычек выполняешь — тем сложнее и красивее фигура</li>
-              <li>🔵 Кольцо вокруг — уровень энергии. Чем полнее, тем лучше</li>
-              <li>✦ Точки по кругу — твоя серия дней подряд</li>
-              <li>⚠ Если забросить привычки — глиф тускнеет и упрощается</li>
-            </ul>
-            <p className="text-[10px] text-primary/60 mt-2 font-mono">
-              Цель: поддерживать глиф ярким и сложным через ежедневную активность
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Main Glyph SVG */}
       <div className="relative flex justify-center">
-        <motion.svg viewBox="0 0 300 300" className="w-52 h-52"
+        <motion.svg viewBox="0 0 300 300" className="w-48 h-48"
           animate={{ rotate: [0, 360] }} transition={{ duration: rotationSpeed * 3, repeat: Infinity, ease: "linear" }}>
           <defs>
             <radialGradient id="glyph-core-grad">
@@ -114,12 +91,10 @@ const GlyphVisualizer = ({ level, xp, xpToNext, energy, maxEnergy, streak, balan
             </filter>
           </defs>
 
-          {/* Core glow */}
           <motion.circle cx={150} cy={150} r={80} fill="url(#glyph-core-grad)"
             animate={{ r: [75, 82, 75], opacity: [0.4, 0.6 * pulseIntensity, 0.4] }}
             transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }} />
 
-          {/* Geometry layers */}
           {Array.from({ length: layers }, (_, i) => {
             const sides = 3 + i;
             const radius = 30 + i * 12;
@@ -141,7 +116,6 @@ const GlyphVisualizer = ({ level, xp, xpToNext, energy, maxEnergy, streak, balan
             );
           })}
 
-          {/* Energy ring */}
           <circle cx={150} cy={150} r={100} fill="none" stroke="hsl(222, 12%, 17%)" strokeWidth={2.5} />
           <motion.circle cx={150} cy={150} r={100} fill="none" stroke={glyphHSL}
             strokeWidth={2.5} strokeDasharray={`${healthPercent * 628} 628`}
@@ -151,7 +125,6 @@ const GlyphVisualizer = ({ level, xp, xpToNext, energy, maxEnergy, streak, balan
             transition={{ duration: 2, ease: "easeOut" }}
             style={{ transform: "rotate(-90deg)", transformOrigin: "150px 150px" }} />
 
-          {/* Streak dots */}
           {Array.from({ length: Math.min(streak, 7) }, (_, i) => {
             const angle = (2 * Math.PI * i) / 7 - Math.PI / 2;
             return (
@@ -162,7 +135,6 @@ const GlyphVisualizer = ({ level, xp, xpToNext, energy, maxEnergy, streak, balan
             );
           })}
 
-          {/* Center */}
           <motion.circle cx={150} cy={150} r={7 + level} fill={glyphHSL}
             fillOpacity={0.2 + healthPercent * 0.3}
             animate={{ r: [7 + level, 10 + level, 7 + level] }}
@@ -197,12 +169,6 @@ const GlyphVisualizer = ({ level, xp, xpToNext, energy, maxEnergy, streak, balan
           <p className="text-sm font-bold font-mono" style={{ color: glyphHSL }}>{balance}%</p>
         </div>
       </div>
-
-      <p className="text-[9px] text-muted-foreground/40 font-mono text-center mt-2">
-        {isLow ? "выполняй привычки, чтобы восстановить глиф"
-          : isStrong ? "глиф в отличной форме — так держать!"
-          : "записывай активности, чтобы усилить глиф"}
-      </p>
     </div>
   );
 };

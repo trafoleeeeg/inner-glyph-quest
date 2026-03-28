@@ -19,9 +19,8 @@ import Onboarding from "@/components/Onboarding";
 import GlyphVisualizer from "@/components/GlyphVisualizer";
 import LifeOverview from "@/components/LifeOverview";
 import AIInsights from "@/components/AIInsights";
-import AdaptiveTaskSelector from "@/components/AdaptiveTaskSelector";
 import { toast } from "sonner";
-import { Heart, HelpCircle } from "lucide-react";
+import { Heart, HelpCircle, Flame, Trophy } from "lucide-react";
 import BottomNav from "@/components/BottomNav";
 import { useTutorial } from "@/components/TutorialOverlay";
 
@@ -178,6 +177,10 @@ const Index = () => {
 
   const completedCount = missions.filter(m => m.completed).length;
 
+  // Motivation: daily greeting based on time
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? "Доброе утро" : hour < 18 ? "Добрый день" : "Добрый вечер";
+
   return (
     <div className="min-h-screen bg-background cyber-grid relative pb-20">
       <ParticleField />
@@ -187,17 +190,41 @@ const Index = () => {
       </AnimatePresence>
 
       <div className="relative z-10 max-w-2xl mx-auto px-4 py-6 space-y-4">
-        {/* Header */}
+        {/* Header with motivation */}
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-primary text-glow-primary font-display tracking-tight">INNER GLYPH</h1>
-            <p className="text-[10px] text-muted-foreground font-mono">твой путь к осознанности</p>
+            <h1 className="text-xl font-bold text-foreground tracking-tight">
+              {greeting}{profile ? `, ${profile.display_name.split(' ')[0]}` : ''} 👋
+            </h1>
+            <p className="text-[10px] text-muted-foreground font-mono">
+              {profile && profile.streak > 0
+                ? `🔥 ${profile.streak} ${profile.streak === 1 ? 'день' : profile.streak < 5 ? 'дня' : 'дней'} подряд — продолжай!`
+                : 'начни серию активных дней сегодня'}
+            </p>
           </div>
           <div className="flex items-center gap-1.5">
             <NavButton icon={<HelpCircle className="w-4 h-4" />} onClick={startTutorial} tooltip="Обучение" color="text-muted-foreground" />
             <NavButton icon={<Heart className="w-4 h-4" />} onClick={() => navigate("/desires")} tooltip="Желания" color="text-secondary" />
           </div>
         </motion.div>
+
+        {/* Quick motivation card when streak is active */}
+        {profile && profile.streak >= 3 && (
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+            className="glass-card rounded-xl p-3 border border-accent/15 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-lg">
+              {profile.streak >= 7 ? '🏆' : '🔥'}
+            </div>
+            <div className="flex-1">
+              <p className="text-xs font-semibold text-foreground">
+                {profile.streak >= 7 ? 'Невероятная серия!' : 'Отличная серия!'}
+              </p>
+              <p className="text-[10px] text-muted-foreground">
+                {profile.streak} дней подряд. Не ломай цепочку — отметь хотя бы одну привычку сегодня.
+              </p>
+            </div>
+          </motion.div>
+        )}
 
         {/* XP + Stats */}
         <div id="tutorial-xp">
@@ -219,13 +246,10 @@ const Index = () => {
           )}
         </div>
 
-        {/* Life Map + Balance */}
+        {/* Life Overview */}
         <div id="tutorial-fog">
           <LifeOverview />
         </div>
-
-        {/* Adaptive Task Selector */}
-        <AdaptiveTaskSelector />
 
         {/* AI Insights */}
         <AIInsights />
@@ -262,9 +286,6 @@ const Index = () => {
           className="text-center py-6 space-y-1">
           <p className="text-[10px] text-muted-foreground/40 font-mono">
             каждый день — шаг к лучшей версии себя
-          </p>
-          <p className="text-[9px] text-muted-foreground/20 font-mono">
-            INNER GLYPH QUEST
           </p>
         </motion.div>
       </div>
