@@ -166,8 +166,8 @@ const Index = () => {
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-primary text-glow-primary font-display tracking-tight">NEURO.LOG</h1>
-            <p className="text-[10px] text-muted-foreground font-mono">персональный интерпретатор • v1.0</p>
+          <h1 className="text-2xl font-bold text-primary text-glow-primary font-display tracking-tight">INNER GLYPH</h1>
+            <p className="text-[10px] text-muted-foreground font-mono">кибернетическое самоопределение • негэнтропия</p>
           </div>
           <div className="flex items-center gap-1.5">
             <NavButton icon={<Heart className="w-4 h-4" />} onClick={() => navigate("/desires")} tooltip="Вектора" color="text-secondary" />
