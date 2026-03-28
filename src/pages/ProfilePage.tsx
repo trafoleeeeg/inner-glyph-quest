@@ -253,7 +253,7 @@ const ProfilePage = () => {
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
                 className="glass-card rounded-2xl p-5 border border-energy/10">
                 <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4 text-energy" /> Телеметрия за неделю
+                  <TrendingUp className="w-4 h-4 text-energy" /> Статистика за неделю
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="text-center p-3 rounded-xl bg-energy/5 border border-energy/10">
