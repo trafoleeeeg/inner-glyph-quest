@@ -8,6 +8,11 @@ import ParticleField from "@/components/ParticleField";
 import AnalyticsCharts from "@/components/AnalyticsCharts";
 import { ArrowLeft, Trophy, Target, Moon, Brain, Flame, TrendingUp, Calendar, Coins, Settings } from "lucide-react";
 
+const LEVEL_TITLES: Record<number, string> = {
+  1: "Спящий агент", 2: "Пробуждённый", 3: "Дешифратор", 4: "Компрессор",
+  5: "Мета-Дипломат", 6: "Архитектор", 7: "Провидец", 8: "Нейромант", 9: "Трансцендент", 10: "Демиург",
+};
+
 const ProfilePage = () => {
   const { user } = useAuth();
   const { profile, updateProfile } = useProfile();
@@ -21,7 +26,6 @@ const ProfilePage = () => {
   useEffect(() => {
     if (!user) return;
     const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
-    
     Promise.all([
       supabase.from("mood_entries").select("mood, energy_level").eq("user_id", user.id).gte("created_at", weekAgo),
       supabase.from("mission_completions").select("*", { count: 'exact', head: true }).eq("user_id", user.id).gte("completed_at", weekAgo),
@@ -47,18 +51,13 @@ const ProfilePage = () => {
   };
 
   if (!profile) return null;
-
   const moodEmoji = ['', '😫', '😕', '😐', '😊', '🔥'];
-  const LEVEL_TITLES: Record<number, string> = {
-    1: "Новичок", 2: "Пробуждённый", 3: "Исследователь", 4: "Адепт",
-    5: "Мастер", 6: "Мудрец", 7: "Архитектор", 8: "Провидец", 9: "Нейромант", 10: "Трансцендент",
-  };
 
   const statCards = [
-    { icon: Target, label: "Всего миссий", value: profile.total_missions_completed, color: "text-primary" },
-    { icon: Moon, label: "Снов записано", value: profile.total_dreams_logged, color: "text-dream" },
-    { icon: Flame, label: "Текущий стрик", value: `${profile.streak}д`, color: "text-streak" },
-    { icon: Trophy, label: "Лучший стрик", value: `${profile.longest_streak}д`, color: "text-energy" },
+    { icon: Target, label: "Протоколов", value: profile.total_missions_completed, color: "text-primary" },
+    { icon: Moon, label: "Синхронизаций", value: profile.total_dreams_logged, color: "text-dream" },
+    { icon: Flame, label: "Поток", value: `${profile.streak}д`, color: "text-streak" },
+    { icon: Trophy, label: "Макс. поток", value: `${profile.longest_streak}д`, color: "text-energy" },
     { icon: Calendar, label: "За неделю", value: weeklyCompletions, color: "text-accent" },
     { icon: Coins, label: "Коины", value: profile.coins, color: "text-energy" },
   ];
@@ -72,7 +71,7 @@ const ProfilePage = () => {
             className="w-9 h-9 rounded-xl bg-muted/50 border border-border/50 flex items-center justify-center text-muted-foreground hover:text-foreground transition-all">
             <ArrowLeft className="w-4 h-4" />
           </motion.button>
-          <h1 className="text-lg font-bold text-foreground">Личный кабинет</h1>
+          <h1 className="text-lg font-bold text-foreground">Матрица агента</h1>
         </motion.div>
 
         {/* Profile Card */}
@@ -101,12 +100,12 @@ const ProfilePage = () => {
           )}
           <p className="text-xs font-mono text-primary">{LEVEL_TITLES[profile.level] || LEVEL_TITLES[10]}</p>
           <p className="text-[10px] font-mono text-muted-foreground mt-1">
-            Уровень {profile.level} • {profile.xp}/{profile.xp_to_next} XP
+            Калибровка {profile.level} • {profile.xp}/{profile.xp_to_next} негэнтропии
           </p>
 
           <div className="mt-4">
             <div className="flex items-center justify-between text-[10px] font-mono mb-1">
-              <span className="text-energy">⚡ Энергия</span>
+              <span className="text-energy">⚡ Ресурс Интерпретатора</span>
               <span className="text-muted-foreground">{profile.energy}/{profile.max_energy}</span>
             </div>
             <div className="h-2 bg-muted/50 rounded-full overflow-hidden">
@@ -123,29 +122,28 @@ const ProfilePage = () => {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
             className="glass-card rounded-2xl p-5 border border-energy/10">
             <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-energy" /> Аналитика за неделю
+              <TrendingUp className="w-4 h-4 text-energy" /> Телеметрия за неделю
             </h3>
             <div className="grid grid-cols-2 gap-3">
               <div className="text-center p-3 rounded-xl bg-energy/5 border border-energy/10">
                 <span className="text-2xl">{moodEmoji[Math.round(moodStats.avgMood)] || '😐'}</span>
                 <p className="text-lg font-bold font-mono text-energy mt-1">{moodStats.avgMood}</p>
-                <p className="text-[9px] text-muted-foreground font-mono uppercase">Ср. настроение</p>
+                <p className="text-[9px] text-muted-foreground font-mono uppercase">Ср. сигнал</p>
               </div>
               <div className="text-center p-3 rounded-xl bg-primary/5 border border-primary/10">
                 <span className="text-2xl">⚡</span>
                 <p className="text-lg font-bold font-mono text-primary mt-1">{moodStats.avgEnergy}</p>
-                <p className="text-[9px] text-muted-foreground font-mono uppercase">Ср. энергия</p>
+                <p className="text-[9px] text-muted-foreground font-mono uppercase">Ср. ресурс</p>
               </div>
             </div>
           </motion.div>
         )}
 
-        {/* Charts */}
         <AnalyticsCharts />
 
         {/* Stats Grid */}
         <div>
-          <h3 className="text-sm font-semibold mb-3 flex items-center gap-2"><span>📊</span> Статистика</h3>
+          <h3 className="text-sm font-semibold mb-3 flex items-center gap-2"><span>📊</span> Метрики сжатия</h3>
           <div className="grid grid-cols-3 gap-2">
             {statCards.map((stat, i) => (
               <motion.div key={stat.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.05 }}
@@ -162,7 +160,7 @@ const ProfilePage = () => {
         {recentRewards.length > 0 && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
             className="glass-card rounded-2xl p-5 border border-secondary/10">
-            <h3 className="text-sm font-semibold mb-3 flex items-center gap-2"><span>🎁</span> Последние награды</h3>
+            <h3 className="text-sm font-semibold mb-3 flex items-center gap-2"><span>🎁</span> Аномалии данных</h3>
             <div className="space-y-2">
               {recentRewards.map(r => (
                 <div key={r.id} className="flex items-center gap-3 p-2 rounded-lg bg-muted/20">
@@ -171,22 +169,22 @@ const ProfilePage = () => {
                     <p className="text-xs text-foreground">{r.description}</p>
                     <p className="text-[10px] text-muted-foreground font-mono">{new Date(r.created_at).toLocaleDateString('ru-RU')}</p>
                   </div>
-                  <span className="text-xs font-mono text-accent">+{r.xp_amount} XP</span>
+                  <span className="text-xs font-mono text-accent">+{r.xp_amount}</span>
                 </div>
               ))}
             </div>
           </motion.div>
         )}
 
-        {/* Motivation info */}
+        {/* Philosophy */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
           className="glass-card rounded-2xl p-5 border border-primary/5">
-          <h3 className="text-sm font-semibold mb-2 flex items-center gap-2"><span>🧬</span> Система мотивации</h3>
+          <h3 className="text-sm font-semibold mb-2 flex items-center gap-2"><span>🧬</span> Архитектура системы</h3>
           <div className="space-y-2 text-xs text-muted-foreground">
-            <p>• <span className="text-primary">Переменные награды</span> — 15% шанс крита (x2 XP), 10% Mystery Box</p>
-            <p>• <span className="text-streak">Стрик бонусы</span> — множитель растёт с каждым днём</p>
-            <p>• <span className="text-energy">Энергия</span> — восстанавливается при выполнении миссий</p>
-            <p>• <span className="text-accent">Нейрокоины</span> — зарабатываются за каждое действие</p>
+            <p>• <span className="text-primary">Девальвация</span> — повторение одних протоколов снижает негэнтропию. Ищи новые зоны.</p>
+            <p>• <span className="text-streak">Непрерывный поток</span> — множитель растёт с каждым днём без пропусков</p>
+            <p>• <span className="text-energy">Резонанс</span> — 15% шанс x2 при выполнении протокола</p>
+            <p>• <span className="text-accent">Инсайты</span> — паттерны из твоих данных. Главная награда — ясность.</p>
           </div>
         </motion.div>
       </div>
