@@ -109,55 +109,25 @@ const Index = () => {
     const mission = missions.find(m => m.id === id);
     if (!mission || mission.completed) return;
 
-    const devaluation = getDevaluation(id);
-    const effectiveBaseXP = Math.max(Math.floor(mission.xp_reward * (1 - devaluation)), Math.floor(mission.xp_reward * 0.3));
+    const { data, error } = await supabase.rpc('complete_mission', { p_mission_id: id });
+    if (error) { toast.error("Ошибка выполнения"); return; }
 
-    const isCriticalHit = Math.random() < 0.15;
-    const streakMultiplier = Math.min(1 + (profile.streak * 0.1), 2.0);
-    const hasMysteryBox = Math.random() < 0.1;
+    const result = data as any;
+    const rewardResult = {
+      baseXP: result.baseXP, bonusXP: result.bonusXP, totalXP: result.totalXP,
+      isCriticalHit: result.isCriticalHit,
+      mysteryBox: result.hasMysteryBox ? { type: 'xp_boost' as const, amount: result.mysteryAmount, description: 'Аномалия данных!', icon: '⚡' } : null,
+      streakMultiplier: result.streakMultiplier, coinsEarned: result.coinsEarned,
+      leveledUp: result.leveledUp, newLevel: result.newLevel || undefined,
+    };
 
-    let bonusXP = 0;
-    if (isCriticalHit) bonusXP += effectiveBaseXP;
-    bonusXP += Math.floor(effectiveBaseXP * (streakMultiplier - 1));
-
-    const mysteryBoxReward = hasMysteryBox ? {
-      type: 'xp_boost' as const, amount: Math.floor(Math.random() * 30 + 20),
-      description: 'Аномалия данных!', icon: '⚡',
-    } : null;
-    if (mysteryBoxReward) bonusXP += mysteryBoxReward.amount;
-
-    const totalXP = effectiveBaseXP + bonusXP;
-    const coinsEarned = Math.floor(totalXP / 10);
-    const newXP = profile.xp + totalXP;
-    const leveledUp = newXP >= profile.xp_to_next;
-    const newLevel = leveledUp ? profile.level + 1 : profile.level;
-    const remainingXP = leveledUp ? newXP - profile.xp_to_next : newXP;
-    const newXPToNext = leveledUp ? Math.floor(100 * Math.pow(1.25, newLevel - 1)) : profile.xp_to_next;
-
-    await supabase.from("mission_completions").insert({ user_id: user.id, mission_id: id, xp_earned: effectiveBaseXP, bonus_xp: bonusXP });
-    await supabase.from("profiles").update({
-      xp: remainingXP, xp_to_next: newXPToNext, level: newLevel,
-      total_missions_completed: profile.total_missions_completed + 1,
-      energy: Math.min(profile.energy + 5, profile.max_energy),
-      coins: profile.coins + coinsEarned,
-    }).eq("user_id", user.id);
-
-    if (isCriticalHit || mysteryBoxReward) {
-      await supabase.from("rewards_log").insert({
-        user_id: user.id, reward_type: isCriticalHit ? 'critical_hit' : 'mystery_box',
-        xp_amount: bonusXP, coins_amount: coinsEarned,
-        description: isCriticalHit ? 'Резонанс! x2 сжатие' : mysteryBoxReward?.description,
-      });
-    }
-
-    const rewardResult = { baseXP: effectiveBaseXP, bonusXP, totalXP, isCriticalHit, mysteryBox: mysteryBoxReward, streakMultiplier, coinsEarned, leveledUp, newLevel: leveledUp ? newLevel : undefined };
-    if (isCriticalHit || mysteryBoxReward || leveledUp) setReward(rewardResult);
-    else toast.success(`+${totalXP} негэнтропии`, { description: mission.title, duration: 2000 });
+    if (result.isCriticalHit || result.hasMysteryBox || result.leveledUp) setReward(rewardResult);
+    else toast.success(`+${result.totalXP} негэнтропии`, { description: mission.title, duration: 2000 });
 
     setMissions(prev => prev.map(m => m.id === id ? { ...m, completed: true } : m));
     setMissionCompletionCounts(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
     await refetchProfile();
-  }, [user, profile, missions, missionCompletionCounts, refetchProfile]);
+  }, [user, profile, missions, refetchProfile]);
 
   const handleMoodSubmit = useCallback(async (mood: number, energy: number, note: string) => {
     if (!user || !profile) return;
