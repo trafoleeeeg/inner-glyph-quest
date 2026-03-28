@@ -164,6 +164,42 @@ export type Database = {
         }
         Relationships: []
       }
+      inner_drives: {
+        Row: {
+          color: string
+          created_at: string
+          description: string | null
+          icon: string
+          id: string
+          name: string
+          strength: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          color?: string
+          created_at?: string
+          description?: string | null
+          icon?: string
+          id?: string
+          name: string
+          strength?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          color?: string
+          created_at?: string
+          description?: string | null
+          icon?: string
+          id?: string
+          name?: string
+          strength?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       mission_completions: {
         Row: {
           bonus_xp: number
@@ -606,6 +642,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      apply_energy_decay: { Args: never; Returns: undefined }
       award_activity_xp: {
         Args: { p_activity?: string; p_amount: number }
         Returns: undefined

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Home, Compass, Map, Search, User, Shield } from "lucide-react";
+import { Home, Compass, Hexagon, Search, User, Shield } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 const NAV_ITEMS = [
   { path: "/", icon: Home, label: "Хаб" },
   { path: "/feed", icon: Compass, label: "Лента" },
-  { path: "/map", icon: Map, label: "Карта" },
+  { path: "/glyph", icon: Hexagon, label: "Глиф" },
   { path: "/search", icon: Search, label: "Поиск" },
   { path: "/profile", icon: User, label: "Я" },
 ];
