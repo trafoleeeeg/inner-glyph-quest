@@ -296,7 +296,7 @@ const TasksPage = () => {
                     </button>
                   ))}
                 </div>
-              )
+              )}
               
               {/* Priority */}
               <div className="flex items-center gap-1">
