@@ -364,28 +364,6 @@ const TasksPage = () => {
           )}
         </AnimatePresence>
 
-        {/* Completed today */}
-        {todayCompleted.length > 0 && (
-          <div>
-            <button onClick={() => setCollapsedCompleted(!collapsedCompleted)}
-              className="flex items-center gap-2 text-xs text-muted-foreground/50 font-mono mb-2 hover:text-muted-foreground transition-colors">
-              {collapsedCompleted ? <ChevronRight className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-              Выполнено сегодня ({todayCompleted.length})
-            </button>
-            <AnimatePresence>
-              {!collapsedCompleted && todayCompleted.map(task => (
-                <motion.div key={task.id} initial={{ opacity: 0, height: 0 }} animate={{ opacity: 0.5, height: "auto" }} exit={{ opacity: 0, height: 0 }}
-                  className="flex items-center gap-3 p-3 rounded-xl bg-muted/10 mb-1">
-                  <button onClick={() => toggleComplete(task)}
-                    className="w-5 h-5 rounded-md bg-accent/20 border border-accent/30 flex items-center justify-center shrink-0">
-                    <Check className="w-3 h-3 text-accent" />
-                  </button>
-                  <span className="text-xs text-muted-foreground line-through flex-1">{task.title}</span>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-        )}
       </div>
       <BottomNav />
     </div>
