@@ -257,7 +257,9 @@ const ProfilePage = () => {
           ))}
         </div>
 
-        {tab === "posts" ? (
+        {tab === "achievements" ? (
+          <AchievementsList achievements={achievements} />
+        ) : tab === "posts" ? (
           <div className="space-y-3">
             <CreatePost onPostCreated={fetchPosts} />
             {posts.length === 0 ? (
