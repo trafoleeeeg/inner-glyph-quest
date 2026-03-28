@@ -17,6 +17,7 @@ const GlyphVisualizer = ({ level, xp, xpToNext, energy, maxEnergy, streak, balan
   const healthPercent = energy / maxEnergy;
   const xpPercent = xp / xpToNext;
   const isLow = healthPercent < 0.3;
+  const isDead = streak === 0 && healthPercent < 0.5;
   const isStrong = healthPercent > 0.7 && streak > 2;
 
   const layers = useMemo(() => Math.min(level + 2, 8), [level]);
