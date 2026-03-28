@@ -26,6 +26,7 @@ const ProfilePage = () => {
   const { user, signOut } = useAuth();
   const { profile, updateProfile } = useProfile();
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
   const [moodStats, setMoodStats] = useState({ avgMood: 0, avgEnergy: 0, count: 0 });
   const [recentRewards, setRecentRewards] = useState<any[]>([]);
   const [weeklyCompletions, setWeeklyCompletions] = useState(0);
