@@ -39,7 +39,8 @@ const ProfilePage = () => {
   const [followersCount, setFollowersCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
   const [activeComments, setActiveComments] = useState<string | null>(null);
-  const [tab, setTab] = useState<"posts" | "stats">("posts");
+  const [tab, setTab] = useState<"posts" | "stats" | "achievements">("posts");
+  const [achievements, setAchievements] = useState<any[]>([]);
   const [isAdmin, setIsAdmin] = useState(false);
 
   const fetchPosts = useCallback(async () => {

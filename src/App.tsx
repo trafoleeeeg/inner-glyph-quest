@@ -59,6 +59,7 @@ const App = () => (
                 {/* /glyph route removed */}
                 <Route path="/tribes" element={<ProtectedRoute><TribesPage /></ProtectedRoute>} />
                 <Route path="/tasks" element={<ProtectedRoute><TasksPage /></ProtectedRoute>} />
+                <Route path="/life-analysis" element={<ProtectedRoute><LifeAnalysisPage /></ProtectedRoute>} />
                 <Route path="/search" element={<ProtectedRoute><SearchPage /></ProtectedRoute>} />
                 <Route path="/user/:userId" element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
                 <Route path="*" element={<NotFound />} />
