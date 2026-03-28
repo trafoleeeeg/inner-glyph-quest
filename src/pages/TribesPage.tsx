@@ -314,6 +314,9 @@ const TribesPage = () => {
           </div>
         )}
 
+        {/* Community Pulse */}
+        <CommunityPulse />
+
         {/* Heuristics Market */}
         <HeuristicsMarket />
       </div>
