@@ -20,7 +20,7 @@ const CommunityChat = () => {
   const navigate = useNavigate();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const [displayName, setDisplayName] = useState("Нейронавт");
+  const [displayName, setDisplayName] = useState("Участник");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
