@@ -79,6 +79,21 @@ const FeedPage = () => {
 
   useEffect(() => { fetchPosts(); }, [fetchPosts]);
 
+  // Search users
+  useEffect(() => {
+    if (!searchQuery.trim()) { setSearchResults([]); return; }
+    setSearching(true);
+    const timer = setTimeout(async () => {
+      const { data } = await (supabase as any)
+        .from("public_profiles")
+        .select("user_id, display_name, level, avatar_url")
+        .ilike("display_name", `%${searchQuery.trim()}%`).limit(8);
+      setSearchResults(data || []);
+      setSearching(false);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
   useEffect(() => {
     const channel = supabase.channel("feed-posts").on(
       "postgres_changes", { event: "INSERT", schema: "public", table: "posts" }, () => fetchPosts()
