@@ -49,6 +49,7 @@ const Index = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [missionCompletionCounts, setMissionCompletionCounts] = useState<Record<string, number>>({});
   const [lifeBalance, setLifeBalance] = useState(50);
+  const [companionFed, setCompanionFed] = useState(false);
 
   // Daily checkin state
   const [showDailyCheckin, setShowDailyCheckin] = useState(false);
@@ -184,6 +185,9 @@ const Index = () => {
     else toast.success(`+${result.totalXP} опыта`, { description: mission.title, duration: 2000 });
     setMissions(prev => prev.map(m => m.id === id ? { ...m, completed: true } : m));
     setMissionCompletionCounts(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
+    // Feed companion
+    setCompanionFed(true);
+    setTimeout(() => setCompanionFed(false), 3000);
     await refetchProfile();
   }, [user, profile, missions, refetchProfile]);
 
@@ -314,6 +318,7 @@ const Index = () => {
               energy={profile.energy} maxEnergy={profile.max_energy}
               streak={profile.streak}
               totalMissions={profile.total_missions_completed}
+              justFed={companionFed}
             />
           )}
         </div>
