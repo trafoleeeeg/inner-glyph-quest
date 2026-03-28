@@ -259,7 +259,7 @@ const ProfilePage = () => {
                   <div className="text-center p-3 rounded-xl bg-energy/5 border border-energy/10">
                     <span className="text-2xl">{moodEmoji[Math.round(moodStats.avgMood)] || '😐'}</span>
                     <p className="text-lg font-bold font-mono text-energy mt-1">{moodStats.avgMood}</p>
-                    <p className="text-[9px] text-muted-foreground font-mono uppercase">Ср. сигнал</p>
+                    <p className="text-[9px] text-muted-foreground font-mono uppercase">Ср. настрой</p>
                   </div>
                   <div className="text-center p-3 rounded-xl bg-primary/5 border border-primary/10">
                     <span className="text-2xl">⚡</span>
