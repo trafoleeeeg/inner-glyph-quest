@@ -176,7 +176,7 @@ const UserProfilePage = () => {
           {/* Game stats */}
           <div className="grid grid-cols-4 gap-2 mt-5">
             {[
-              { icon: Target, label: "Протоколов", value: profile.total_missions_completed, color: "text-primary" },
+              { icon: Target, label: "Привычек", value: profile.total_missions_completed, color: "text-primary" },
               { icon: Flame, label: "Поток", value: `${profile.streak}д`, color: "text-streak" },
               { icon: Moon, label: "Снов", value: profile.total_dreams_logged, color: "text-dream" },
               { icon: Calendar, label: "Уровень", value: profile.level, color: "text-energy" },
