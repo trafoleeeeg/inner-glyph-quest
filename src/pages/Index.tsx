@@ -318,6 +318,7 @@ const Index = () => {
               energy={profile.energy} maxEnergy={profile.max_energy}
               streak={profile.streak}
               totalMissions={profile.total_missions_completed}
+              justFed={companionFed}
             />
           )}
         </div>
