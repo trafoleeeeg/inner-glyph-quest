@@ -22,10 +22,11 @@ const GlyphVisualizer = ({ level, xp, xpToNext, energy, maxEnergy, streak, balan
 
   const layers = useMemo(() => Math.min(level + 2, 8), [level]);
   const glyphColor = useMemo(() => {
+    if (isDead) return { h: 0, s: 10, l: 35 };
     if (isLow) return { h: 0, s: 50, l: 50 };
     if (isStrong) return { h: 200, s: 60, l: 50 };
     return { h: 200 + balance * 0.4, s: 40 + healthPercent * 30, l: 42 + healthPercent * 10 };
-  }, [isLow, isStrong, balance, healthPercent]);
+  }, [isDead, isLow, isStrong, balance, healthPercent]);
 
   const pulseIntensity = isLow ? 0.3 : 0.5 + streak * 0.04;
   const rotationSpeed = isLow ? 20 : 14 - Math.min(level, 8);

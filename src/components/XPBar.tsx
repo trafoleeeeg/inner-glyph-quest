@@ -20,9 +20,22 @@ const LEVEL_TITLES: Record<number, string> = {
   10: "Легенда",
 };
 
+const LEVEL_UNLOCKS: Record<number, string> = {
+  2: "Редактирование привычек",
+  3: "Дневник снов",
+  4: "AI-инсайты",
+  5: "Новый элемент глифа",
+  6: "Племена",
+  7: "Еженедельные отчёты",
+  8: "Бонусные награды",
+  9: "Расширенная аналитика",
+  10: "Статус Легенды",
+};
+
 const XPBar = ({ current, max, level, displayName }: XPBarProps) => {
   const percentage = Math.min((current / max) * 100, 100);
   const title = LEVEL_TITLES[level] || LEVEL_TITLES[10];
+  const nextUnlock = LEVEL_UNLOCKS[level + 1];
 
   return (
     <motion.div
@@ -76,6 +89,20 @@ const XPBar = ({ current, max, level, displayName }: XPBarProps) => {
           }} />
         </motion.div>
       </div>
+
+      {/* Next level unlock hint */}
+      {nextUnlock && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+          className="mt-2 flex items-center gap-1.5"
+        >
+          <span className="text-[9px] text-muted-foreground/60 font-mono">
+            🔓 Уровень {level + 1}: {nextUnlock}
+          </span>
+        </motion.div>
+      )}
     </motion.div>
   );
 };

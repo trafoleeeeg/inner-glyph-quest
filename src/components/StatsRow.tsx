@@ -45,6 +45,7 @@ const StatsRow = ({ energy, maxEnergy, streak, longestStreak, totalMissions, dre
           <stat.icon className={`w-4 h-4 ${stat.color} mx-auto mb-1`} />
           <p className={`text-lg font-bold font-mono ${stat.color} leading-none`}>{stat.value}</p>
           <p className="text-[9px] text-muted-foreground font-mono uppercase tracking-wider mt-1">{stat.label}</p>
+          {stat.sub && <p className="text-[7px] text-muted-foreground/60 font-mono mt-0.5 truncate">{stat.sub}</p>}
         </motion.div>
       ))}
     </motion.div>
