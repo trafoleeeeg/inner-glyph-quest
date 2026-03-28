@@ -46,7 +46,7 @@ const RewardPopup = ({ reward, onClose }: RewardPopupProps) => {
           {!reward.leveledUp && (
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
               <p className="text-3xl font-bold text-accent text-glow-accent mb-1">+{reward.totalXP}</p>
-              <p className="text-[10px] font-mono text-muted-foreground">негэнтропия</p>
+              <p className="text-[10px] font-mono text-muted-foreground">опыт</p>
             </motion.div>
           )}
 

@@ -21,7 +21,7 @@ const AchievementsList = ({ achievements }: AchievementsListProps) => {
   return (
     <div className="glass-card rounded-2xl p-5 border border-border/30">
       <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
-        <span>🔬</span> Калибровки Интерпретатора
+        <span>🏆</span> Достижения
         <span className="text-xs font-mono text-muted-foreground ml-auto">
           {achievements.filter(a => a.unlocked).length}/{achievements.length}
         </span>
