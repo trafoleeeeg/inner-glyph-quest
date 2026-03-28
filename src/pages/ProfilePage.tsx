@@ -229,7 +229,7 @@ const ProfilePage = () => {
 
         {/* Tabs */}
         <div className="flex items-center gap-2 justify-center">
-          {(["posts", "stats"] as const).map(t => (
+          {(["posts", "stats", "achievements"] as const).map(t => (
             <motion.button
               key={t}
               whileTap={{ scale: 0.95 }}
@@ -238,7 +238,7 @@ const ProfilePage = () => {
                 tab === t ? "bg-primary/20 text-primary border border-primary/30" : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              {t === "posts" ? "Посты" : "Аналитика"}
+              {t === "posts" ? "Посты" : t === "stats" ? "Аналитика" : "Достижения"}
             </motion.button>
           ))}
         </div>
