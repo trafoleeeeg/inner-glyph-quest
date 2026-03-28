@@ -185,6 +185,9 @@ const Index = () => {
     else toast.success(`+${result.totalXP} опыта`, { description: mission.title, duration: 2000 });
     setMissions(prev => prev.map(m => m.id === id ? { ...m, completed: true } : m));
     setMissionCompletionCounts(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
+    // Feed companion
+    setCompanionFed(true);
+    setTimeout(() => setCompanionFed(false), 3000);
     await refetchProfile();
   }, [user, profile, missions, refetchProfile]);
 
