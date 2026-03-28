@@ -14,6 +14,7 @@ import FeedPage from "./pages/FeedPage";
 import SearchPage from "./pages/SearchPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import MapPage from "./pages/MapPage";
+import GlyphPage from "./pages/GlyphPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
