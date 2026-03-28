@@ -25,6 +25,13 @@ interface PostWithAuthor {
   author?: { display_name: string; level: number; avatar_url?: string | null };
 }
 
+interface PublicProfile {
+  user_id: string;
+  display_name: string;
+  level: number;
+  avatar_url: string | null;
+}
+
 const FeedPage = () => {
   const { user } = useAuth();
   const [posts, setPosts] = useState<PostWithAuthor[]>([]);
@@ -50,10 +57,11 @@ const FeedPage = () => {
     if (!postsData) { setLoading(false); return; }
 
     const userIds = [...new Set(postsData.map(p => p.user_id))];
-    const { data: profiles } = await supabase
+    const { data: profilesData } = await supabase
       .from(PUBLIC_PROFILES_TABLE)
       .select("user_id, display_name, level, avatar_url")
       .in("user_id", userIds);
+    const profiles = (profilesData || []) as PublicProfile[];
     const profileMap = new Map(profiles?.map(p => [p.user_id, p]) || []);
 
     setPosts(postsData.map(p => ({ ...p, author: profileMap.get(p.user_id) as any })));
