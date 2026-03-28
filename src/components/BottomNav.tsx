@@ -1,12 +1,13 @@
 import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Home, Compass, Search, User } from "lucide-react";
+import { Home, Compass, Map, Search, User } from "lucide-react";
 
 const NAV_ITEMS = [
   { path: "/", icon: Home, label: "Хаб" },
   { path: "/feed", icon: Compass, label: "Лента" },
+  { path: "/map", icon: Map, label: "Карта" },
   { path: "/search", icon: Search, label: "Поиск" },
-  { path: "/profile", icon: User, label: "Профиль" },
+  { path: "/profile", icon: User, label: "Я" },
 ];
 
 const BottomNav = () => {
