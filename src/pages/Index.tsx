@@ -49,7 +49,7 @@ const Index = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [missionCompletionCounts, setMissionCompletionCounts] = useState<Record<string, number>>({});
   const [lifeBalance, setLifeBalance] = useState(50);
-  const [companionFed, setCompanionFed] = useState(false);
+  const [showWhyBlock, setShowWhyBlock] = useState(() => !localStorage.getItem("neuro_why_understood"));
 
   // Daily checkin state
   const [showDailyCheckin, setShowDailyCheckin] = useState(false);
