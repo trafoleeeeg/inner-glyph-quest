@@ -11,7 +11,7 @@ import PostCard from "@/components/PostCard";
 import CreatePost from "@/components/CreatePost";
 import CommentsSheet from "@/components/CommentsSheet";
 import { ArrowLeft, Trophy, Target, Moon, Flame, TrendingUp, Calendar, Coins, Settings, LogOut, Edit3 } from "lucide-react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
 
 const LEVEL_TITLES: Record<number, string> = {
