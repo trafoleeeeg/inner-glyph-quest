@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Home, Compass, Map, Search, User, Shield } from "lucide-react";
+import { Home, Compass, Hexagon, Search, User, Shield } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
