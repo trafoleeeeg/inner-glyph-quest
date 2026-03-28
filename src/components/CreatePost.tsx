@@ -144,7 +144,7 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
       setContent("");
       clearMedia();
       setFocused(false);
-      toast.success("Сигнал отправлен в сеть");
+      toast.success("Пост опубликован");
       onPostCreated();
     }
     setSubmitting(false);
