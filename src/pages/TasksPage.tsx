@@ -173,17 +173,42 @@ const TasksPage = () => {
 
   const activeCat = CATEGORIES.find(c => c.id === activeCategory)!;
 
+  const todayTasksTotal = tasks.filter(t => !t.parent_task_id && (t.category === "today" || t.scheduled_date === today)).length;
+  const todayTasksDone = todayCompleted.length;
+  const progressPercent = todayTasksTotal > 0 ? Math.round((todayTasksDone / todayTasksTotal) * 100) : 0;
+
   return (
     <div className="min-h-screen bg-background cyber-grid relative pb-20">
       <ParticleField />
       <div className="relative z-10 max-w-2xl mx-auto px-4 py-6 space-y-4">
-        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-          <h1 className="text-lg font-bold text-foreground flex items-center gap-2">
-            <span className="text-primary">☐</span> Задачи
-          </h1>
-          <p className="text-[10px] text-muted-foreground font-mono">
-            +10 XP за каждую выполненную задачу
-          </p>
+        {/* Header with daily progress */}
+        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
+          className="glass-card rounded-2xl p-4 border border-primary/10">
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <h1 className="text-lg font-bold text-foreground flex items-center gap-2">
+                <span className="text-primary">☐</span> Задачи
+              </h1>
+              <p className="text-[10px] text-muted-foreground font-mono">
+                +10 XP за каждую выполненную задачу
+              </p>
+            </div>
+            <div className="text-right">
+              <p className="text-xl font-bold font-mono text-primary">{todayTasksDone}/{todayTasksTotal}</p>
+              <p className="text-[9px] text-muted-foreground font-mono">сегодня</p>
+            </div>
+          </div>
+          {/* Progress bar */}
+          <div className="h-2 bg-muted/30 rounded-full overflow-hidden">
+            <motion.div className="h-full rounded-full bg-gradient-to-r from-primary/60 to-accent/60"
+              initial={{ width: 0 }} animate={{ width: `${progressPercent}%` }} transition={{ duration: 0.8 }} />
+          </div>
+          {todayTasksDone > 0 && todayTasksDone === todayTasksTotal && todayTasksTotal > 0 && (
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+              className="text-[10px] text-accent font-mono mt-1.5 text-center">
+              ✨ Все задачи на сегодня выполнены!
+            </motion.p>
+          )}
         </motion.div>
 
         {/* Category tabs */}
