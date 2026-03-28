@@ -17,6 +17,9 @@ import CreateMission from "@/components/CreateMission";
 import InsightsPanel from "@/components/InsightsPanel";
 import Onboarding from "@/components/Onboarding";
 import GlyphVisualizer from "@/components/GlyphVisualizer";
+import LifeBalanceChart from "@/components/LifeBalanceChart";
+import FogOfWarMap from "@/components/FogOfWarMap";
+import AIInsights from "@/components/AIInsights";
 import { toast } from "sonner";
 import { Heart, HelpCircle } from "lucide-react";
 import BottomNav from "@/components/BottomNav";
@@ -207,6 +210,15 @@ const Index = () => {
             />
           )}
         </div>
+
+        {/* Fog of War + Balance */}
+        <div id="tutorial-fog">
+          <FogOfWarMap />
+        </div>
+        <LifeBalanceChart />
+
+        {/* AI Insights */}
+        <AIInsights />
 
         {/* Insights */}
         <InsightsPanel />

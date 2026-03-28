@@ -47,6 +47,33 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_insights: {
+        Row: {
+          content: string
+          created_at: string
+          data_summary: Json | null
+          id: string
+          insight_type: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          data_summary?: Json | null
+          id?: string
+          insight_type?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          data_summary?: Json | null
+          id?: string
+          insight_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       chat_messages: {
         Row: {
           created_at: string
@@ -161,6 +188,77 @@ export type Database = {
           follower_id?: string
           following_id?: string
           id?: string
+        }
+        Relationships: []
+      }
+      heuristic_upvotes: {
+        Row: {
+          created_at: string
+          heuristic_id: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          heuristic_id: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          heuristic_id?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "heuristic_upvotes_heuristic_id_fkey"
+            columns: ["heuristic_id"]
+            isOneToOne: false
+            referencedRelation: "heuristics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      heuristics: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          downloads: number
+          id: string
+          is_public: boolean
+          tags: string[] | null
+          title: string
+          updated_at: string
+          upvotes: number
+          user_id: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          downloads?: number
+          id?: string
+          is_public?: boolean
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+          upvotes?: number
+          user_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          downloads?: number
+          id?: string
+          is_public?: boolean
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          upvotes?: number
+          user_id?: string
         }
         Relationships: []
       }
@@ -575,6 +673,83 @@ export type Database = {
           reward_type?: string
           user_id?: string
           xp_amount?: number
+        }
+        Relationships: []
+      }
+      tribe_members: {
+        Row: {
+          id: string
+          joined_at: string
+          role: string
+          tribe_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          joined_at?: string
+          role?: string
+          tribe_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          joined_at?: string
+          role?: string
+          tribe_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tribe_members_tribe_id_fkey"
+            columns: ["tribe_id"]
+            isOneToOne: false
+            referencedRelation: "tribes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tribes: {
+        Row: {
+          collective_xp: number
+          color: string
+          created_at: string
+          creator_id: string
+          description: string | null
+          goal: string | null
+          icon: string
+          id: string
+          is_public: boolean
+          members_count: number
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          collective_xp?: number
+          color?: string
+          created_at?: string
+          creator_id: string
+          description?: string | null
+          goal?: string | null
+          icon?: string
+          id?: string
+          is_public?: boolean
+          members_count?: number
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          collective_xp?: number
+          color?: string
+          created_at?: string
+          creator_id?: string
+          description?: string | null
+          goal?: string | null
+          icon?: string
+          id?: string
+          is_public?: boolean
+          members_count?: number
+          name?: string
+          updated_at?: string
         }
         Relationships: []
       }
