@@ -254,7 +254,7 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
                   onClick={handleSubmit} disabled={(!content.trim() && !mediaFile) || submitting}
                   className="flex items-center gap-2 px-4 py-2 rounded-xl bg-primary/20 text-primary text-xs font-semibold disabled:opacity-30 hover:bg-primary/30 transition-all">
                   {submitting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
-                  Транслировать
+                  Опубликовать
                 </motion.button>
               </motion.div>
             )}
