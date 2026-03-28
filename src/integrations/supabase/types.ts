@@ -570,12 +570,36 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      award_activity_xp: {
+        Args: { p_activity?: string; p_amount: number }
+        Returns: undefined
+      }
+      complete_mission: { Args: { p_mission_id: string }; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      send_notification: {
+        Args: {
+          p_body?: string
+          p_related_post_id?: string
+          p_related_user_id?: string
+          p_target_user_id: string
+          p_title: string
+          p_type: string
+        }
+        Returns: undefined
+      }
+      submit_dream_entry: {
+        Args: { p_description?: string; p_lucidity?: number; p_title: string }
+        Returns: undefined
+      }
+      submit_mood_checkin: {
+        Args: { p_energy: number; p_mood: number; p_note?: string }
+        Returns: undefined
       }
     }
     Enums: {

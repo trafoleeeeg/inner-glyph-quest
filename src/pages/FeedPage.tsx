@@ -82,13 +82,13 @@ const FeedPage = () => {
       setPosts(prev => prev.map(p => p.id === postId ? { ...p, likes_count: p.likes_count + 1 } : p));
       // Send notification to post author
       if (post && post.user_id !== user.id) {
-        supabase.from("notifications").insert({
-          user_id: post.user_id,
-          type: "like",
-          title: "Твой сигнал срезонировал",
-          body: post.content?.slice(0, 50),
-          related_user_id: user.id,
-          related_post_id: postId,
+        supabase.rpc('send_notification', {
+          p_target_user_id: post.user_id,
+          p_type: "like",
+          p_title: "Твой сигнал срезонировал",
+          p_body: post.content?.slice(0, 50),
+          p_related_user_id: user.id,
+          p_related_post_id: postId,
         });
       }
     }

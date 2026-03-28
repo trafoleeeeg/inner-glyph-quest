@@ -41,9 +41,7 @@ const DesireTracker = () => {
       setDesires(prev => [data, ...prev]);
       setTitle(""); setDescription(""); setPriority(3); setShowAdd(false);
       toast.success("+20 негэнтропии", { description: "Вектор зафиксирован" });
-      await supabase.from("profiles").update({
-        xp: (await supabase.from("profiles").select("xp").eq("user_id", user.id).single()).data?.xp! + 20
-      }).eq("user_id", user.id);
+      await supabase.rpc('award_activity_xp', { p_amount: 20, p_activity: 'desire' });
     }
   };
 

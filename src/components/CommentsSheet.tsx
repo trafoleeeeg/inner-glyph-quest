@@ -71,13 +71,13 @@ const CommentsSheet = ({ postId, onClose }: CommentsSheetProps) => {
       // Send notification to post author
       const { data: post } = await supabase.from("posts").select("user_id, content").eq("id", postId).single();
       if (post && post.user_id !== user.id) {
-        supabase.from("notifications").insert({
-          user_id: post.user_id,
-          type: "comment",
-          title: "Новый комментарий к твоему сигналу",
-          body: input.trim().slice(0, 50),
-          related_user_id: user.id,
-          related_post_id: postId,
+        supabase.rpc('send_notification', {
+          p_target_user_id: post.user_id,
+          p_type: "comment",
+          p_title: "Новый комментарий к твоему сигналу",
+          p_body: input.trim().slice(0, 50),
+          p_related_user_id: user.id,
+          p_related_post_id: postId,
         });
       }
     } else {
