@@ -20,6 +20,7 @@ import GlyphVisualizer from "@/components/GlyphVisualizer";
 import LifeBalanceChart from "@/components/LifeBalanceChart";
 import FogOfWarMap from "@/components/FogOfWarMap";
 import AIInsights from "@/components/AIInsights";
+import AdaptiveTaskSelector from "@/components/AdaptiveTaskSelector";
 import { toast } from "sonner";
 import { Heart, HelpCircle } from "lucide-react";
 import BottomNav from "@/components/BottomNav";
