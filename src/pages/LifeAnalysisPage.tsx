@@ -223,9 +223,12 @@ const LifeAnalysisPage = () => {
           </motion.div>
         ))}
       </div>
-      <Button onClick={() => navigate("/")} className="w-full" variant="outline">
-        Вернуться на главную
-      </Button>
+      <div className="text-center">
+        <p className="text-xs text-accent font-medium mb-3">✅ Все привычки уже добавлены на главную</p>
+        <Button onClick={() => navigate("/")} className="w-full" variant="default">
+          Перейти к привычкам →
+        </Button>
+      </div>
     </motion.div>,
   ];
 
