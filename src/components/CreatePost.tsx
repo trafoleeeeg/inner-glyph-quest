@@ -181,7 +181,7 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             onFocus={() => setFocused(true)}
-            placeholder="Что ты сейчас видишь яснее?"
+            placeholder="Чем хочешь поделиться?"
             maxLength={2000}
             rows={focused ? 4 : 2}
             className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground/50 resize-none focus:outline-none leading-relaxed"

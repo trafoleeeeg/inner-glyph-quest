@@ -74,7 +74,7 @@ const SearchPage = () => {
       // Notification
       supabase.rpc('send_notification', {
         p_target_user_id: targetId, p_type: "follow",
-        p_title: "Новый наблюдатель в твоей сети",
+        p_title: "На тебя подписались",
         p_related_user_id: user.id,
       });
     }
