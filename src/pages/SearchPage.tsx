@@ -136,7 +136,7 @@ const SearchPage = () => {
                       <span className="text-[9px] font-mono text-primary/60 bg-primary/5 px-1.5 py-0.5 rounded">LVL {u.level}</span>
                     </div>
                     <p className="text-[10px] text-muted-foreground font-mono">
-                      {LEVEL_TITLES[u.level] || LEVEL_TITLES[10]} • 🔥{u.streak}д • {u.total_missions_completed} протоколов
+                      {LEVEL_TITLES[u.level] || LEVEL_TITLES[10]} • 🔥{u.streak}д • {u.total_missions_completed} привычек
                     </p>
                   </div>
                   {!isMe && (
