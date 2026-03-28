@@ -5,20 +5,22 @@ interface StatsRowProps {
   energy: number;
   maxEnergy: number;
   streak: number;
+  longestStreak: number;
   totalMissions: number;
   dreamsLogged: number;
   coins: number;
 }
 
-const StatsRow = ({ energy, maxEnergy, streak, totalMissions, dreamsLogged, coins }: StatsRowProps) => {
+const StatsRow = ({ energy, maxEnergy, streak, longestStreak, totalMissions, dreamsLogged, coins }: StatsRowProps) => {
   const energyPercent = Math.round((energy / maxEnergy) * 100);
+  const toRecord = longestStreak > streak ? longestStreak - streak : 0;
   
   const stats = [
-    { label: "Энергия", value: `${energyPercent}%`, icon: Zap, color: "text-energy", borderColor: "border-energy/20" },
-    { label: "Серия", value: `${streak}д`, icon: Flame, color: "text-streak", borderColor: "border-streak/20" },
-    { label: "Сделано", value: totalMissions, icon: Target, color: "text-primary", borderColor: "border-primary/20" },
-    { label: "Снов", value: dreamsLogged, icon: Moon, color: "text-dream", borderColor: "border-dream/20" },
-    { label: "Монеты", value: coins, icon: Coins, color: "text-energy", borderColor: "border-energy/20" },
+    { label: "Энергия", value: `${energyPercent}%`, icon: Zap, color: "text-energy", borderColor: "border-energy/20", sub: "" },
+    { label: "Серия", value: `${streak}д`, icon: Flame, color: "text-streak", borderColor: "border-streak/20", sub: toRecord > 0 ? `до рекорда: ${toRecord}` : streak > 0 ? "🏆 рекорд!" : "" },
+    { label: "Сделано", value: totalMissions, icon: Target, color: "text-primary", borderColor: "border-primary/20", sub: "" },
+    { label: "Снов", value: dreamsLogged, icon: Moon, color: "text-dream", borderColor: "border-dream/20", sub: "" },
+    { label: "Монеты", value: coins, icon: Coins, color: "text-energy", borderColor: "border-energy/20", sub: "" },
   ];
 
   const container = {
@@ -43,6 +45,7 @@ const StatsRow = ({ energy, maxEnergy, streak, totalMissions, dreamsLogged, coin
           <stat.icon className={`w-4 h-4 ${stat.color} mx-auto mb-1`} />
           <p className={`text-lg font-bold font-mono ${stat.color} leading-none`}>{stat.value}</p>
           <p className="text-[9px] text-muted-foreground font-mono uppercase tracking-wider mt-1">{stat.label}</p>
+          {stat.sub && <p className="text-[7px] text-muted-foreground/60 font-mono mt-0.5 truncate">{stat.sub}</p>}
         </motion.div>
       ))}
     </motion.div>

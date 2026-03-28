@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { Users, Plus, X, LogIn, LogOut, Target, Crown, Trophy, TrendingUp, Flame } from "lucide-react";
+import { Users, Plus, X, LogIn, LogOut, Target, Crown, Trophy, TrendingUp, Flame, Swords, Award } from "lucide-react";
 import { toast } from "sonner";
 import ParticleField from "@/components/ParticleField";
 import BottomNav from "@/components/BottomNav";
@@ -47,6 +47,9 @@ const TribesPage = () => {
   const [selectedTribe, setSelectedTribe] = useState<Tribe | null>(null);
   const [tribeMembers, setTribeMembers] = useState<any[]>([]);
   const [view, setView] = useState<"all" | "mine" | "ranking">("all");
+  const [challenges, setChallenges] = useState<any[]>([]);
+  const [showNewChallenge, setShowNewChallenge] = useState(false);
+  const [newChallengeTitle, setNewChallengeTitle] = useState("");
 
   const ICONS = ["🔥", "⚡", "🧠", "🌱", "💎", "🎯", "🦅", "🐉", "🌊", "☀️"];
 
@@ -95,13 +98,46 @@ const TribesPage = () => {
 
   const selectTribe = async (tribe: Tribe) => {
     setSelectedTribe(tribe);
-    const { data } = await supabase.from("tribe_members").select("user_id, role, joined_at").eq("tribe_id", tribe.id);
-    if (data) {
-      const userIds = data.map(m => m.user_id);
+    const [{ data: members }, { data: tribeChallenges }] = await Promise.all([
+      supabase.from("tribe_members").select("user_id, role, joined_at").eq("tribe_id", tribe.id),
+      supabase.from("tribe_challenges").select("*").eq("tribe_id", tribe.id).eq("is_active", true).order("created_at", { ascending: false }),
+    ]);
+    if (members) {
+      const userIds = members.map(m => m.user_id);
       const { data: profiles } = await supabase.from("public_profiles").select("user_id, display_name, avatar_url, level").in("user_id", userIds);
       const profileMap = new Map((profiles || []).map(p => [p.user_id, p]));
-      setTribeMembers(data.map(m => ({ ...m, profile: profileMap.get(m.user_id) })));
+      setTribeMembers(members.map(m => ({ ...m, profile: profileMap.get(m.user_id) })));
     }
+    setChallenges(tribeChallenges || []);
+  };
+
+  const createChallenge = async () => {
+    if (!user || !selectedTribe || !newChallengeTitle.trim()) return;
+    const { data } = await supabase.from("tribe_challenges").insert({
+      tribe_id: selectedTribe.id,
+      title: newChallengeTitle.trim(),
+      created_by: user.id,
+    }).select().single();
+    if (data) {
+      // Auto-join
+      await supabase.from("tribe_challenge_participants").insert({
+        challenge_id: data.id,
+        user_id: user.id,
+      });
+      setChallenges(prev => [data, ...prev]);
+      setNewChallengeTitle("");
+      setShowNewChallenge(false);
+      toast.success("Вызов создан! 🏆");
+    }
+  };
+
+  const joinChallenge = async (challengeId: string) => {
+    if (!user) return;
+    await supabase.from("tribe_challenge_participants").insert({
+      challenge_id: challengeId,
+      user_id: user.id,
+    });
+    toast.success("Вы приняли вызов!");
   };
 
   const displayTribes = view === "mine" ? tribes.filter(t => myTribeIds.has(t.id)) : tribes;
@@ -204,6 +240,47 @@ const TribesPage = () => {
                 </div>
               )}
               {selectedTribe.description && <p className="text-xs text-foreground/70 mb-3">{selectedTribe.description}</p>}
+              
+              {/* Challenges section */}
+              {myTribeIds.has(selectedTribe.id) && (
+                <div className="mb-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                      <Swords className="w-3.5 h-3.5 text-primary" /> Вызовы
+                    </h4>
+                    <button onClick={() => setShowNewChallenge(!showNewChallenge)} className="text-[10px] text-primary hover:underline">
+                      {showNewChallenge ? "Отмена" : "+ Создать"}
+                    </button>
+                  </div>
+                  {showNewChallenge && (
+                    <div className="flex gap-2 mb-2">
+                      <input value={newChallengeTitle} onChange={e => setNewChallengeTitle(e.target.value)}
+                        placeholder="Кто больше привычек за неделю?"
+                        className="flex-1 bg-muted/10 rounded-lg px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground/40 outline-none border border-border/20" />
+                      <motion.button whileTap={{ scale: 0.95 }} onClick={createChallenge}
+                        className="px-3 py-2 rounded-lg bg-primary/15 text-primary text-xs font-semibold">Go</motion.button>
+                    </div>
+                  )}
+                  {challenges.length > 0 ? challenges.map(ch => (
+                    <div key={ch.id} className="p-2.5 rounded-lg bg-muted/10 border border-border/10 mb-1.5 flex items-center gap-2">
+                      <Award className="w-4 h-4 text-primary shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-medium text-foreground truncate">{ch.title}</p>
+                        <p className="text-[9px] text-muted-foreground font-mono">
+                          до {new Date(ch.end_date).toLocaleDateString("ru-RU", { day: "numeric", month: "short" })}
+                        </p>
+                      </div>
+                      <motion.button whileTap={{ scale: 0.9 }} onClick={() => joinChallenge(ch.id)}
+                        className="text-[10px] px-2 py-1 rounded bg-primary/10 text-primary font-semibold hover:bg-primary/20">
+                        Принять
+                      </motion.button>
+                    </div>
+                  )) : (
+                    <p className="text-[10px] text-muted-foreground/50 text-center py-2">Пока нет активных вызовов</p>
+                  )}
+                </div>
+              )}
+
               <div className="space-y-1.5">
                 {tribeMembers.map(m => (
                   <div key={m.user_id} className="flex items-center gap-2 p-2 rounded-lg bg-muted/10">
