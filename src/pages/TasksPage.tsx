@@ -285,6 +285,18 @@ const TasksPage = () => {
                 onKeyDown={e => e.key === "Enter" && addTask()}
                 placeholder="Что нужно сделать?" autoFocus
                 className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none" />
+
+              {/* Quick presets */}
+              {!newTaskTitle && (
+                <div className="flex flex-wrap gap-1">
+                  {QUICK_PRESETS.map(p => (
+                    <button key={p.title} onClick={() => addTask(undefined, p.title)}
+                      className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-mono text-muted-foreground hover:text-foreground bg-muted/20 hover:bg-muted/40 transition-colors border border-border/20">
+                      <span>{p.icon}</span> {p.title}
+                    </button>
+                  ))}
+                </div>
+              )
               
               {/* Priority */}
               <div className="flex items-center gap-1">
