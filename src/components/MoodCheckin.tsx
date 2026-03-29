@@ -59,7 +59,7 @@ const MoodCheckin = ({ onSubmit }: MoodCheckinProps) => {
         {moods.map((m) => (
           <motion.button key={m.value} onClick={() => setSelectedMood(m.value)}
             className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all flex-1 ${
-              selectedMood === m.value ? 'bg-energy/15 border border-energy/30' : 'hover:bg-muted/50 border border-transparent'
+              selectedMood === m.value ? 'bg-primary/10 border border-primary/30' : 'hover:bg-muted/50 border border-transparent'
             }`} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.9 }}>
             <span className="text-xl">{m.emoji}</span>
             <span className="text-[9px] text-muted-foreground font-mono">{m.label}</span>
