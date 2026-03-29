@@ -354,6 +354,16 @@ const Index = () => {
           </div>
         </motion.div>
 
+        {/* Glyph — visual state indicator */}
+        {profile && (
+          <GlyphVisualizer
+            level={profile.level}
+            energy={profile.energy}
+            maxEnergy={profile.max_energy}
+            streak={profile.streak}
+          />
+        )}
+
         {/* XP + Stats */}
         <div id="tutorial-xp">
           {profile && <XPBar current={profile.xp} max={profile.xp_to_next} level={profile.level} displayName={profile.display_name} />}
