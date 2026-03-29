@@ -300,20 +300,20 @@ const Index = () => {
 
       <div className="max-w-2xl mx-auto px-4 py-6 space-y-0">
         {/* Header */}
-        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center justify-between py-4 border-b border-border">
           <div>
             <h1 className="text-xl font-bold text-foreground tracking-tight">
-              {greeting}{profile ? `, ${profile.display_name.split(' ')[0]}` : ''} 👋
+              {greeting}{profile ? `, ${profile.display_name.split(' ')[0]}` : ''}
             </h1>
-            <p className="text-[10px] text-muted-foreground font-mono">
+            <p className="text-xs text-muted-foreground">
               {profile && profile.streak > 0
-                ? `🔥 ${profile.streak} ${profile.streak === 1 ? 'день' : profile.streak < 5 ? 'дня' : 'дней'} подряд — продолжай!`
-                : 'начни серию активных дней сегодня'}
+                ? `${profile.streak} ${profile.streak === 1 ? 'день' : profile.streak < 5 ? 'дня' : 'дней'} подряд`
+                : 'начни серию сегодня'}
             </p>
           </div>
           <div className="flex items-center gap-1.5">
             <NavButton icon={<HelpCircle className="w-4 h-4" />} onClick={startTutorial} tooltip="Обучение" color="text-muted-foreground" />
-            <NavButton icon={<Heart className="w-4 h-4" />} onClick={() => navigate("/desires")} tooltip="Желания" color="text-secondary" />
+            <NavButton icon={<Heart className="w-4 h-4" />} onClick={() => navigate("/desires")} tooltip="Желания" color="text-muted-foreground" />
           </div>
         </motion.div>
 
