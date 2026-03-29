@@ -86,7 +86,7 @@ const Auth = () => {
     <div className="min-h-screen bg-background relative overflow-hidden flex items-center justify-center">
       
       <motion.div initial={{ opacity: 0, scale: 0.9, y: 30 }} animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }} className="relative z-10 w-full max-w-md mx-4">
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }} className="w-full max-w-md mx-4">
         
         {/* Logo */}
         <motion.div className="text-center mb-8" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>

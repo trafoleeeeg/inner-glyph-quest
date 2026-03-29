@@ -7,7 +7,7 @@ const MapPage = () => {
   return (
     <div className="min-h-screen bg-background relative pb-20">
       
-      <div className="relative z-10 max-w-2xl mx-auto px-4 py-6 space-y-5">
+      <div className="max-w-2xl mx-auto px-4 py-6 space-y-5">
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
           <h1 className="text-xl font-bold text-primary  font-display">Карта Сознания</h1>
           <p className="text-[10px] text-muted-foreground font-mono">

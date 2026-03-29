@@ -150,7 +150,7 @@ const ProfilePage = () => {
   return (
     <div className="min-h-screen bg-background relative pb-20">
       
-      <div className="relative z-10 max-w-2xl mx-auto px-4 py-6 space-y-5">
+      <div className="max-w-2xl mx-auto px-4 py-6 space-y-5">
         {/* Header with sign out */}
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
           <h1 className="text-lg font-bold text-foreground">Мой профиль</h1>

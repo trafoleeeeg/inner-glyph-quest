@@ -77,7 +77,7 @@ const CommunityChat = () => {
   return (
     <div className="min-h-screen bg-background relative flex flex-col">
       
-      <div className="relative z-10 max-w-2xl mx-auto px-4 py-6 flex flex-col flex-1 w-full">
+      <div className="max-w-2xl mx-auto px-4 py-6 flex flex-col flex-1 w-full">
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3 mb-4">
           <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => navigate("/")}
