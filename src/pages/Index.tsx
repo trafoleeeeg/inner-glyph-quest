@@ -365,6 +365,17 @@ const Index = () => {
             energy={profile.energy}
             maxEnergy={profile.max_energy}
             streak={profile.streak}
+            onStagnationUpdate={(d) => setStagnationIndex(d.stagnation_index)}
+          />
+        )}
+
+        {/* WHOOP-style state gauges */}
+        {profile && (
+          <StateGauges
+            energy={profile.energy}
+            maxEnergy={profile.max_energy}
+            moodAvg={moodAvg}
+            stagnation={stagnationIndex}
           />
         )}
 
