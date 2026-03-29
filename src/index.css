@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=SF+Mono:wght@400;500&family=JetBrains+Mono:wght@300;400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,114 +6,128 @@
 
 @layer base {
   :root {
-    --font-display: 'Space Grotesk', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --font-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
 
-    --background: 222 20% 7%;
-    --foreground: 210 15% 85%;
+    /* WHOOP-inspired: pure black, data-dense, clean */
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
 
-    --card: 222 18% 11%;
-    --card-foreground: 210 15% 85%;
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 222 18% 11%;
-    --popover-foreground: 210 15% 85%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 200 60% 50%;
-    --primary-foreground: 222 20% 7%;
+    /* Recovery green — primary action color */
+    --primary: 152 69% 47%;
+    --primary-foreground: 0 0% 0%;
 
-    --secondary: 250 40% 55%;
+    /* Strain blue */
+    --secondary: 210 100% 56%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 222 15% 15%;
-    --muted-foreground: 215 12% 50%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 50%;
 
-    --accent: 155 45% 45%;
-    --accent-foreground: 222 20% 7%;
+    /* Sleep purple accent */
+    --accent: 270 60% 55%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 55% 50%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 222 12% 17%;
-    --input: 222 15% 15%;
-    --ring: 200 60% 50%;
+    --border: 0 0% 14%;
+    --input: 0 0% 12%;
+    --ring: 152 69% 47%;
 
     --radius: 0.75rem;
 
-    --energy: 40 70% 55%;
-    --energy-foreground: 222 20% 7%;
-    --xp: 155 45% 45%;
-    --xp-foreground: 222 20% 7%;
-    --dream: 260 50% 60%;
+    /* Semantic metric colors */
+    --energy: 45 93% 55%;
+    --energy-foreground: 0 0% 0%;
+    --xp: 152 69% 47%;
+    --xp-foreground: 0 0% 0%;
+    --dream: 270 60% 55%;
     --dream-foreground: 0 0% 100%;
-    --streak: 25 65% 50%;
+    --streak: 25 95% 53%;
     --streak-foreground: 0 0% 100%;
 
-    --glow-primary: 0 0 12px hsl(200 60% 50% / 0.15), 0 0 40px hsl(200 60% 50% / 0.05);
-    --glow-accent: 0 0 12px hsl(155 45% 45% / 0.15), 0 0 40px hsl(155 45% 45% / 0.05);
-    --glow-secondary: 0 0 12px hsl(250 40% 55% / 0.15), 0 0 40px hsl(250 40% 55% / 0.05);
-    --glow-energy: 0 0 12px hsl(40 70% 55% / 0.15), 0 0 40px hsl(40 70% 55% / 0.05);
+    /* Recovery/Strain/Sleep — WHOOP core triad */
+    --recovery: 152 69% 47%;
+    --strain: 210 100% 56%;
+    --sleep: 270 60% 55%;
 
-    --sidebar-background: 222 18% 9%;
-    --sidebar-foreground: 210 15% 85%;
-    --sidebar-primary: 200 60% 50%;
-    --sidebar-primary-foreground: 222 20% 7%;
-    --sidebar-accent: 222 15% 15%;
-    --sidebar-accent-foreground: 210 15% 85%;
-    --sidebar-border: 222 12% 17%;
-    --sidebar-ring: 200 60% 50%;
+    --glow-primary: 0 0 20px hsl(152 69% 47% / 0.15);
+    --glow-accent: 0 0 20px hsl(270 60% 55% / 0.15);
+    --glow-secondary: 0 0 20px hsl(210 100% 56% / 0.15);
+    --glow-energy: 0 0 20px hsl(45 93% 55% / 0.15);
+
+    --sidebar-background: 0 0% 4%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 152 69% 47%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 0 0% 12%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 14%;
+    --sidebar-ring: 152 69% 47%;
   }
 
   .light {
-    --background: 220 20% 97%;
-    --foreground: 222 20% 15%;
+    --background: 0 0% 97%;
+    --foreground: 0 0% 8%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222 20% 15%;
+    --card-foreground: 0 0% 8%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 20% 15%;
+    --popover-foreground: 0 0% 8%;
 
-    --primary: 200 65% 45%;
+    --primary: 152 69% 40%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 250 35% 55%;
+    --secondary: 210 90% 50%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 15% 92%;
-    --muted-foreground: 215 12% 45%;
+    --muted: 0 0% 93%;
+    --muted-foreground: 0 0% 40%;
 
-    --accent: 155 50% 40%;
+    --accent: 270 50% 50%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 55% 50%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 15% 88%;
-    --input: 220 15% 92%;
-    --ring: 200 65% 45%;
+    --border: 0 0% 88%;
+    --input: 0 0% 93%;
+    --ring: 152 69% 40%;
 
-    --energy: 40 70% 50%;
-    --energy-foreground: 222 20% 7%;
-    --xp: 155 50% 40%;
+    --energy: 45 93% 48%;
+    --energy-foreground: 0 0% 0%;
+    --xp: 152 69% 40%;
     --xp-foreground: 0 0% 100%;
-    --dream: 260 45% 55%;
+    --dream: 270 50% 50%;
     --dream-foreground: 0 0% 100%;
-    --streak: 25 65% 50%;
+    --streak: 25 95% 50%;
     --streak-foreground: 0 0% 100%;
 
-    --glow-primary: 0 0 8px hsl(200 65% 45% / 0.1), 0 0 20px hsl(200 65% 45% / 0.04);
-    --glow-accent: 0 0 8px hsl(155 50% 40% / 0.1), 0 0 20px hsl(155 50% 40% / 0.04);
-    --glow-secondary: 0 0 8px hsl(250 35% 55% / 0.1), 0 0 20px hsl(250 35% 55% / 0.04);
-    --glow-energy: 0 0 8px hsl(40 70% 50% / 0.1), 0 0 20px hsl(40 70% 50% / 0.04);
+    --recovery: 152 69% 40%;
+    --strain: 210 90% 50%;
+    --sleep: 270 50% 50%;
+
+    --glow-primary: 0 0 10px hsl(152 69% 40% / 0.08);
+    --glow-accent: 0 0 10px hsl(270 50% 50% / 0.08);
+    --glow-secondary: 0 0 10px hsl(210 90% 50% / 0.08);
+    --glow-energy: 0 0 10px hsl(45 93% 48% / 0.08);
 
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 222 20% 15%;
-    --sidebar-primary: 200 65% 45%;
+    --sidebar-foreground: 0 0% 8%;
+    --sidebar-primary: 152 69% 40%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 15% 95%;
-    --sidebar-accent-foreground: 222 20% 15%;
-    --sidebar-border: 220 15% 88%;
-    --sidebar-ring: 200 65% 45%;
+    --sidebar-accent: 0 0% 95%;
+    --sidebar-accent-foreground: 0 0% 8%;
+    --sidebar-border: 0 0% 88%;
+    --sidebar-ring: 152 69% 40%;
   }
 }
 
@@ -125,6 +139,8 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-display);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   code, .font-mono {
@@ -146,53 +162,42 @@
     box-shadow: var(--glow-energy);
   }
   .text-glow-primary {
-    text-shadow: 0 0 8px hsl(200 60% 50% / 0.3);
+    text-shadow: 0 0 12px hsl(152 69% 47% / 0.4);
   }
   .text-glow-accent {
-    text-shadow: 0 0 8px hsl(155 45% 45% / 0.3);
+    text-shadow: 0 0 12px hsl(270 60% 55% / 0.4);
   }
   .text-glow-secondary {
-    text-shadow: 0 0 8px hsl(250 40% 55% / 0.3);
+    text-shadow: 0 0 12px hsl(210 100% 56% / 0.4);
   }
   .text-glow-energy {
-    text-shadow: 0 0 8px hsl(40 70% 55% / 0.3);
+    text-shadow: 0 0 12px hsl(45 93% 55% / 0.4);
   }
+
+  /* WHOOP-style clean glass card */
   .glass {
-    @apply bg-card/60 backdrop-blur-xl border border-border/40;
+    @apply bg-card/80 backdrop-blur-xl border border-border;
   }
   .glass-card {
-    background: linear-gradient(
-      135deg,
-      hsl(var(--card) / 0.85) 0%,
-      hsl(var(--card) / 0.9) 100%
-    );
-    backdrop-filter: blur(16px) saturate(1.2);
-    border: 1px solid hsl(var(--primary) / 0.06);
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
   }
   .light .glass-card {
-    background: hsl(var(--card) / 0.95);
-    backdrop-filter: blur(8px);
+    background: hsl(var(--card));
     border: 1px solid hsl(var(--border));
-    box-shadow: 0 1px 3px hsl(222 20% 7% / 0.06);
+    box-shadow: 0 1px 3px hsl(0 0% 0% / 0.04);
   }
   .glass-card-hover {
-    background: linear-gradient(
-      135deg,
-      hsl(var(--card) / 0.9) 0%,
-      hsl(var(--card) / 0.95) 100%
-    );
-    backdrop-filter: blur(16px) saturate(1.2);
-    border: 1px solid hsl(var(--primary) / 0.1);
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--primary) / 0.2);
   }
+
+  /* Minimal grid — barely visible */
   .cyber-grid {
-    background-image: 
-      linear-gradient(hsl(var(--primary) / 0.01) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(var(--primary) / 0.01) 1px, transparent 1px);
-    background-size: 48px 48px;
-  }
-  .light .cyber-grid {
     background-image: none;
   }
+
   .gradient-border {
     position: relative;
   }
@@ -202,32 +207,27 @@
     inset: 0;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(135deg, hsl(200 60% 50% / 0.15), hsl(250 40% 55% / 0.15), hsl(155 45% 45% / 0.15));
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.2), hsl(var(--secondary) / 0.1), hsl(var(--accent) / 0.15));
     mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     mask-composite: exclude;
     -webkit-mask-composite: xor;
     pointer-events: none;
   }
-  .shimmer {
-    background: linear-gradient(
-      110deg,
-      transparent 25%,
-      hsl(200 60% 50% / 0.03) 50%,
-      transparent 75%
-    );
-    background-size: 200% 100%;
-    animation: shimmer 4s ease-in-out infinite;
-  }
-}
 
-@keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  .shimmer {
+    background: none;
+  }
+
+  /* WHOOP-style metric ring */
+  .metric-ring {
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.6s ease;
+  }
 }
 
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
+  50% { transform: translateY(-4px); }
 }
 
 @keyframes orbit {

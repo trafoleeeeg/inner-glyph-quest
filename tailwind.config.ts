@@ -12,8 +12,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['Space Grotesk', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
+        display: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        mono: ['JetBrains Mono', 'SF Mono', 'monospace'],
       },
       colors: {
         border: "hsl(var(--border))",
