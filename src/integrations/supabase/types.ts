@@ -590,12 +590,15 @@ export type Database = {
           energy: number
           followers_count: number
           following_count: number
+          glyph_integrity: number
           id: string
           last_active_date: string | null
+          last_stagnation_calc: string | null
           level: number
           longest_streak: number
           max_energy: number
           posts_count: number
+          stagnation_index: number
           streak: number
           total_dreams_logged: number
           total_missions_completed: number
@@ -613,12 +616,15 @@ export type Database = {
           energy?: number
           followers_count?: number
           following_count?: number
+          glyph_integrity?: number
           id?: string
           last_active_date?: string | null
+          last_stagnation_calc?: string | null
           level?: number
           longest_streak?: number
           max_energy?: number
           posts_count?: number
+          stagnation_index?: number
           streak?: number
           total_dreams_logged?: number
           total_missions_completed?: number
@@ -636,12 +642,15 @@ export type Database = {
           energy?: number
           followers_count?: number
           following_count?: number
+          glyph_integrity?: number
           id?: string
           last_active_date?: string | null
+          last_stagnation_calc?: string | null
           level?: number
           longest_streak?: number
           max_energy?: number
           posts_count?: number
+          stagnation_index?: number
           streak?: number
           total_dreams_logged?: number
           total_missions_completed?: number
@@ -717,6 +726,80 @@ export type Database = {
           xp_amount?: number
         }
         Relationships: []
+      }
+      synthetic_agents: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          display_name: string
+          id: string
+          is_active: boolean
+          level: number
+          personality_type: string
+          streak: number
+          total_missions_completed: number
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name: string
+          id?: string
+          is_active?: boolean
+          level?: number
+          personality_type?: string
+          streak?: number
+          total_missions_completed?: number
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string
+          id?: string
+          is_active?: boolean
+          level?: number
+          personality_type?: string
+          streak?: number
+          total_missions_completed?: number
+        }
+        Relationships: []
+      }
+      synthetic_posts: {
+        Row: {
+          agent_id: string
+          content: string
+          created_at: string
+          id: string
+          likes_count: number
+          post_type: string
+        }
+        Insert: {
+          agent_id: string
+          content: string
+          created_at?: string
+          id?: string
+          likes_count?: number
+          post_type?: string
+        }
+        Update: {
+          agent_id?: string
+          content?: string
+          created_at?: string
+          id?: string
+          likes_count?: number
+          post_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "synthetic_posts_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "synthetic_agents"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       tribe_challenge_participants: {
         Row: {
@@ -1043,6 +1126,7 @@ export type Database = {
         Args: { p_activity?: string; p_amount: number }
         Returns: undefined
       }
+      calculate_stagnation_index: { Args: { p_user_id: string }; Returns: Json }
       complete_mission: { Args: { p_mission_id: string }; Returns: Json }
       has_role: {
         Args: {

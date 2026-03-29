@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useProfile } from "@/hooks/useProfile";
 import { supabase } from "@/integrations/supabase/client";
 import XPBar from "@/components/XPBar";
+import GlyphVisualizer from "@/components/GlyphVisualizer";
 import StatsRow from "@/components/StatsRow";
 import MissionCard from "@/components/MissionCard";
 import type { MissionData } from "@/components/MissionCard";
@@ -352,6 +353,16 @@ const Index = () => {
             <span className="text-destructive text-lg font-bold">→</span>
           </div>
         </motion.div>
+
+        {/* Glyph — visual state indicator */}
+        {profile && (
+          <GlyphVisualizer
+            level={profile.level}
+            energy={profile.energy}
+            maxEnergy={profile.max_energy}
+            streak={profile.streak}
+          />
+        )}
 
         {/* XP + Stats */}
         <div id="tutorial-xp">

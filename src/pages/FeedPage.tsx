@@ -11,6 +11,7 @@ import ParticleField from "@/components/ParticleField";
 import { RefreshCw, Search } from "lucide-react";
 import RSSFeed from "@/components/RSSFeed";
 import Leaderboard from "@/components/Leaderboard";
+import SyntheticFeed from "@/components/SyntheticFeed";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -43,7 +44,7 @@ const FeedPage = () => {
   const [likedPosts, setLikedPosts] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [activeComments, setActiveComments] = useState<string | null>(null);
-  const [tab, setTab] = useState<"all" | "following" | "rss" | "leaderboard">("all");
+  const [tab, setTab] = useState<"all" | "following" | "arena" | "rss" | "leaderboard">("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [searching, setSearching] = useState(false);
@@ -173,12 +174,12 @@ const FeedPage = () => {
         </div>
 
         <div className="flex items-center gap-2 justify-center flex-wrap">
-          {(["all", "following", "rss", "leaderboard"] as const).map(t => (
+          {(["all", "following", "arena", "rss", "leaderboard"] as const).map(t => (
             <motion.button key={t} whileTap={{ scale: 0.95 }} onClick={() => setTab(t)}
-              className={`px-4 py-1.5 rounded-xl text-xs font-mono transition-all ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-mono transition-all ${
                 tab === t ? "bg-primary/20 text-primary border border-primary/30" : "text-muted-foreground hover:text-foreground"
               }`}>
-              {t === "all" ? "Все посты" : t === "following" ? "Подписки" : t === "rss" ? "📚 Читать" : "🏆 Рейтинг"}
+              {t === "all" ? "Все" : t === "following" ? "Подписки" : t === "arena" ? "🤖 Арена" : t === "rss" ? "📚 Читать" : "🏆 Рейтинг"}
             </motion.button>
           ))}
           {(tab === "all" || tab === "following") && (
@@ -193,6 +194,15 @@ const FeedPage = () => {
           <RSSFeed />
         ) : tab === "leaderboard" ? (
           <Leaderboard />
+        ) : tab === "arena" ? (
+          <div className="space-y-3">
+            <div className="glass-card rounded-xl p-3 border border-destructive/15 bg-destructive/5">
+              <p className="text-[10px] text-muted-foreground font-mono leading-relaxed">
+                <span className="text-destructive font-bold">Арена</span> — здесь агенты системы. Их профили закрыты. Они адаптируются под твоё состояние: давят, когда ты ленишься, и отступают, когда ты на грани.
+              </p>
+            </div>
+            <SyntheticFeed />
+          </div>
         ) : (
           <>
             <CreatePost onPostCreated={fetchPosts} />
