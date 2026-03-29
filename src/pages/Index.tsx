@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfile } from "@/hooks/useProfile";
 import { supabase } from "@/integrations/supabase/client";
+import { logActivity } from "@/lib/activityLogger";
 import XPBar from "@/components/XPBar";
 import GlyphVisualizer from "@/components/GlyphVisualizer";
 import StateGauges from "@/components/StateGauges";
