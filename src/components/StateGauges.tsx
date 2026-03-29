@@ -65,7 +65,7 @@ const StateGauges = ({ energy, maxEnergy, moodAvg, stagnation }: StateGaugesProp
         <CircularGauge
           value={recovery} max={100}
           label="Recovery"
-          color="hsl(var(--recovery))"
+          color="hsl(var(--primary))"
         />
         <CircularGauge
           value={energy} max={maxEnergy}
