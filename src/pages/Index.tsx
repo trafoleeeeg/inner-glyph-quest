@@ -399,42 +399,35 @@ const Index = () => {
         <AnimatePresence>
           {showWhyBlock && (
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, height: 0, marginBottom: 0 }}
-              className="rounded-2xl p-4 border border-accent/20 bg-gradient-to-br from-accent/5 via-primary/5 to-secondary/5"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0, height: 0 }}
+              className="py-4 border-b border-border"
             >
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-xl flex-shrink-0">🧠</div>
-                <div className="flex-1">
-                  <h3 className="text-sm font-semibold text-foreground mb-1">Это не просто трекер</h3>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    Алгоритм определяет твой архетип прокрастинации и назначает нейробиологические протоколы (Глифы), которые ломают деструктивные паттерны. Настроение и энергия — входные данные для калибровки системы.
-                  </p>
-                  <p className="text-xs text-foreground/70 leading-relaxed mt-1.5 font-medium">
-                    Каждый чекин = данные. Данные = точная диагностика. Диагностика = протоколы, которые работают.
-                  </p>
-                  <button
-                    onClick={() => { localStorage.setItem("neuro_why_understood", "1"); setShowWhyBlock(false); }}
-                    className="mt-2 text-xs font-medium text-primary hover:text-primary/80 transition-colors"
-                  >
-                    Понятно ✓
-                  </button>
-                </div>
-              </div>
+              <h3 className="text-sm font-semibold text-foreground mb-1">Это не просто трекер</h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Алгоритм определяет твой архетип прокрастинации и назначает протоколы, которые ломают паттерны. Настроение и энергия — входные данные для калибровки.
+              </p>
+              <p className="text-xs text-foreground/70 leading-relaxed mt-1.5">
+                Чекин = данные → диагностика → протоколы
+              </p>
+              <button
+                onClick={() => { localStorage.setItem("neuro_why_understood", "1"); setShowWhyBlock(false); }}
+                className="mt-2 text-xs text-muted-foreground"
+              >
+                Понятно ✓
+              </button>
             </motion.div>
           )}
         </AnimatePresence>
 
-        {/* Collapsed "?" hint if block was dismissed */}
         {!showWhyBlock && (
-          <motion.button
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+          <button
             onClick={() => setShowWhyBlock(true)}
-            className="flex items-center gap-1.5 text-[10px] text-muted-foreground/60 hover:text-muted-foreground transition-colors font-mono"
+            className="flex items-center gap-1.5 py-2 text-[10px] text-muted-foreground font-mono"
           >
             <HelpCircle className="w-3 h-3" /> зачем всё это?
-          </motion.button>
+          </button>
         )}
 
         {/* Life Overview */}
