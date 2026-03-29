@@ -48,24 +48,23 @@ const CircularGauge = ({ value, max, label, color, size = 80 }: GaugeProps) => {
 interface StateGaugesProps {
   energy: number;
   maxEnergy: number;
-  moodAvg: number; // 0-5
-  stagnation: number; // 0-100
+  moodAvg: number;
+  stagnation: number;
 }
 
 const StateGauges = ({ energy, maxEnergy, moodAvg, stagnation }: StateGaugesProps) => {
-  // Recovery = inverse of stagnation
   const recovery = Math.max(0, 100 - stagnation);
 
   return (
-    <div className="glass-card rounded-2xl p-5">
+    <div className="py-4 border-b border-border">
       <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest mb-4">
-        Текущее состояние
+        Активность
       </p>
       <div className="flex justify-around">
         <CircularGauge
           value={recovery} max={100}
-          label="Recovery"
-          color="hsl(var(--primary))"
+          label="Движение"
+          color="hsl(var(--recovery))"
         />
         <CircularGauge
           value={energy} max={maxEnergy}

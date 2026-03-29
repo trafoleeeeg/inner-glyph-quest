@@ -298,65 +298,59 @@ const Index = () => {
         {showOnboarding && <Onboarding onComplete={() => setShowOnboarding(false)} />}
       </AnimatePresence>
 
-      <div className="max-w-2xl mx-auto px-4 py-6 space-y-4">
+      <div className="max-w-2xl mx-auto px-4 py-6 space-y-0">
         {/* Header */}
-        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center justify-between py-4 border-b border-border">
           <div>
             <h1 className="text-xl font-bold text-foreground tracking-tight">
-              {greeting}{profile ? `, ${profile.display_name.split(' ')[0]}` : ''} 👋
+              {greeting}{profile ? `, ${profile.display_name.split(' ')[0]}` : ''}
             </h1>
-            <p className="text-[10px] text-muted-foreground font-mono">
+            <p className="text-xs text-muted-foreground">
               {profile && profile.streak > 0
-                ? `🔥 ${profile.streak} ${profile.streak === 1 ? 'день' : profile.streak < 5 ? 'дня' : 'дней'} подряд — продолжай!`
-                : 'начни серию активных дней сегодня'}
+                ? `${profile.streak} ${profile.streak === 1 ? 'день' : profile.streak < 5 ? 'дня' : 'дней'} подряд`
+                : 'начни серию сегодня'}
             </p>
           </div>
           <div className="flex items-center gap-1.5">
             <NavButton icon={<HelpCircle className="w-4 h-4" />} onClick={startTutorial} tooltip="Обучение" color="text-muted-foreground" />
-            <NavButton icon={<Heart className="w-4 h-4" />} onClick={() => navigate("/desires")} tooltip="Желания" color="text-secondary" />
+            <NavButton icon={<Heart className="w-4 h-4" />} onClick={() => navigate("/desires")} tooltip="Желания" color="text-muted-foreground" />
           </div>
         </motion.div>
 
-        {/* Streak motivation card */}
+        {/* Streak — inline */}
         {profile && profile.streak >= 3 && (
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
-            className="glass-card rounded-xl p-3 border border-accent/15 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-lg">
-              {profile.streak >= 7 ? '🏆' : '🔥'}
-            </div>
-            <div className="flex-1">
+          <div className="py-3 border-b border-border flex items-center gap-3">
+            <span className="text-lg">{profile.streak >= 7 ? '🏆' : '🔥'}</span>
+            <div>
               <p className="text-xs font-semibold text-foreground">
                 {profile.streak >= 7 ? 'Невероятная серия!' : 'Отличная серия!'}
               </p>
               <p className="text-[10px] text-muted-foreground">
-                {profile.streak} дней подряд.
+                {profile.streak} дней подряд
                 {profile.longest_streak > profile.streak
-                  ? ` До рекорда (${profile.longest_streak}д) осталось ${profile.longest_streak - profile.streak}!`
-                  : ' 🏆 Это твой рекорд!'}
+                  ? ` · до рекорда ${profile.longest_streak - profile.streak}`
+                  : ' · рекорд'}
               </p>
             </div>
-          </motion.div>
+          </div>
         )}
 
-        {/* Diagnostic block — accent */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-          className="rounded-2xl p-4 border border-primary/20 bg-card cursor-pointer hover:border-primary/40 transition-all"
+        {/* Diagnostic */}
+        <div
+          className="py-4 border-b border-border cursor-pointer"
           onClick={() => navigate("/life-analysis")}
         >
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-destructive/15 flex items-center justify-center text-2xl">
-              🧬
-            </div>
+            <span className="text-2xl">🧬</span>
             <div className="flex-1">
-              <p className="text-sm font-bold text-foreground">Диагностика: определи свой архетип</p>
+              <p className="text-sm font-semibold text-foreground">Определи свой архетип</p>
               <p className="text-[10px] text-muted-foreground mt-0.5">
-                Алгоритм определит тип твоей прокрастинации и назначит протоколы, которые сломают паттерн
+                Диагностика назначит протоколы под твой тип прокрастинации
               </p>
             </div>
-            <span className="text-destructive text-lg font-bold">→</span>
+            <span className="text-muted-foreground">→</span>
           </div>
-        </motion.div>
+        </div>
 
         {/* Glyph — visual state indicator */}
         {profile && (
@@ -405,42 +399,35 @@ const Index = () => {
         <AnimatePresence>
           {showWhyBlock && (
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, height: 0, marginBottom: 0 }}
-              className="rounded-2xl p-4 border border-accent/20 bg-gradient-to-br from-accent/5 via-primary/5 to-secondary/5"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0, height: 0 }}
+              className="py-4 border-b border-border"
             >
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-xl flex-shrink-0">🧠</div>
-                <div className="flex-1">
-                  <h3 className="text-sm font-semibold text-foreground mb-1">Это не просто трекер</h3>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    Алгоритм определяет твой архетип прокрастинации и назначает нейробиологические протоколы (Глифы), которые ломают деструктивные паттерны. Настроение и энергия — входные данные для калибровки системы.
-                  </p>
-                  <p className="text-xs text-foreground/70 leading-relaxed mt-1.5 font-medium">
-                    Каждый чекин = данные. Данные = точная диагностика. Диагностика = протоколы, которые работают.
-                  </p>
-                  <button
-                    onClick={() => { localStorage.setItem("neuro_why_understood", "1"); setShowWhyBlock(false); }}
-                    className="mt-2 text-xs font-medium text-primary hover:text-primary/80 transition-colors"
-                  >
-                    Понятно ✓
-                  </button>
-                </div>
-              </div>
+              <h3 className="text-sm font-semibold text-foreground mb-1">Это не просто трекер</h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Алгоритм определяет твой архетип прокрастинации и назначает протоколы, которые ломают паттерны. Настроение и энергия — входные данные для калибровки.
+              </p>
+              <p className="text-xs text-foreground/70 leading-relaxed mt-1.5">
+                Чекин = данные → диагностика → протоколы
+              </p>
+              <button
+                onClick={() => { localStorage.setItem("neuro_why_understood", "1"); setShowWhyBlock(false); }}
+                className="mt-2 text-xs text-muted-foreground"
+              >
+                Понятно ✓
+              </button>
             </motion.div>
           )}
         </AnimatePresence>
 
-        {/* Collapsed "?" hint if block was dismissed */}
         {!showWhyBlock && (
-          <motion.button
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+          <button
             onClick={() => setShowWhyBlock(true)}
-            className="flex items-center gap-1.5 text-[10px] text-muted-foreground/60 hover:text-muted-foreground transition-colors font-mono"
+            className="flex items-center gap-1.5 py-2 text-[10px] text-muted-foreground font-mono"
           >
             <HelpCircle className="w-3 h-3" /> зачем всё это?
-          </motion.button>
+          </button>
         )}
 
         {/* Life Overview */}
@@ -455,14 +442,14 @@ const Index = () => {
         <InsightsPanel />
 
         {/* Habits */}
-        <div id="tutorial-missions">
+        <div id="tutorial-missions" className="py-4 border-b border-border">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold text-foreground flex items-center gap-2"><span>⚡</span> Ежедневные привычки</h2>
+            <h2 className="text-sm font-semibold text-foreground">Ежедневные привычки</h2>
             {missions.length > 0 && <span className="text-xs font-mono text-muted-foreground">{completedCount}/{missions.length}</span>}
           </div>
           {missions.length > 0 ? (
             <>
-              <div className="space-y-2">
+              <div className="space-y-0">
                 {missions.map((mission, i) => (
                   <MissionCard key={mission.id} mission={mission} onComplete={completeMission}
                     onEdit={handleEditMission} onDelete={handleDeleteMission}
@@ -474,30 +461,25 @@ const Index = () => {
               </div>
             </>
           ) : (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="rounded-2xl p-6 border-2 border-dashed border-primary/20 bg-primary/5 text-center space-y-3"
-            >
-              <div className="text-4xl">🧬</div>
-              <h3 className="text-sm font-semibold text-foreground">Протоколы не назначены</h3>
-              <p className="text-xs text-muted-foreground leading-relaxed max-w-xs mx-auto">
-                Пройди диагностику — алгоритм определит твой архетип прокрастинации и назначит Глифы, которые сломают деструктивные паттерны.
+            <div className="text-center py-6">
+              <p className="text-sm text-foreground font-semibold mb-1">Протоколы не назначены</p>
+              <p className="text-xs text-muted-foreground mb-3">
+                Пройди диагностику для получения персональных привычек
               </p>
               <button
                 onClick={() => navigate("/life-analysis")}
-                className="px-4 py-2 rounded-xl bg-destructive text-destructive-foreground text-xs font-semibold hover:bg-destructive/90 transition-colors"
+                className="px-4 py-2 rounded-full bg-foreground text-background text-xs font-semibold"
               >
-                Запустить диагностику →
+                Запустить диагностику
               </button>
-              <div className="pt-2">
+              <div className="pt-3">
                 <CreateMission onSubmit={handleCreateMission} />
               </div>
-            </motion.div>
+            </div>
           )}
         </div>
 
-        <div id="tutorial-mood" className="grid md:grid-cols-2 gap-4">
+        <div id="tutorial-mood" className="grid md:grid-cols-2 gap-0">
           <MoodCheckin onSubmit={handleMoodSubmit} />
           <DreamJournal onSubmit={handleDreamSubmit} />
         </div>
@@ -516,10 +498,10 @@ const Index = () => {
 };
 
 const NavButton = ({ icon, onClick, tooltip, color }: { icon: React.ReactNode; onClick: () => void; tooltip: string; color: string }) => (
-  <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={onClick} title={tooltip}
-    className={`w-8 h-8 rounded-lg bg-muted/30 border border-border/30 flex items-center justify-center ${color} hover:bg-muted/50 transition-all`}>
+  <button onClick={onClick} title={tooltip}
+    className={`w-8 h-8 rounded-full flex items-center justify-center ${color} transition-colors`}>
     {icon}
-  </motion.button>
+  </button>
 );
 
 export default Index;
