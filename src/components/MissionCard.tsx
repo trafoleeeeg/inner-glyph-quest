@@ -41,9 +41,9 @@ const categoryLabels: Record<string, string> = {
 };
 
 const glyphTypeLabels: Record<string, { label: string; color: string }> = {
-  cognitive_constraint: { label: 'КОГНИТИВ', color: 'text-primary bg-primary/10' },
+  cognitive_constraint: { label: 'КОГНИТИВ', color: 'text-secondary bg-secondary/10' },
   physical_shock: { label: 'ФИЗИКА', color: 'text-destructive bg-destructive/10' },
-  dynamic_complexity: { label: 'ДИНАМИКА', color: 'text-accent bg-accent/10' },
+  dynamic_complexity: { label: 'ДИНАМИКА', color: 'text-primary bg-primary/10' },
 };
 
 const MissionCard = ({ mission, onComplete, onEdit, onDelete, index, devaluation }: MissionCardProps) => {
