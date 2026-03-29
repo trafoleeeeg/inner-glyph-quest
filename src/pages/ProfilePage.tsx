@@ -97,15 +97,18 @@ const ProfilePage = () => {
   const handleNameSave = async () => {
     const trimmed = nameInput.trim();
     if (!trimmed || trimmed.length > 30) return;
-    // Allow English letters, numbers, spaces, underscores, dots
     const isValid = /^[a-zA-Z0-9_.\s]+$/.test(trimmed);
     if (!isValid) {
       toast.error("Никнейм должен быть на английском (буквы, цифры, _)");
       return;
     }
-    await updateProfile({ display_name: trimmed } as any);
-    setEditingName(false);
-    toast.success("Никнейм обновлён");
+    try {
+      await updateProfile({ display_name: trimmed });
+      setEditingName(false);
+      toast.success("Никнейм обновлён");
+    } catch (e) {
+      toast.error("Не удалось обновить никнейм");
+    }
   };
 
   const handleBioSave = async () => {
