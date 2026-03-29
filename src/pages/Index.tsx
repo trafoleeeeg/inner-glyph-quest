@@ -442,14 +442,14 @@ const Index = () => {
         <InsightsPanel />
 
         {/* Habits */}
-        <div id="tutorial-missions">
+        <div id="tutorial-missions" className="py-4 border-b border-border">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold text-foreground flex items-center gap-2"><span>⚡</span> Ежедневные привычки</h2>
+            <h2 className="text-sm font-semibold text-foreground">Ежедневные привычки</h2>
             {missions.length > 0 && <span className="text-xs font-mono text-muted-foreground">{completedCount}/{missions.length}</span>}
           </div>
           {missions.length > 0 ? (
             <>
-              <div className="space-y-2">
+              <div className="space-y-0">
                 {missions.map((mission, i) => (
                   <MissionCard key={mission.id} mission={mission} onComplete={completeMission}
                     onEdit={handleEditMission} onDelete={handleDeleteMission}
@@ -461,26 +461,21 @@ const Index = () => {
               </div>
             </>
           ) : (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="rounded-2xl p-6 border-2 border-dashed border-primary/20 bg-primary/5 text-center space-y-3"
-            >
-              <div className="text-4xl">🧬</div>
-              <h3 className="text-sm font-semibold text-foreground">Протоколы не назначены</h3>
-              <p className="text-xs text-muted-foreground leading-relaxed max-w-xs mx-auto">
-                Пройди диагностику — алгоритм определит твой архетип прокрастинации и назначит Глифы, которые сломают деструктивные паттерны.
+            <div className="text-center py-6">
+              <p className="text-sm text-foreground font-semibold mb-1">Протоколы не назначены</p>
+              <p className="text-xs text-muted-foreground mb-3">
+                Пройди диагностику для получения персональных привычек
               </p>
               <button
                 onClick={() => navigate("/life-analysis")}
-                className="px-4 py-2 rounded-xl bg-destructive text-destructive-foreground text-xs font-semibold hover:bg-destructive/90 transition-colors"
+                className="px-4 py-2 rounded-full bg-foreground text-background text-xs font-semibold"
               >
-                Запустить диагностику →
+                Запустить диагностику
               </button>
-              <div className="pt-2">
+              <div className="pt-3">
                 <CreateMission onSubmit={handleCreateMission} />
               </div>
-            </motion.div>
+            </div>
           )}
         </div>
 
