@@ -27,12 +27,12 @@ interface MissionCardProps {
 }
 
 const categoryColors: Record<string, { border: string; text: string; bg: string }> = {
-  habit: { border: 'border-primary/15 hover:border-primary/30', text: 'text-primary', bg: 'bg-primary/8' },
-  mood: { border: 'border-energy/15 hover:border-energy/30', text: 'text-energy', bg: 'bg-energy/8' },
-  dream: { border: 'border-dream/15 hover:border-dream/30', text: 'text-dream', bg: 'bg-dream/8' },
-  desire: { border: 'border-secondary/15 hover:border-secondary/30', text: 'text-secondary', bg: 'bg-secondary/8' },
-  health: { border: 'border-accent/15 hover:border-accent/30', text: 'text-accent', bg: 'bg-accent/8' },
-  custom: { border: 'border-primary/15 hover:border-primary/30', text: 'text-primary', bg: 'bg-primary/8' },
+  habit: { border: 'border-border hover:border-primary/30', text: 'text-primary', bg: 'bg-primary/8' },
+  mood: { border: 'border-border hover:border-secondary/30', text: 'text-secondary', bg: 'bg-secondary/8' },
+  dream: { border: 'border-border hover:border-accent/30', text: 'text-accent', bg: 'bg-accent/8' },
+  desire: { border: 'border-border hover:border-primary/30', text: 'text-primary', bg: 'bg-primary/8' },
+  health: { border: 'border-border hover:border-primary/30', text: 'text-primary', bg: 'bg-primary/8' },
+  custom: { border: 'border-border hover:border-primary/30', text: 'text-primary', bg: 'bg-primary/8' },
 };
 
 const categoryLabels: Record<string, string> = {
@@ -41,9 +41,9 @@ const categoryLabels: Record<string, string> = {
 };
 
 const glyphTypeLabels: Record<string, { label: string; color: string }> = {
-  cognitive_constraint: { label: 'КОГНИТИВ', color: 'text-primary bg-primary/10' },
+  cognitive_constraint: { label: 'КОГНИТИВ', color: 'text-secondary bg-secondary/10' },
   physical_shock: { label: 'ФИЗИКА', color: 'text-destructive bg-destructive/10' },
-  dynamic_complexity: { label: 'ДИНАМИКА', color: 'text-accent bg-accent/10' },
+  dynamic_complexity: { label: 'ДИНАМИКА', color: 'text-primary bg-primary/10' },
 };
 
 const MissionCard = ({ mission, onComplete, onEdit, onDelete, index, devaluation }: MissionCardProps) => {

@@ -6,6 +6,7 @@ import { useProfile } from "@/hooks/useProfile";
 import { supabase } from "@/integrations/supabase/client";
 import XPBar from "@/components/XPBar";
 import GlyphVisualizer from "@/components/GlyphVisualizer";
+import StateGauges from "@/components/StateGauges";
 import StatsRow from "@/components/StatsRow";
 import MissionCard from "@/components/MissionCard";
 import type { MissionData } from "@/components/MissionCard";
@@ -44,6 +45,8 @@ const Index = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [missionCompletionCounts, setMissionCompletionCounts] = useState<Record<string, number>>({});
   const [lifeBalance, setLifeBalance] = useState(50);
+  const [moodAvg, setMoodAvg] = useState(0);
+  const [stagnationIndex, setStagnationIndex] = useState(0);
   const [showWhyBlock, setShowWhyBlock] = useState(() => !localStorage.getItem("neuro_why_understood"));
 
   // Daily checkin state
@@ -149,6 +152,7 @@ const Index = () => {
       const moodData = moods.data || [];
       const avgEnergy = moodData.length > 0 ? moodData.reduce((s, m) => s + m.energy_level, 0) / moodData.length : 0;
       const avgMood = moodData.length > 0 ? moodData.reduce((s, m) => s + m.mood, 0) / moodData.length : 0;
+      setMoodAvg(avgMood);
       const scores = [
         Math.min(avgEnergy * 20, 100), Math.min((completions.count || 0) * 5, 100),
         Math.min(avgMood * 20 + moodData.length * 3, 100), Math.min((posts.count || 0) * 10, 100),
@@ -361,6 +365,17 @@ const Index = () => {
             energy={profile.energy}
             maxEnergy={profile.max_energy}
             streak={profile.streak}
+            onStagnationUpdate={(d) => setStagnationIndex(d.stagnation_index)}
+          />
+        )}
+
+        {/* WHOOP-style state gauges */}
+        {profile && (
+          <StateGauges
+            energy={profile.energy}
+            maxEnergy={profile.max_energy}
+            moodAvg={moodAvg}
+            stagnation={stagnationIndex}
           />
         )}
 

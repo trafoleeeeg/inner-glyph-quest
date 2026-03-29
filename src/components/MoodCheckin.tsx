@@ -4,8 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 const moods = [
   { emoji: '😫', label: 'Плохо', value: 1, color: 'text-destructive' },
   { emoji: '😕', label: 'Так себе', value: 2, color: 'text-streak' },
-  { emoji: '😐', label: 'Нормально', value: 3, color: 'text-energy' },
-  { emoji: '😊', label: 'Хорошо', value: 4, color: 'text-accent' },
+  { emoji: '😐', label: 'Нормально', value: 3, color: 'text-muted-foreground' },
+  { emoji: '😊', label: 'Хорошо', value: 4, color: 'text-primary' },
   { emoji: '🔥', label: 'Отлично', value: 5, color: 'text-primary' },
 ];
 
@@ -46,12 +46,12 @@ const MoodCheckin = ({ onSubmit }: MoodCheckinProps) => {
   }
 
   return (
-    <div className="glass-card rounded-2xl p-5 border border-energy/10">
+    <div className="glass-card rounded-2xl p-5">
       <h3 className="text-sm font-semibold mb-1 flex items-center gap-2">
-        <span className="text-energy">📡</span> Как ты сейчас?
+        Как ты сейчас?
       </h3>
       <p className="text-[9px] text-muted-foreground/60 font-mono mb-3 leading-relaxed">
-        Записывай каждый день — через неделю AI покажет, какие привычки улучшают твоё состояние
+        Данные → паттерны → точные рекомендации
       </p>
       
       <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider mb-2">Настроение</p>
@@ -59,7 +59,7 @@ const MoodCheckin = ({ onSubmit }: MoodCheckinProps) => {
         {moods.map((m) => (
           <motion.button key={m.value} onClick={() => setSelectedMood(m.value)}
             className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all flex-1 ${
-              selectedMood === m.value ? 'bg-energy/15 border border-energy/30' : 'hover:bg-muted/50 border border-transparent'
+              selectedMood === m.value ? 'bg-primary/10 border border-primary/30' : 'hover:bg-muted/50 border border-transparent'
             }`} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.9 }}>
             <span className="text-xl">{m.emoji}</span>
             <span className="text-[9px] text-muted-foreground font-mono">{m.label}</span>
@@ -72,7 +72,7 @@ const MoodCheckin = ({ onSubmit }: MoodCheckinProps) => {
         {energyLevels.map((e) => (
           <motion.button key={e.value} onClick={() => setSelectedEnergy(e.value)}
             className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all flex-1 ${
-              selectedEnergy === e.value ? 'bg-primary/15 border border-primary/30' : 'hover:bg-muted/50 border border-transparent'
+              selectedEnergy === e.value ? 'bg-secondary/10 border border-secondary/30' : 'hover:bg-muted/50 border border-transparent'
             }`} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.9 }}>
             <span className="text-xl">{e.emoji}</span>
             <span className="text-[9px] text-muted-foreground font-mono">{e.label}</span>
