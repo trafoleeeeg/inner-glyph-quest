@@ -32,6 +32,8 @@ const AdminPanel = () => {
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState<UserProfile[]>([]);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [selectedUserId, setSelectedUserId] = useState<string | undefined>(undefined);
+  const [activeTab, setActiveTab] = useState<"users" | "activity">("users");
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalMissions: 0,
