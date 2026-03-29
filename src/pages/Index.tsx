@@ -479,7 +479,7 @@ const Index = () => {
           )}
         </div>
 
-        <div id="tutorial-mood" className="grid md:grid-cols-2 gap-4">
+        <div id="tutorial-mood" className="grid md:grid-cols-2 gap-0">
           <MoodCheckin onSubmit={handleMoodSubmit} />
           <DreamJournal onSubmit={handleDreamSubmit} />
         </div>
