@@ -498,10 +498,10 @@ const Index = () => {
 };
 
 const NavButton = ({ icon, onClick, tooltip, color }: { icon: React.ReactNode; onClick: () => void; tooltip: string; color: string }) => (
-  <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={onClick} title={tooltip}
-    className={`w-8 h-8 rounded-lg bg-muted/30 border border-border/30 flex items-center justify-center ${color} hover:bg-muted/50 transition-all`}>
+  <button onClick={onClick} title={tooltip}
+    className={`w-8 h-8 rounded-full flex items-center justify-center ${color} transition-colors`}>
     {icon}
-  </motion.button>
+  </button>
 );
 
 export default Index;
