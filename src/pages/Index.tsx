@@ -226,6 +226,7 @@ const Index = () => {
     setMissions(prev => prev.map(m => m.id === id ? { ...m, completed: true } : m));
     setMissionCompletionCounts(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
     await refetchProfile();
+    logActivity("mission_complete", mission.title, { mission_id: id, xp: result.totalXP });
   }, [user, profile, missions, refetchProfile]);
 
   const handleMoodSubmit = useCallback(async (mood: number, energy: number, note: string) => {
