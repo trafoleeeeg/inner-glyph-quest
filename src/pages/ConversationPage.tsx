@@ -162,8 +162,8 @@ const ConversationPage = () => {
       toast.error("Не удалось отправить");
     } else {
       setInput("");
-      // Update conversation updated_at
       await supabase.from("conversations").update({ updated_at: new Date().toISOString() }).eq("id", conversationId);
+      import("@/lib/activityLogger").then(m => m.logActivity("message_sent", type, { conversation_id: conversationId }));
     }
     setSending(false);
   };
