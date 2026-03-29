@@ -13,7 +13,7 @@ import MoodCheckin from "@/components/MoodCheckin";
 import DreamJournal from "@/components/DreamJournal";
 import AchievementsList from "@/components/AchievementsList";
 import RewardPopup from "@/components/RewardPopup";
-import ParticleField from "@/components/ParticleField";
+
 import CreateMission from "@/components/CreateMission";
 import InsightsPanel from "@/components/InsightsPanel";
 import Onboarding from "@/components/Onboarding";
@@ -265,8 +265,8 @@ const Index = () => {
   const greeting = hour < 12 ? "Доброе утро" : hour < 18 ? "Добрый день" : "Добрый вечер";
 
   return (
-    <div className="min-h-screen bg-background cyber-grid relative pb-20">
-      <ParticleField />
+    <div className="min-h-screen bg-background relative pb-20">
+      
 
       {/* Daily Checkin Overlay */}
       <AnimatePresence>
@@ -294,7 +294,7 @@ const Index = () => {
         {showOnboarding && <Onboarding onComplete={() => setShowOnboarding(false)} />}
       </AnimatePresence>
 
-      <div className="relative z-10 max-w-2xl mx-auto px-4 py-6 space-y-4">
+      <div className="max-w-2xl mx-auto px-4 py-6 space-y-4">
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
           <div>
@@ -337,7 +337,7 @@ const Index = () => {
         {/* Diagnostic block — accent */}
         <motion.div
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-          className="rounded-2xl p-4 border-2 border-destructive/30 bg-gradient-to-r from-destructive/10 via-primary/10 to-accent/10 cursor-pointer hover:border-destructive/50 transition-all"
+          className="rounded-2xl p-4 border border-primary/20 bg-card cursor-pointer hover:border-primary/40 transition-all"
           onClick={() => navigate("/life-analysis")}
         >
           <div className="flex items-center gap-3">

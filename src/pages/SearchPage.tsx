@@ -6,7 +6,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import BottomNav from "@/components/BottomNav";
-import ParticleField from "@/components/ParticleField";
 
 const PUBLIC_PROFILES_TABLE = "public_profiles";
 
@@ -83,11 +82,11 @@ const SearchPage = () => {
   const displayList = query.trim() ? results : topUsers;
 
   return (
-    <div className="min-h-screen bg-background cyber-grid relative pb-20">
-      <ParticleField />
-      <div className="relative z-10 max-w-2xl mx-auto px-4 py-6 space-y-4">
+    <div className="min-h-screen bg-background relative pb-20">
+      
+      <div className="max-w-2xl mx-auto px-4 py-6 space-y-4">
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-2">
-          <h1 className="text-xl font-bold text-primary text-glow-primary font-display">Участники</h1>
+          <h1 className="text-xl font-bold text-primary  font-display">Участники</h1>
           <p className="text-[10px] text-muted-foreground font-mono">найди единомышленников</p>
         </motion.div>
 

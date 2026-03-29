@@ -4,7 +4,7 @@ import { Plus, Check, Trash2, Calendar, Flag, ChevronDown, ChevronRight, Inbox, 
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
-import ParticleField from "@/components/ParticleField";
+
 import BottomNav from "@/components/BottomNav";
 
 interface Task {
@@ -188,9 +188,9 @@ const TasksPage = () => {
   const progressPercent = todayTasksTotal > 0 ? Math.round((todayTasksDone / todayTasksTotal) * 100) : 0;
 
   return (
-    <div className="min-h-screen bg-background cyber-grid relative pb-20">
-      <ParticleField />
-      <div className="relative z-10 max-w-2xl mx-auto px-4 py-6 space-y-4">
+    <div className="min-h-screen bg-background relative pb-20">
+      
+      <div className="max-w-2xl mx-auto px-4 py-6 space-y-4">
         {/* Header with daily progress */}
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
           className="glass-card rounded-2xl p-4 border border-primary/10">
@@ -209,7 +209,7 @@ const TasksPage = () => {
             </div>
           </div>
           <div className="h-2 bg-muted/30 rounded-full overflow-hidden">
-            <motion.div className="h-full rounded-full bg-gradient-to-r from-primary/60 to-accent/60"
+            <motion.div className="h-full rounded-full bg-primary"
               initial={{ width: 0 }} animate={{ width: `${progressPercent}%` }} transition={{ duration: 0.8 }} />
           </div>
           {todayTasksDone > 0 && todayTasksDone === todayTasksTotal && todayTasksTotal > 0 && (

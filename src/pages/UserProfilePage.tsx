@@ -8,7 +8,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import PostCard from "@/components/PostCard";
 import CommentsSheet from "@/components/CommentsSheet";
 import BottomNav from "@/components/BottomNav";
-import ParticleField from "@/components/ParticleField";
 import { toast } from "sonner";
 
 const PUBLIC_PROFILES_TABLE = "public_profiles";
@@ -112,9 +111,9 @@ const UserProfilePage = () => {
   const initials = profile.display_name.slice(0, 2).toUpperCase();
 
   return (
-    <div className="min-h-screen bg-background cyber-grid relative pb-20">
-      <ParticleField />
-      <div className="relative z-10 max-w-2xl mx-auto px-4 py-6 space-y-4">
+    <div className="min-h-screen bg-background relative pb-20">
+      
+      <div className="max-w-2xl mx-auto px-4 py-6 space-y-4">
         {/* Back button */}
         <motion.button
           initial={{ opacity: 0 }}
@@ -128,7 +127,7 @@ const UserProfilePage = () => {
 
         {/* Profile card */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          className="glass-card rounded-2xl p-6 gradient-border text-center">
+          className="glass-card rounded-2xl p-6  text-center">
           <Avatar className="w-20 h-20 mx-auto mb-3 border-2 border-primary/20">
             {profile.avatar_url && <AvatarImage src={profile.avatar_url} />}
             <AvatarFallback className="bg-primary/10 text-primary text-xl font-mono">{initials}</AvatarFallback>

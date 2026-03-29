@@ -86,7 +86,7 @@ const MoodCheckin = ({ onSubmit }: MoodCheckinProps) => {
             <textarea placeholder="Что повлияло? (опционально)" value={note} onChange={(e) => setNote(e.target.value)}
               className="w-full bg-muted/30 border border-border/50 rounded-xl p-3 text-sm text-foreground placeholder:text-muted-foreground resize-none h-16 mb-3 focus:outline-none focus:border-energy/50 transition-all" />
             <motion.button onClick={handleSubmit} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-              className="w-full bg-gradient-to-r from-energy/20 to-primary/20 hover:from-energy/30 hover:to-primary/30 text-energy border border-energy/20 rounded-xl py-2.5 text-sm font-semibold transition-all">
+              className="w-full bg-primary text-primary-foreground rounded-xl py-2.5 text-sm font-semibold transition-all">
               Записать настроение
             </motion.button>
           </motion.div>

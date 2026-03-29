@@ -4,7 +4,7 @@ import { useProfile } from "@/hooks/useProfile";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import ParticleField from "@/components/ParticleField";
+
 import AchievementsList from "@/components/AchievementsList";
 import AnalyticsCharts from "@/components/AnalyticsCharts";
 import GrowthPathChart from "@/components/GrowthPathChart";
@@ -148,9 +148,9 @@ const ProfilePage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background cyber-grid relative pb-20">
-      <ParticleField />
-      <div className="relative z-10 max-w-2xl mx-auto px-4 py-6 space-y-5">
+    <div className="min-h-screen bg-background relative pb-20">
+      
+      <div className="max-w-2xl mx-auto px-4 py-6 space-y-5">
         {/* Header with sign out */}
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
           <h1 className="text-lg font-bold text-foreground">Мой профиль</h1>
@@ -175,7 +175,7 @@ const ProfilePage = () => {
 
         {/* Profile Card */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-          className="glass-card rounded-2xl p-6 gradient-border text-center">
+          className="glass-card rounded-2xl p-6  text-center">
           <div className="relative inline-block">
             <Avatar className="w-20 h-20 mx-auto mb-3 border-2 border-primary/20">
               {profile.avatar_url && <AvatarImage src={profile.avatar_url} />}
@@ -256,10 +256,9 @@ const ProfilePage = () => {
               <span className="text-muted-foreground">{profile.xp}/{profile.xp_to_next}</span>
             </div>
             <div className="h-2 bg-muted/50 rounded-full overflow-hidden">
-              <motion.div className="h-full rounded-full bg-gradient-to-r from-primary to-accent" initial={{ width: 0 }}
+              <motion.div className="h-full rounded-full bg-primary" initial={{ width: 0 }}
                 animate={{ width: `${(profile.xp / profile.xp_to_next) * 100}%` }}
-                transition={{ duration: 1 }}
-                style={{ boxShadow: '0 0 10px hsl(180 100% 50% / 0.4)' }} />
+                transition={{ duration: 1 }} />
             </div>
           </div>
         </motion.div>
