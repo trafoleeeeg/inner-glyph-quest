@@ -3,8 +3,9 @@ import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Users, Shield, TrendingUp, Activity, Copy, Check, MessageCircle } from "lucide-react";
+import { ArrowLeft, Users, Shield, TrendingUp, Activity, Copy, Check, MessageCircle, Eye } from "lucide-react";
 import { toast } from "sonner";
+import ActivityLog from "@/components/admin/ActivityLog";
 
 interface UserProfile {
   id: string;
