@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import ParticleField from "@/components/ParticleField";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Users, Shield, TrendingUp, Activity } from "lucide-react";
 
@@ -74,7 +73,7 @@ const AdminPanel = () => {
 
   if (!isAdmin) {
     return (
-      <div className="min-h-screen bg-background cyber-grid flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="glass-card rounded-2xl p-8 text-center max-w-sm">
           <Shield className="w-12 h-12 text-destructive mx-auto mb-3" />
           <h2 className="text-lg font-bold text-foreground mb-1">Доступ запрещён</h2>
@@ -93,8 +92,8 @@ const AdminPanel = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background cyber-grid relative">
-      <ParticleField />
+    <div className="min-h-screen bg-background relative">
+      
       <div className="relative z-10 max-w-4xl mx-auto px-4 py-6 space-y-5">
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3">
           <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => navigate("/")}

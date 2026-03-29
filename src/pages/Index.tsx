@@ -265,8 +265,8 @@ const Index = () => {
   const greeting = hour < 12 ? "Доброе утро" : hour < 18 ? "Добрый день" : "Добрый вечер";
 
   return (
-    <div className="min-h-screen bg-background cyber-grid relative pb-20">
-      <ParticleField />
+    <div className="min-h-screen bg-background relative pb-20">
+      
 
       {/* Daily Checkin Overlay */}
       <AnimatePresence>

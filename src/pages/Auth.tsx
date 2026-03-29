@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Zap } from "lucide-react";
-import ParticleField from "@/components/ParticleField";
 import { lovable } from "@/integrations/lovable/index";
 import { z } from "zod";
 
@@ -84,8 +83,8 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background cyber-grid relative overflow-hidden flex items-center justify-center">
-      <ParticleField />
+    <div className="min-h-screen bg-background relative overflow-hidden flex items-center justify-center">
+      
       <motion.div initial={{ opacity: 0, scale: 0.9, y: 30 }} animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }} className="relative z-10 w-full max-w-md mx-4">
         

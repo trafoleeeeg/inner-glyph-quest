@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import ParticleField from "@/components/ParticleField";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Send } from "lucide-react";
 
@@ -76,8 +75,8 @@ const CommunityChat = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background cyber-grid relative flex flex-col">
-      <ParticleField />
+    <div className="min-h-screen bg-background relative flex flex-col">
+      
       <div className="relative z-10 max-w-2xl mx-auto px-4 py-6 flex flex-col flex-1 w-full">
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3 mb-4">

@@ -138,8 +138,8 @@ const FeedPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background cyber-grid relative pb-20">
-      <ParticleField />
+    <div className="min-h-screen bg-background relative pb-20">
+      
       <div className="relative z-10 max-w-2xl mx-auto px-4 py-6 space-y-4">
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
           <div className="text-center flex-1">
