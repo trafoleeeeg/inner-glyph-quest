@@ -40,18 +40,31 @@ export function useProfile() {
   useEffect(() => { fetchProfile(); }, [fetchProfile]);
 
   const updateProfile = useCallback(async (updates: Partial<Pick<Profile, 'display_name' | 'avatar_url' | 'bio'>>) => {
-    if (!user) return;
+    if (!user) return false;
     const safeUpdates: Record<string, unknown> = {};
     if ('display_name' in updates) safeUpdates.display_name = updates.display_name;
     if ('avatar_url' in updates) safeUpdates.avatar_url = updates.avatar_url;
     if ('bio' in updates) safeUpdates.bio = updates.bio;
-    if (Object.keys(safeUpdates).length === 0) return;
-    const { error } = await supabase.from("profiles").update(safeUpdates).eq("user_id", user.id);
+    if (Object.keys(safeUpdates).length === 0) return false;
+    
+    const { error, data } = await supabase
+      .from("profiles")
+      .update(safeUpdates)
+      .eq("user_id", user.id)
+      .select();
+    
     if (error) {
       console.error("Profile update error:", error);
       throw error;
     }
+    
+    if (!data || data.length === 0) {
+      console.error("Profile update returned no rows — possible RLS issue");
+      throw new Error("Update failed — no rows affected");
+    }
+    
     await fetchProfile();
+    return true;
   }, [user, fetchProfile]);
 
   return { profile, loading, refetch: fetchProfile, updateProfile };
