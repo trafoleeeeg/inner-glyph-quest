@@ -20,6 +20,8 @@ import MapPage from "./pages/MapPage";
 import TribesPage from "./pages/TribesPage";
 import TasksPage from "./pages/TasksPage";
 import LifeAnalysisPage from "./pages/LifeAnalysisPage";
+import MessagesPage from "./pages/MessagesPage";
+import ConversationPage from "./pages/ConversationPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -60,6 +62,8 @@ const App = () => (
                 <Route path="/tribes" element={<ProtectedRoute><TribesPage /></ProtectedRoute>} />
                 <Route path="/tasks" element={<ProtectedRoute><TasksPage /></ProtectedRoute>} />
                 <Route path="/life-analysis" element={<ProtectedRoute><LifeAnalysisPage /></ProtectedRoute>} />
+                <Route path="/messages" element={<ProtectedRoute><MessagesPage /></ProtectedRoute>} />
+                <Route path="/messages/:conversationId" element={<ProtectedRoute><ConversationPage /></ProtectedRoute>} />
                 <Route path="/search" element={<ProtectedRoute><SearchPage /></ProtectedRoute>} />
                 <Route path="/user/:userId" element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
                 <Route path="*" element={<NotFound />} />
