@@ -20,6 +20,8 @@ import MapPage from "./pages/MapPage";
 import TribesPage from "./pages/TribesPage";
 import TasksPage from "./pages/TasksPage";
 import LifeAnalysisPage from "./pages/LifeAnalysisPage";
+import MessagesPage from "./pages/MessagesPage";
+import ConversationPage from "./pages/ConversationPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
