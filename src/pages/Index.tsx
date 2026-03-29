@@ -31,6 +31,8 @@ import BottomNav from "@/components/BottomNav";
 import StreakBadges from "@/components/StreakBadges";
 import PhantomCompetitor from "@/components/PhantomCompetitor";
 import { useTutorial } from "@/components/TutorialOverlay";
+import HubTasks from "@/components/HubTasks";
+import HubAnalytics from "@/components/HubAnalytics";
 
 
 const CHECKIN_KEY = "neuro_daily_checkin_";
