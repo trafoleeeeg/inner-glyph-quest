@@ -29,6 +29,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const trackActivity = async () => {
       try {
         await supabase.rpc("track_user_activity");
+        await logActivity("login", "Вход в приложение");
       } catch { /* ignore */ }
     };
 
