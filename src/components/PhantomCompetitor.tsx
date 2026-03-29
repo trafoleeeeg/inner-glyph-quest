@@ -35,7 +35,7 @@ const PhantomCompetitor = ({ userCompletedToday, userTotalCompleted, userStreak,
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Swords className="w-4 h-4 text-destructive" />
-          <h3 className="text-xs font-semibold text-foreground">Фантомный Конкурент</h3>
+          <h3 className="text-xs font-semibold text-foreground">Ближайший Конкурент</h3>
         </div>
         <span className="text-[9px] font-mono text-muted-foreground">
           {isAhead ? "Ты впереди! 🔥" : isTied ? "Ничья ⚔️" : "Догоняй! 💨"}
