@@ -4,8 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 const moods = [
   { emoji: '😫', label: 'Плохо', value: 1, color: 'text-destructive' },
   { emoji: '😕', label: 'Так себе', value: 2, color: 'text-streak' },
-  { emoji: '😐', label: 'Нормально', value: 3, color: 'text-energy' },
-  { emoji: '😊', label: 'Хорошо', value: 4, color: 'text-accent' },
+  { emoji: '😐', label: 'Нормально', value: 3, color: 'text-muted-foreground' },
+  { emoji: '😊', label: 'Хорошо', value: 4, color: 'text-primary' },
   { emoji: '🔥', label: 'Отлично', value: 5, color: 'text-primary' },
 ];
 
