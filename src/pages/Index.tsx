@@ -317,25 +317,22 @@ const Index = () => {
           </div>
         </motion.div>
 
-        {/* Streak motivation card */}
+        {/* Streak — inline */}
         {profile && profile.streak >= 3 && (
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
-            className="glass-card rounded-xl p-3 border border-accent/15 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-lg">
-              {profile.streak >= 7 ? '🏆' : '🔥'}
-            </div>
-            <div className="flex-1">
+          <div className="py-3 border-b border-border flex items-center gap-3">
+            <span className="text-lg">{profile.streak >= 7 ? '🏆' : '🔥'}</span>
+            <div>
               <p className="text-xs font-semibold text-foreground">
                 {profile.streak >= 7 ? 'Невероятная серия!' : 'Отличная серия!'}
               </p>
               <p className="text-[10px] text-muted-foreground">
-                {profile.streak} дней подряд.
+                {profile.streak} дней подряд
                 {profile.longest_streak > profile.streak
-                  ? ` До рекорда (${profile.longest_streak}д) осталось ${profile.longest_streak - profile.streak}!`
-                  : ' 🏆 Это твой рекорд!'}
+                  ? ` · до рекорда ${profile.longest_streak - profile.streak}`
+                  : ' · рекорд'}
               </p>
             </div>
-          </motion.div>
+          </div>
         )}
 
         {/* Diagnostic block — accent */}
