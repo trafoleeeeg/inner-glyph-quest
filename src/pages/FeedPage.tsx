@@ -174,12 +174,12 @@ const FeedPage = () => {
         </div>
 
         <div className="flex items-center gap-2 justify-center flex-wrap">
-          {(["all", "following", "rss", "leaderboard"] as const).map(t => (
+          {(["all", "following", "arena", "rss", "leaderboard"] as const).map(t => (
             <motion.button key={t} whileTap={{ scale: 0.95 }} onClick={() => setTab(t)}
-              className={`px-4 py-1.5 rounded-xl text-xs font-mono transition-all ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-mono transition-all ${
                 tab === t ? "bg-primary/20 text-primary border border-primary/30" : "text-muted-foreground hover:text-foreground"
               }`}>
-              {t === "all" ? "Все посты" : t === "following" ? "Подписки" : t === "rss" ? "📚 Читать" : "🏆 Рейтинг"}
+              {t === "all" ? "Все" : t === "following" ? "Подписки" : t === "arena" ? "🤖 Арена" : t === "rss" ? "📚 Читать" : "🏆 Рейтинг"}
             </motion.button>
           ))}
           {(tab === "all" || tab === "following") && (
