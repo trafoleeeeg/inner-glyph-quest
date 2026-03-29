@@ -35,7 +35,7 @@ const PhantomCompetitor = ({ userCompletedToday, userTotalCompleted, userStreak,
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Swords className="w-4 h-4 text-destructive" />
-          <h3 className="text-xs font-semibold text-foreground">Фантомный Конкурент</h3>
+          <h3 className="text-xs font-semibold text-foreground">Ближайший Конкурент</h3>
         </div>
         <span className="text-[9px] font-mono text-muted-foreground">
           {isAhead ? "Ты впереди! 🔥" : isTied ? "Ничья ⚔️" : "Догоняй! 💨"}
@@ -64,7 +64,7 @@ const PhantomCompetitor = ({ userCompletedToday, userTotalCompleted, userStreak,
         <div className="space-y-1">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-medium text-muted-foreground flex items-center gap-1">
-              👻 Фантом
+              🎯 Конкурент
             </span>
             <span className="text-[10px] font-mono text-destructive/70">{phantomCompletedToday}/{totalMissions}</span>
           </div>
