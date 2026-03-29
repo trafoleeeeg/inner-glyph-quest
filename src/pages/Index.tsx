@@ -337,7 +337,7 @@ const Index = () => {
         {/* Diagnostic block — accent */}
         <motion.div
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-          className="rounded-2xl p-4 border-2 border-destructive/30 bg-gradient-to-r from-destructive/10 via-primary/10 to-accent/10 cursor-pointer hover:border-destructive/50 transition-all"
+          className="rounded-2xl p-4 border border-primary/20 bg-card cursor-pointer hover:border-primary/40 transition-all"
           onClick={() => navigate("/life-analysis")}
         >
           <div className="flex items-center gap-3">

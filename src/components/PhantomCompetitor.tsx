@@ -55,7 +55,7 @@ const PhantomCompetitor = ({ userCompletedToday, userTotalCompleted, userStreak,
               initial={{ width: 0 }}
               animate={{ width: `${userProgress}%` }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="h-full bg-gradient-to-r from-primary to-accent rounded-full"
+              className="h-full bg-primary rounded-full"
             />
           </div>
         </div>
