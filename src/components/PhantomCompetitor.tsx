@@ -64,7 +64,7 @@ const PhantomCompetitor = ({ userCompletedToday, userTotalCompleted, userStreak,
         <div className="space-y-1">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-medium text-muted-foreground flex items-center gap-1">
-              👻 Фантом
+              🎯 Конкурент
             </span>
             <span className="text-[10px] font-mono text-destructive/70">{phantomCompletedToday}/{totalMissions}</span>
           </div>
