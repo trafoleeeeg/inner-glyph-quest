@@ -15,29 +15,25 @@ const BottomNav = () => {
   const location = useLocation();
 
   return (
-    <motion.nav initial={{ y: 100 }} animate={{ y: 0 }}
+    <nav
       id="tutorial-nav"
-      className="fixed bottom-0 inset-x-0 z-40 bg-background/95 backdrop-blur-lg border-t border-border pb-[env(safe-area-inset-bottom)]">
-      <div className="max-w-2xl mx-auto flex items-center justify-around h-14">
+      className="fixed bottom-0 inset-x-0 z-40 bg-background border-t border-border pb-[env(safe-area-inset-bottom)]"
+    >
+      <div className="max-w-2xl mx-auto flex items-center justify-around h-12">
         {NAV_ITEMS.map(({ path, icon: Icon, label }) => {
           const isActive = location.pathname === path;
           return (
-            <motion.button key={path} whileTap={{ scale: 0.9 }} onClick={() => navigate(path)}
-              className={`flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl transition-colors ${
-                isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
+            <button key={path} onClick={() => navigate(path)}
+              className={`flex flex-col items-center gap-0.5 px-3 py-1 transition-colors ${
+                isActive ? "text-foreground" : "text-muted-foreground"
               }`}>
-              <Icon className="w-5 h-5" strokeWidth={isActive ? 2.5 : 1.5} />
-              <span className="text-[9px] font-medium tracking-wide">{label}</span>
-              {isActive && (
-                <motion.div layoutId="nav-indicator"
-                  className="absolute -top-px h-0.5 w-8 bg-primary rounded-full"
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }} />
-              )}
-            </motion.button>
+              <Icon className="w-5 h-5" strokeWidth={isActive ? 2 : 1.5} />
+              <span className="text-[9px] font-medium">{label}</span>
+            </button>
           );
         })}
       </div>
-    </motion.nav>
+    </nav>
   );
 };
 
