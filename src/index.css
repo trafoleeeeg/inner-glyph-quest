@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=SF+Mono:wght@400;500&family=JetBrains+Mono:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -9,125 +9,115 @@
     --font-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
 
-    /* WHOOP-inspired: pure black, data-dense, clean */
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
+    /* ── Deep slate palette ── */
+    --background: 222 47% 6%;
+    --foreground: 210 20% 95%;
 
-    --card: 0 0% 7%;
-    --card-foreground: 0 0% 100%;
+    --card: 222 40% 9%;
+    --card-foreground: 210 20% 95%;
 
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 222 40% 9%;
+    --popover-foreground: 210 20% 95%;
 
-    /* Recovery green — primary action color */
-    --primary: 152 69% 47%;
-    --primary-foreground: 0 0% 0%;
+    /* Accent blue — единственный акцент */
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
 
-    /* Strain blue */
-    --secondary: 210 100% 56%;
-    --secondary-foreground: 0 0% 100%;
+    /* Muted blue-gray for secondary */
+    --secondary: 215 20% 25%;
+    --secondary-foreground: 210 20% 90%;
 
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 50%;
+    --muted: 220 25% 14%;
+    --muted-foreground: 215 15% 50%;
 
-    /* Sleep purple accent */
-    --accent: 270 60% 55%;
-    --accent-foreground: 0 0% 100%;
+    /* Warm amber for highlights */
+    --accent: 38 92% 55%;
+    --accent-foreground: 0 0% 0%;
 
-    --destructive: 0 72% 51%;
+    --destructive: 0 65% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 14%;
-    --input: 0 0% 12%;
-    --ring: 152 69% 47%;
+    --border: 220 20% 15%;
+    --input: 220 25% 14%;
+    --ring: 217 91% 60%;
 
     --radius: 0.75rem;
 
-    /* Semantic metric colors */
-    --energy: 45 93% 55%;
-    --energy-foreground: 0 0% 0%;
-    --xp: 152 69% 47%;
-    --xp-foreground: 0 0% 0%;
-    --dream: 270 60% 55%;
+    /* All metric colors — tints of the primary blue */
+    --energy: 217 91% 60%;
+    --energy-foreground: 0 0% 100%;
+    --xp: 217 91% 60%;
+    --xp-foreground: 0 0% 100%;
+    --dream: 217 70% 45%;
     --dream-foreground: 0 0% 100%;
-    --streak: 25 95% 53%;
-    --streak-foreground: 0 0% 100%;
+    --streak: 38 92% 55%;
+    --streak-foreground: 0 0% 0%;
 
-    /* Recovery/Strain/Sleep — WHOOP core triad */
-    --recovery: 152 69% 47%;
-    --strain: 210 100% 56%;
-    --sleep: 270 60% 55%;
+    /* Gauge triad — subtle variations of blue */
+    --recovery: 217 91% 60%;
+    --strain: 200 70% 50%;
+    --sleep: 230 60% 55%;
 
-    --glow-primary: 0 0 20px hsl(152 69% 47% / 0.15);
-    --glow-accent: 0 0 20px hsl(270 60% 55% / 0.15);
-    --glow-secondary: 0 0 20px hsl(210 100% 56% / 0.15);
-    --glow-energy: 0 0 20px hsl(45 93% 55% / 0.15);
-
-    --sidebar-background: 0 0% 4%;
-    --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 152 69% 47%;
-    --sidebar-primary-foreground: 0 0% 0%;
-    --sidebar-accent: 0 0% 12%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 0 0% 14%;
-    --sidebar-ring: 152 69% 47%;
+    --sidebar-background: 222 47% 4%;
+    --sidebar-foreground: 210 20% 95%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 25% 14%;
+    --sidebar-accent-foreground: 210 20% 90%;
+    --sidebar-border: 220 20% 15%;
+    --sidebar-ring: 217 91% 60%;
   }
 
   .light {
-    --background: 0 0% 97%;
-    --foreground: 0 0% 8%;
+    --background: 220 14% 96%;
+    --foreground: 222 47% 11%;
 
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 8%;
+    --card-foreground: 222 47% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 8%;
+    --popover-foreground: 222 47% 11%;
 
-    --primary: 152 69% 40%;
+    --primary: 217 91% 55%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 90% 50%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 215 15% 90%;
+    --secondary-foreground: 222 47% 11%;
 
-    --muted: 0 0% 93%;
-    --muted-foreground: 0 0% 40%;
+    --muted: 220 14% 92%;
+    --muted-foreground: 215 15% 42%;
 
-    --accent: 270 50% 50%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 38 92% 50%;
+    --accent-foreground: 0 0% 0%;
 
-    --destructive: 0 72% 51%;
+    --destructive: 0 65% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 88%;
-    --input: 0 0% 93%;
-    --ring: 152 69% 40%;
+    --border: 220 13% 89%;
+    --input: 220 14% 92%;
+    --ring: 217 91% 55%;
 
-    --energy: 45 93% 48%;
-    --energy-foreground: 0 0% 0%;
-    --xp: 152 69% 40%;
+    --energy: 217 91% 55%;
+    --energy-foreground: 0 0% 100%;
+    --xp: 217 91% 55%;
     --xp-foreground: 0 0% 100%;
-    --dream: 270 50% 50%;
+    --dream: 217 70% 40%;
     --dream-foreground: 0 0% 100%;
-    --streak: 25 95% 50%;
-    --streak-foreground: 0 0% 100%;
+    --streak: 38 92% 50%;
+    --streak-foreground: 0 0% 0%;
 
-    --recovery: 152 69% 40%;
-    --strain: 210 90% 50%;
-    --sleep: 270 50% 50%;
-
-    --glow-primary: 0 0 10px hsl(152 69% 40% / 0.08);
-    --glow-accent: 0 0 10px hsl(270 50% 50% / 0.08);
-    --glow-secondary: 0 0 10px hsl(210 90% 50% / 0.08);
-    --glow-energy: 0 0 10px hsl(45 93% 48% / 0.08);
+    --recovery: 217 91% 55%;
+    --strain: 200 70% 45%;
+    --sleep: 230 60% 50%;
 
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 0 0% 8%;
-    --sidebar-primary: 152 69% 40%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 217 91% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 95%;
-    --sidebar-accent-foreground: 0 0% 8%;
-    --sidebar-border: 0 0% 88%;
-    --sidebar-ring: 152 69% 40%;
+    --sidebar-accent: 220 14% 95%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 220 13% 89%;
+    --sidebar-ring: 217 91% 55%;
   }
 }
 
@@ -149,32 +139,6 @@
 }
 
 @layer utilities {
-  .glow-primary {
-    box-shadow: var(--glow-primary);
-  }
-  .glow-accent {
-    box-shadow: var(--glow-accent);
-  }
-  .glow-secondary {
-    box-shadow: var(--glow-secondary);
-  }
-  .glow-energy {
-    box-shadow: var(--glow-energy);
-  }
-  .text-glow-primary {
-    text-shadow: 0 0 12px hsl(152 69% 47% / 0.4);
-  }
-  .text-glow-accent {
-    text-shadow: 0 0 12px hsl(270 60% 55% / 0.4);
-  }
-  .text-glow-secondary {
-    text-shadow: 0 0 12px hsl(210 100% 56% / 0.4);
-  }
-  .text-glow-energy {
-    text-shadow: 0 0 12px hsl(45 93% 55% / 0.4);
-  }
-
-  /* WHOOP-style clean glass card */
   .glass {
     @apply bg-card/80 backdrop-blur-xl border border-border;
   }
@@ -193,44 +157,15 @@
     border: 1px solid hsl(var(--primary) / 0.2);
   }
 
-  /* Minimal grid — barely visible */
-  .cyber-grid {
-    background-image: none;
-  }
+  /* Legacy classes — no-op for backwards compat */
+  .cyber-grid { background-image: none; }
+  .gradient-border { position: relative; }
+  .shimmer { background: none; }
+  .glow-primary, .glow-accent, .glow-secondary, .glow-energy { box-shadow: none; }
+  .text-glow-primary, .text-glow-accent, .text-glow-secondary, .text-glow-energy { text-shadow: none; }
 
-  .gradient-border {
-    position: relative;
-  }
-  .gradient-border::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(135deg, hsl(var(--primary) / 0.2), hsl(var(--secondary) / 0.1), hsl(var(--accent) / 0.15));
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask-composite: exclude;
-    -webkit-mask-composite: xor;
-    pointer-events: none;
-  }
-
-  .shimmer {
-    background: none;
-  }
-
-  /* WHOOP-style metric ring */
   .metric-ring {
     stroke-linecap: round;
     transition: stroke-dashoffset 0.6s ease;
   }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-4px); }
-}
-
-@keyframes orbit {
-  0% { transform: rotate(0deg) translateX(30px) rotate(0deg); }
-  100% { transform: rotate(360deg) translateX(30px) rotate(-360deg); }
 }
