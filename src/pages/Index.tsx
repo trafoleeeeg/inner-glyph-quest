@@ -335,25 +335,22 @@ const Index = () => {
           </div>
         )}
 
-        {/* Diagnostic block — accent */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-          className="rounded-2xl p-4 border border-primary/20 bg-card cursor-pointer hover:border-primary/40 transition-all"
+        {/* Diagnostic */}
+        <div
+          className="py-4 border-b border-border cursor-pointer"
           onClick={() => navigate("/life-analysis")}
         >
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-destructive/15 flex items-center justify-center text-2xl">
-              🧬
-            </div>
+            <span className="text-2xl">🧬</span>
             <div className="flex-1">
-              <p className="text-sm font-bold text-foreground">Диагностика: определи свой архетип</p>
+              <p className="text-sm font-semibold text-foreground">Определи свой архетип</p>
               <p className="text-[10px] text-muted-foreground mt-0.5">
-                Алгоритм определит тип твоей прокрастинации и назначит протоколы, которые сломают паттерн
+                Диагностика назначит протоколы под твой тип прокрастинации
               </p>
             </div>
-            <span className="text-destructive text-lg font-bold">→</span>
+            <span className="text-muted-foreground">→</span>
           </div>
-        </motion.div>
+        </div>
 
         {/* Glyph — visual state indicator */}
         {profile && (
