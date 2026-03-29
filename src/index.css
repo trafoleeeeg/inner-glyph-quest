@@ -10,7 +10,7 @@
     --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
 
     /* ── Threads × Apple Watch: true black + white ── */
-    --background: 0 0% 0%;
+    --background: 0 0% 4%;
     --foreground: 0 0% 100%;
 
     --card: 0 0% 0%;
