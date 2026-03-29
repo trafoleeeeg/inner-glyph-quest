@@ -6,6 +6,7 @@ import { useProfile } from "@/hooks/useProfile";
 import { supabase } from "@/integrations/supabase/client";
 import XPBar from "@/components/XPBar";
 import GlyphVisualizer from "@/components/GlyphVisualizer";
+import StateGauges from "@/components/StateGauges";
 import StatsRow from "@/components/StatsRow";
 import MissionCard from "@/components/MissionCard";
 import type { MissionData } from "@/components/MissionCard";
