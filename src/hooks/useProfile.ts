@@ -7,6 +7,7 @@ export interface Profile {
   user_id: string;
   display_name: string;
   avatar_url: string | null;
+  bio: string | null;
   level: number;
   xp: number;
   xp_to_next: number;
