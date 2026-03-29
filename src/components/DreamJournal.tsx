@@ -59,7 +59,7 @@ const DreamJournal = ({ onSubmit }: DreamJournalProps) => {
             </div>
 
             <motion.button onClick={handleSubmit} disabled={!title.trim()} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-              className="w-full bg-gradient-to-r from-dream/20 to-secondary/20 hover:from-dream/30 hover:to-secondary/30 text-dream border border-dream/20 rounded-xl py-2.5 text-sm font-semibold transition-all disabled:opacity-30 disabled:cursor-not-allowed">
+              className="w-full bg-accent text-accent-foreground rounded-xl py-2.5 text-sm font-semibold transition-all disabled:opacity-30 disabled:cursor-not-allowed">
               Записать сон
             </motion.button>
           </motion.div>

@@ -209,7 +209,7 @@ const TasksPage = () => {
             </div>
           </div>
           <div className="h-2 bg-muted/30 rounded-full overflow-hidden">
-            <motion.div className="h-full rounded-full bg-gradient-to-r from-primary/60 to-accent/60"
+            <motion.div className="h-full rounded-full bg-primary"
               initial={{ width: 0 }} animate={{ width: `${progressPercent}%` }} transition={{ duration: 0.8 }} />
           </div>
           {todayTasksDone > 0 && todayTasksDone === todayTasksTotal && todayTasksTotal > 0 && (

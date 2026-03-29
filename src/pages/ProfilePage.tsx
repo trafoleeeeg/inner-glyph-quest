@@ -256,10 +256,9 @@ const ProfilePage = () => {
               <span className="text-muted-foreground">{profile.xp}/{profile.xp_to_next}</span>
             </div>
             <div className="h-2 bg-muted/50 rounded-full overflow-hidden">
-              <motion.div className="h-full rounded-full bg-gradient-to-r from-primary to-accent" initial={{ width: 0 }}
+              <motion.div className="h-full rounded-full bg-primary" initial={{ width: 0 }}
                 animate={{ width: `${(profile.xp / profile.xp_to_next) * 100}%` }}
-                transition={{ duration: 1 }}
-                style={{ boxShadow: '0 0 10px hsl(180 100% 50% / 0.4)' }} />
+                transition={{ duration: 1 }} />
             </div>
           </div>
         </motion.div>

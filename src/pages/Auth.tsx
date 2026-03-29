@@ -151,7 +151,7 @@ const Auth = () => {
             )}
 
             <motion.button type="submit" disabled={loading} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-primary/80 to-accent/80 text-primary-foreground font-semibold text-sm transition-all  disabled:opacity-50">
+              className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-sm transition-all disabled:opacity-50">
               {loading ? (
                 <span className="inline-flex items-center gap-2">
                   <span className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
