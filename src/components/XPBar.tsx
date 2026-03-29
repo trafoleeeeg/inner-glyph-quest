@@ -37,71 +37,77 @@ const XPBar = ({ current, max, level, displayName }: XPBarProps) => {
   const title = LEVEL_TITLES[level] || LEVEL_TITLES[10];
   const nextUnlock = LEVEL_UNLOCKS[level + 1];
 
+  // Circular ring params
+  const size = 64;
+  const stroke = 4;
+  const radius = (size - stroke) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference - (percentage / 100) * circumference;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="glass-card rounded-2xl p-5 gradient-border shimmer"
+      className="glass-card rounded-2xl p-5"
     >
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-3">
-          <motion.div
-            className="relative w-12 h-12 rounded-2xl bg-primary/10 border border-primary/30 flex items-center justify-center overflow-hidden"
-            animate={{ boxShadow: ['0 0 15px hsl(180 100% 50% / 0.2)', '0 0 25px hsl(180 100% 50% / 0.4)', '0 0 15px hsl(180 100% 50% / 0.2)'] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            <span className="text-primary font-mono font-bold text-lg relative z-10">{level}</span>
-            <div className="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent" />
-          </motion.div>
-          <div>
-            <p className="text-sm font-semibold text-foreground">{displayName || 'Пользователь'}</p>
-            <p className="text-xs text-primary font-mono">{title}</p>
+      <div className="flex items-center gap-4">
+        {/* WHOOP-style circular level ring */}
+        <div className="relative flex-shrink-0">
+          <svg width={size} height={size} className="-rotate-90">
+            <circle
+              cx={size / 2} cy={size / 2} r={radius}
+              fill="none" stroke="hsl(var(--muted))" strokeWidth={stroke}
+            />
+            <motion.circle
+              cx={size / 2} cy={size / 2} r={radius}
+              fill="none" stroke="hsl(var(--primary))" strokeWidth={stroke}
+              strokeLinecap="round"
+              strokeDasharray={circumference}
+              initial={{ strokeDashoffset: circumference }}
+              animate={{ strokeDashoffset: offset }}
+              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+            />
+          </svg>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-foreground font-bold text-lg font-mono">{level}</span>
           </div>
         </div>
-        <div className="text-right">
-          <p className="font-mono text-sm text-primary font-bold">
-            {current} <span className="text-muted-foreground">/ {max}</span>
-          </p>
-          <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider">опыт</p>
+
+        <div className="flex-1 min-w-0">
+          <div className="flex items-baseline justify-between">
+            <div>
+              <p className="text-sm font-semibold text-foreground truncate">{displayName || 'Пользователь'}</p>
+              <p className="text-xs text-primary font-medium">{title}</p>
+            </div>
+            <div className="text-right">
+              <p className="font-mono text-sm text-foreground font-bold">
+                {current}<span className="text-muted-foreground">/{max}</span>
+              </p>
+              <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest">XP</p>
+            </div>
+          </div>
+
+          {/* Thin progress bar */}
+          <div className="relative h-1.5 bg-muted rounded-full overflow-hidden mt-3">
+            <motion.div
+              className="absolute inset-y-0 left-0 rounded-full bg-primary"
+              initial={{ width: 0 }}
+              animate={{ width: `${percentage}%` }}
+              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+            />
+          </div>
         </div>
       </div>
-      
-      <div className="relative h-3 bg-muted/50 rounded-full overflow-hidden">
-        <motion.div
-          className="absolute inset-y-0 left-0 rounded-full"
-          initial={{ width: 0 }}
-          animate={{ width: `${percentage}%` }}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-          style={{
-            background: 'linear-gradient(90deg, hsl(180 100% 50%), hsl(160 80% 55%), hsl(140 70% 50%))',
-            boxShadow: '0 0 15px hsl(180 100% 50% / 0.5), 0 0 30px hsl(180 100% 50% / 0.2)',
-          }}
-        />
-        <motion.div
-          className="absolute inset-y-0 left-0 rounded-full opacity-30"
-          style={{ width: `${percentage}%` }}
-          animate={{ backgroundPosition: ['200% 0', '-200% 0'] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-        >
-          <div className="w-full h-full" style={{
-            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
-            backgroundSize: '50% 100%',
-          }} />
-        </motion.div>
-      </div>
 
-      {/* Next level unlock hint */}
       {nextUnlock && (
-        <motion.div
+        <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
-          className="mt-2 flex items-center gap-1.5"
+          className="mt-3 text-[10px] text-muted-foreground font-mono"
         >
-          <span className="text-[9px] text-muted-foreground/60 font-mono">
-            🔓 Уровень {level + 1}: {nextUnlock}
-          </span>
-        </motion.div>
+          Уровень {level + 1} → {nextUnlock}
+        </motion.p>
       )}
     </motion.div>
   );
