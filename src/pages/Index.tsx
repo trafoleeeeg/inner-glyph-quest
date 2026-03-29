@@ -152,6 +152,7 @@ const Index = () => {
       const moodData = moods.data || [];
       const avgEnergy = moodData.length > 0 ? moodData.reduce((s, m) => s + m.energy_level, 0) / moodData.length : 0;
       const avgMood = moodData.length > 0 ? moodData.reduce((s, m) => s + m.mood, 0) / moodData.length : 0;
+      setMoodAvg(avgMood);
       const scores = [
         Math.min(avgEnergy * 20, 100), Math.min((completions.count || 0) * 5, 100),
         Math.min(avgMood * 20 + moodData.length * 3, 100), Math.min((posts.count || 0) * 10, 100),
