@@ -1277,6 +1277,7 @@ export type Database = {
         Args: { p_energy: number; p_mood: number; p_note?: string }
         Returns: undefined
       }
+      track_user_activity: { Args: never; Returns: Json }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
