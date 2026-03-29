@@ -4,7 +4,7 @@ import { Plus, Check, Trash2, Calendar, Flag, ChevronDown, ChevronRight, Inbox, 
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
-import ParticleField from "@/components/ParticleField";
+
 import BottomNav from "@/components/BottomNav";
 
 interface Task {

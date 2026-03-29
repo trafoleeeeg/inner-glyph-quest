@@ -7,7 +7,7 @@ import CreatePost from "@/components/CreatePost";
 import CommentsSheet from "@/components/CommentsSheet";
 import BottomNav from "@/components/BottomNav";
 import NotificationBell from "@/components/NotificationBell";
-import ParticleField from "@/components/ParticleField";
+
 import { RefreshCw, Search } from "lucide-react";
 import RSSFeed from "@/components/RSSFeed";
 import Leaderboard from "@/components/Leaderboard";

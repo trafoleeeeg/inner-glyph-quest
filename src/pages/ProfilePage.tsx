@@ -4,7 +4,7 @@ import { useProfile } from "@/hooks/useProfile";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import ParticleField from "@/components/ParticleField";
+
 import AchievementsList from "@/components/AchievementsList";
 import AnalyticsCharts from "@/components/AnalyticsCharts";
 import GrowthPathChart from "@/components/GrowthPathChart";

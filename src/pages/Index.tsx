@@ -13,7 +13,7 @@ import MoodCheckin from "@/components/MoodCheckin";
 import DreamJournal from "@/components/DreamJournal";
 import AchievementsList from "@/components/AchievementsList";
 import RewardPopup from "@/components/RewardPopup";
-import ParticleField from "@/components/ParticleField";
+
 import CreateMission from "@/components/CreateMission";
 import InsightsPanel from "@/components/InsightsPanel";
 import Onboarding from "@/components/Onboarding";
