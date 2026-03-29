@@ -110,7 +110,7 @@ const ConversationPage = () => {
 
     setMessages(data.map(m => ({
       ...m,
-      sender: profileMap.get(m.sender_id) || { display_name: "?", avatar_url: null },
+      sender: (profileMap.get(m.sender_id) as { display_name: string; avatar_url: string | null }) || { display_name: "?", avatar_url: null },
     })));
 
     setTimeout(scrollToBottom, 100);
