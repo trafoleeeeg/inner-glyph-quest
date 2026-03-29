@@ -45,6 +45,8 @@ const Index = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [missionCompletionCounts, setMissionCompletionCounts] = useState<Record<string, number>>({});
   const [lifeBalance, setLifeBalance] = useState(50);
+  const [moodAvg, setMoodAvg] = useState(0);
+  const [stagnationIndex, setStagnationIndex] = useState(0);
   const [showWhyBlock, setShowWhyBlock] = useState(() => !localStorage.getItem("neuro_why_understood"));
 
   // Daily checkin state
