@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { User, Session } from "@supabase/supabase-js";
+import { logActivity } from "@/lib/activityLogger";
 
 interface AuthContextType {
   user: User | null;
@@ -28,6 +29,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const trackActivity = async () => {
       try {
         await supabase.rpc("track_user_activity");
+        await logActivity("login", "Вход в приложение");
       } catch { /* ignore */ }
     };
 

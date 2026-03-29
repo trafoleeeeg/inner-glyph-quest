@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfile } from "@/hooks/useProfile";
 import { supabase } from "@/integrations/supabase/client";
+import { logActivity } from "@/lib/activityLogger";
 import XPBar from "@/components/XPBar";
 import GlyphVisualizer from "@/components/GlyphVisualizer";
 import StateGauges from "@/components/StateGauges";
@@ -225,6 +226,7 @@ const Index = () => {
     setMissions(prev => prev.map(m => m.id === id ? { ...m, completed: true } : m));
     setMissionCompletionCounts(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
     await refetchProfile();
+    logActivity("mission_complete", mission.title, { mission_id: id, xp: result.totalXP });
   }, [user, profile, missions, refetchProfile]);
 
   const handleMoodSubmit = useCallback(async (mood: number, energy: number, note: string) => {
@@ -232,6 +234,7 @@ const Index = () => {
     await supabase.rpc('submit_mood_checkin', { p_mood: mood, p_energy: energy, p_note: note || null });
     toast.success("+15 опыта", { description: "Настроение записано" });
     await refetchProfile();
+    logActivity("mood_checkin", `Настроение: ${mood}/5, Энергия: ${energy}/5`);
   }, [user, refetchProfile]);
 
   const handleDreamSubmit = useCallback(async (title: string, description: string, lucidity: number) => {

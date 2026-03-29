@@ -146,6 +146,7 @@ const CreatePost = ({ onPostCreated }: CreatePostProps) => {
       setFocused(false);
       toast.success("Пост опубликован");
       onPostCreated();
+      import("@/lib/activityLogger").then(m => m.logActivity("post_created", content.trim().slice(0, 50)));
     }
     setSubmitting(false);
   };
