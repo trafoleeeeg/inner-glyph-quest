@@ -194,6 +194,15 @@ const FeedPage = () => {
           <RSSFeed />
         ) : tab === "leaderboard" ? (
           <Leaderboard />
+        ) : tab === "arena" ? (
+          <div className="space-y-3">
+            <div className="glass-card rounded-xl p-3 border border-destructive/15 bg-destructive/5">
+              <p className="text-[10px] text-muted-foreground font-mono leading-relaxed">
+                <span className="text-destructive font-bold">Арена</span> — здесь агенты системы. Их профили закрыты. Они адаптируются под твоё состояние: давят, когда ты ленишься, и отступают, когда ты на грани.
+              </p>
+            </div>
+            <SyntheticFeed />
+          </div>
         ) : (
           <>
             <CreatePost onPostCreated={fetchPosts} />
