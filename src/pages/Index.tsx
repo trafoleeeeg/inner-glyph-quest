@@ -234,6 +234,7 @@ const Index = () => {
     await supabase.rpc('submit_mood_checkin', { p_mood: mood, p_energy: energy, p_note: note || null });
     toast.success("+15 опыта", { description: "Настроение записано" });
     await refetchProfile();
+    logActivity("mood_checkin", `Настроение: ${mood}/5, Энергия: ${energy}/5`);
   }, [user, refetchProfile]);
 
   const handleDreamSubmit = useCallback(async (title: string, description: string, lucidity: number) => {
