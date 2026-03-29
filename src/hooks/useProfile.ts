@@ -38,14 +38,18 @@ export function useProfile() {
 
   useEffect(() => { fetchProfile(); }, [fetchProfile]);
 
-  const updateProfile = useCallback(async (updates: Partial<Pick<Profile, 'display_name' | 'avatar_url'>>) => {
+  const updateProfile = useCallback(async (updates: Partial<Pick<Profile, 'display_name' | 'avatar_url' | 'bio'>>) => {
     if (!user) return;
-    // Only allow safe fields to be sent to the API
     const safeUpdates: Record<string, unknown> = {};
     if ('display_name' in updates) safeUpdates.display_name = updates.display_name;
     if ('avatar_url' in updates) safeUpdates.avatar_url = updates.avatar_url;
+    if ('bio' in updates) safeUpdates.bio = updates.bio;
     if (Object.keys(safeUpdates).length === 0) return;
-    await supabase.from("profiles").update(safeUpdates).eq("user_id", user.id);
+    const { error } = await supabase.from("profiles").update(safeUpdates).eq("user_id", user.id);
+    if (error) {
+      console.error("Profile update error:", error);
+      throw error;
+    }
     await fetchProfile();
   }, [user, fetchProfile]);
 
