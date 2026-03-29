@@ -9,115 +9,114 @@
     --font-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
 
-    /* ── Deep slate palette ── */
-    --background: 222 47% 6%;
-    --foreground: 210 20% 95%;
+    /* ── Threads × Apple Watch: true black + white ── */
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
 
-    --card: 222 40% 9%;
-    --card-foreground: 210 20% 95%;
+    --card: 0 0% 0%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 222 40% 9%;
-    --popover-foreground: 210 20% 95%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 100%;
 
-    /* Accent blue — единственный акцент */
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 100%;
+    /* White as primary — like Threads buttons */
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 0%;
 
-    /* Muted blue-gray for secondary */
-    --secondary: 215 20% 25%;
-    --secondary-foreground: 210 20% 90%;
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 80%;
 
-    --muted: 220 25% 14%;
-    --muted-foreground: 215 15% 50%;
+    --muted: 0 0% 8%;
+    --muted-foreground: 0 0% 45%;
 
-    /* Warm amber for highlights */
-    --accent: 38 92% 55%;
-    --accent-foreground: 0 0% 0%;
+    /* Subtle warm accent for highlights only */
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 65% 50%;
+    --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 20% 15%;
-    --input: 220 25% 14%;
-    --ring: 217 91% 60%;
+    --border: 0 0% 12%;
+    --input: 0 0% 10%;
+    --ring: 0 0% 100%;
 
-    --radius: 0.75rem;
+    --radius: 0.875rem;
 
-    /* All metric colors — tints of the primary blue */
-    --energy: 217 91% 60%;
+    /* Data ring colors — Apple Watch style */
+    --energy: 4 90% 58%;
     --energy-foreground: 0 0% 100%;
-    --xp: 217 91% 60%;
+    --xp: 120 70% 45%;
     --xp-foreground: 0 0% 100%;
-    --dream: 217 70% 45%;
+    --dream: 200 90% 50%;
     --dream-foreground: 0 0% 100%;
-    --streak: 38 92% 55%;
+    --streak: 35 95% 55%;
     --streak-foreground: 0 0% 0%;
 
-    /* Gauge triad — subtle variations of blue */
-    --recovery: 217 91% 60%;
-    --strain: 200 70% 50%;
-    --sleep: 230 60% 55%;
+    /* Apple Watch ring triad */
+    --recovery: 4 90% 58%;
+    --strain: 120 70% 45%;
+    --sleep: 200 90% 50%;
 
-    --sidebar-background: 222 47% 4%;
-    --sidebar-foreground: 210 20% 95%;
-    --sidebar-primary: 217 91% 60%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 25% 14%;
-    --sidebar-accent-foreground: 210 20% 90%;
-    --sidebar-border: 220 20% 15%;
-    --sidebar-ring: 217 91% 60%;
+    --sidebar-background: 0 0% 0%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 0 0% 100%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 0 0% 8%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 12%;
+    --sidebar-ring: 0 0% 100%;
   }
 
   .light {
-    --background: 220 14% 96%;
-    --foreground: 222 47% 11%;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 0 0% 0%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover-foreground: 0 0% 0%;
 
-    --primary: 217 91% 55%;
+    --primary: 0 0% 0%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 215 15% 90%;
-    --secondary-foreground: 222 47% 11%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 30%;
 
-    --muted: 220 14% 92%;
-    --muted-foreground: 215 15% 42%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
 
-    --accent: 38 92% 50%;
+    --accent: 0 0% 96%;
     --accent-foreground: 0 0% 0%;
 
-    --destructive: 0 65% 50%;
+    --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 89%;
-    --input: 220 14% 92%;
-    --ring: 217 91% 55%;
+    --border: 0 0% 91%;
+    --input: 0 0% 96%;
+    --ring: 0 0% 0%;
 
-    --energy: 217 91% 55%;
+    --energy: 4 90% 55%;
     --energy-foreground: 0 0% 100%;
-    --xp: 217 91% 55%;
+    --xp: 120 70% 40%;
     --xp-foreground: 0 0% 100%;
-    --dream: 217 70% 40%;
+    --dream: 200 90% 45%;
     --dream-foreground: 0 0% 100%;
-    --streak: 38 92% 50%;
+    --streak: 35 95% 50%;
     --streak-foreground: 0 0% 0%;
 
-    --recovery: 217 91% 55%;
-    --strain: 200 70% 45%;
-    --sleep: 230 60% 50%;
+    --recovery: 4 90% 55%;
+    --strain: 120 70% 40%;
+    --sleep: 200 90% 45%;
 
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 222 47% 11%;
-    --sidebar-primary: 217 91% 55%;
+    --sidebar-foreground: 0 0% 0%;
+    --sidebar-primary: 0 0% 0%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 14% 95%;
-    --sidebar-accent-foreground: 222 47% 11%;
-    --sidebar-border: 220 13% 89%;
-    --sidebar-ring: 217 91% 55%;
+    --sidebar-accent: 0 0% 96%;
+    --sidebar-accent-foreground: 0 0% 0%;
+    --sidebar-border: 0 0% 91%;
+    --sidebar-ring: 0 0% 0%;
   }
 }
 
@@ -140,27 +139,28 @@
 
 @layer utilities {
   .glass {
-    @apply bg-card/80 backdrop-blur-xl border border-border;
+    @apply bg-card backdrop-blur-xl border border-border;
   }
+  /* Threads-style: no card bg, just bottom border divider */
   .glass-card {
-    background: hsl(var(--card));
-    border: 1px solid hsl(var(--border));
-    border-radius: var(--radius);
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid hsl(var(--border));
+    border-radius: 0;
+    padding-bottom: 1rem;
   }
   .light .glass-card {
-    background: hsl(var(--card));
-    border: 1px solid hsl(var(--border));
-    box-shadow: 0 1px 3px hsl(0 0% 0% / 0.04);
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid hsl(var(--border));
+    box-shadow: none;
   }
   .glass-card-hover {
-    background: hsl(var(--card));
-    border: 1px solid hsl(var(--primary) / 0.2);
+    background: hsl(var(--muted));
   }
 
-  /* Legacy classes — no-op for backwards compat */
-  .cyber-grid { background-image: none; }
-  .gradient-border { position: relative; }
-  .shimmer { background: none; }
+  /* Legacy — no-ops */
+  .cyber-grid, .gradient-border, .shimmer { background: none; }
   .glow-primary, .glow-accent, .glow-secondary, .glow-energy { box-shadow: none; }
   .text-glow-primary, .text-glow-accent, .text-glow-secondary, .text-glow-energy { text-shadow: none; }
 
