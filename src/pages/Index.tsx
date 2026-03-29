@@ -31,6 +31,8 @@ import BottomNav from "@/components/BottomNav";
 import StreakBadges from "@/components/StreakBadges";
 import PhantomCompetitor from "@/components/PhantomCompetitor";
 import { useTutorial } from "@/components/TutorialOverlay";
+import HubTasks from "@/components/HubTasks";
+import HubAnalytics from "@/components/HubAnalytics";
 
 
 const CHECKIN_KEY = "neuro_daily_checkin_";
@@ -482,10 +484,16 @@ const Index = () => {
           )}
         </div>
 
+        {/* Tasks mini-section */}
+        <HubTasks />
+
         <div id="tutorial-mood" className="grid md:grid-cols-2 gap-0">
           <MoodCheckin onSubmit={handleMoodSubmit} />
           <DreamJournal onSubmit={handleDreamSubmit} />
         </div>
+
+        {/* Analytics collapsible */}
+        <HubAnalytics />
 
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
           className="text-center py-6">
