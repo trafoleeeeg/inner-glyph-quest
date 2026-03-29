@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Home, Compass, MessageCircle, CheckSquare, User } from "lucide-react";
+import { Home, Compass, MessageCircle, CheckSquare, User, Users } from "lucide-react";
 
 const NAV_ITEMS = [
   { path: "/", icon: Home, label: "Хаб" },
   { path: "/feed", icon: Compass, label: "Лента" },
   { path: "/messages", icon: MessageCircle, label: "Чаты" },
+  { path: "/tribes", icon: Users, label: "Племена" },
   { path: "/tasks", icon: CheckSquare, label: "Задачи" },
   { path: "/profile", icon: User, label: "Я" },
 ];

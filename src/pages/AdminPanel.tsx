@@ -147,84 +147,111 @@ const AdminPanel = () => {
           ))}
         </div>
 
-        {/* Users table */}
-        <div className="glass-card rounded-2xl p-5 border border-border/30">
-          <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
-            <Users className="w-4 h-4 text-primary" />
-            Все пользователи ({users.length})
-          </h3>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider border-b border-border/30">
-                  <th className="text-left py-2 px-2">Ник</th>
-                  <th className="text-left py-2 px-2">User ID</th>
-                  <th className="text-center py-2 px-2">Статус</th>
-                  <th className="text-center py-2 px-2">Lvl</th>
-                  <th className="text-center py-2 px-2">XP</th>
-                  <th className="text-center py-2 px-2">Стрик</th>
-                  <th className="text-center py-2 px-2">Рекорд</th>
-                  <th className="text-center py-2 px-2">Миссии</th>
-                  <th className="text-center py-2 px-2">⚡</th>
-                  <th className="text-center py-2 px-2">📈</th>
-                  <th className="text-center py-2 px-2">💰</th>
-                  <th className="text-center py-2 px-2">Рег.</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((u, i) => {
-                  const activity = getActivityStatus(u.last_active_date);
-                  return (
-                    <motion.tr key={u.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                      transition={{ delay: i * 0.02 }}
-                      className="border-b border-border/10 hover:bg-muted/20 transition-colors">
-                      <td className="py-2 px-2">
-                        <div className="flex items-center gap-2">
-                          {u.avatar_url ? (
-                            <img src={u.avatar_url} className="w-6 h-6 rounded-full object-cover" />
-                          ) : (
-                            <div className="w-6 h-6 rounded-full bg-muted/30 flex items-center justify-center text-[8px] font-mono text-muted-foreground">
-                              {u.display_name.slice(0, 2).toUpperCase()}
-                            </div>
-                          )}
-                          <span className="font-semibold text-foreground text-xs">{u.display_name}</span>
-                        </div>
-                      </td>
-                      <td className="py-2 px-2">
-                        <button
-                          onClick={() => copyId(u.user_id)}
-                          className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground hover:text-foreground transition-colors"
-                          title={u.user_id}
-                        >
-                          {u.user_id.slice(0, 8)}...
-                          {copiedId === u.user_id ? (
-                            <Check className="w-3 h-3 text-green-400" />
-                          ) : (
-                            <Copy className="w-3 h-3" />
-                          )}
-                        </button>
-                      </td>
-                      <td className="py-2 px-2 text-center">
-                        <span className={`text-[10px] font-mono ${activity.color}`}>{activity.label}</span>
-                      </td>
-                      <td className="py-2 px-2 text-center font-mono text-primary text-xs">{u.level}</td>
-                      <td className="py-2 px-2 text-center font-mono text-accent text-xs">{u.xp}</td>
-                      <td className="py-2 px-2 text-center font-mono text-streak text-xs">{u.streak}д</td>
-                      <td className="py-2 px-2 text-center font-mono text-muted-foreground text-xs">{u.longest_streak}д</td>
-                      <td className="py-2 px-2 text-center font-mono text-xs">{u.total_missions_completed}</td>
-                      <td className="py-2 px-2 text-center font-mono text-energy text-xs">{u.energy}</td>
-                      <td className="py-2 px-2 text-center font-mono text-xs">{Math.round(Number(u.stagnation_index))}%</td>
-                      <td className="py-2 px-2 text-center font-mono text-energy text-xs">{u.coins}</td>
-                      <td className="py-2 px-2 text-center font-mono text-muted-foreground text-[10px]">
-                        {new Date(u.created_at).toLocaleDateString('ru-RU')}
-                      </td>
-                    </motion.tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+        {/* Tabs */}
+        <div className="flex gap-2">
+          {[
+            { key: "users", label: "Пользователи", icon: Users },
+            { key: "activity", label: "Лог действий", icon: Activity },
+          ].map(({ key, label, icon: Icon }) => (
+            <button key={key} onClick={() => { setActiveTab(key as any); setSelectedUserId(undefined); }}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                activeTab === key ? "bg-primary/20 text-primary" : "bg-muted/30 text-muted-foreground hover:text-foreground"
+              }`}>
+              <Icon className="w-3.5 h-3.5" />
+              {label}
+            </button>
+          ))}
         </div>
+
+        {activeTab === "users" && (
+          <div className="glass-card rounded-2xl p-5 border border-border/30">
+            <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
+              <Users className="w-4 h-4 text-primary" />
+              Все пользователи ({users.length})
+            </h3>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider border-b border-border/30">
+                    <th className="text-left py-2 px-2">Ник</th>
+                    <th className="text-left py-2 px-2">User ID</th>
+                    <th className="text-center py-2 px-2">Статус</th>
+                    <th className="text-center py-2 px-2">Lvl</th>
+                    <th className="text-center py-2 px-2">XP</th>
+                    <th className="text-center py-2 px-2">Стрик</th>
+                    <th className="text-center py-2 px-2">Рекорд</th>
+                    <th className="text-center py-2 px-2">Миссии</th>
+                    <th className="text-center py-2 px-2">⚡</th>
+                    <th className="text-center py-2 px-2">📈</th>
+                    <th className="text-center py-2 px-2">💰</th>
+                    <th className="text-center py-2 px-2">Лог</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users.map((u, i) => {
+                    const activity = getActivityStatus(u.last_active_date);
+                    return (
+                      <motion.tr key={u.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                        transition={{ delay: i * 0.02 }}
+                        className="border-b border-border/10 hover:bg-muted/20 transition-colors">
+                        <td className="py-2 px-2">
+                          <div className="flex items-center gap-2">
+                            {u.avatar_url ? (
+                              <img src={u.avatar_url} className="w-6 h-6 rounded-full object-cover" />
+                            ) : (
+                              <div className="w-6 h-6 rounded-full bg-muted/30 flex items-center justify-center text-[8px] font-mono text-muted-foreground">
+                                {u.display_name.slice(0, 2).toUpperCase()}
+                              </div>
+                            )}
+                            <span className="font-semibold text-foreground text-xs">{u.display_name}</span>
+                          </div>
+                        </td>
+                        <td className="py-2 px-2">
+                          <button
+                            onClick={() => copyId(u.user_id)}
+                            className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground hover:text-foreground transition-colors"
+                            title={u.user_id}
+                          >
+                            {u.user_id.slice(0, 8)}...
+                            {copiedId === u.user_id ? (
+                              <Check className="w-3 h-3 text-primary" />
+                            ) : (
+                              <Copy className="w-3 h-3" />
+                            )}
+                          </button>
+                        </td>
+                        <td className="py-2 px-2 text-center">
+                          <span className={`text-[10px] font-mono ${activity.color}`}>{activity.label}</span>
+                        </td>
+                        <td className="py-2 px-2 text-center font-mono text-primary text-xs">{u.level}</td>
+                        <td className="py-2 px-2 text-center font-mono text-accent text-xs">{u.xp}</td>
+                        <td className="py-2 px-2 text-center font-mono text-streak text-xs">{u.streak}д</td>
+                        <td className="py-2 px-2 text-center font-mono text-muted-foreground text-xs">{u.longest_streak}д</td>
+                        <td className="py-2 px-2 text-center font-mono text-xs">{u.total_missions_completed}</td>
+                        <td className="py-2 px-2 text-center font-mono text-energy text-xs">{u.energy}</td>
+                        <td className="py-2 px-2 text-center font-mono text-xs">{Math.round(Number(u.stagnation_index))}%</td>
+                        <td className="py-2 px-2 text-center font-mono text-energy text-xs">{u.coins}</td>
+                        <td className="py-2 px-2 text-center">
+                          <button
+                            onClick={() => { setSelectedUserId(u.user_id); setActiveTab("activity"); }}
+                            className="text-muted-foreground hover:text-primary transition-colors"
+                            title="Лог действий"
+                          >
+                            <Eye className="w-3.5 h-3.5" />
+                          </button>
+                        </td>
+                      </motion.tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "activity" && (
+          <ActivityLog selectedUserId={selectedUserId} />
+        )}
       </div>
     </div>
   );
