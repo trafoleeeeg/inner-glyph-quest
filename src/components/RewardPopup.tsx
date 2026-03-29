@@ -27,7 +27,7 @@ const RewardPopup = ({ reward, onClose }: RewardPopupProps) => {
         className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm" onClick={onClose}>
         <motion.div initial={{ scale: 0.5, opacity: 0, y: 50 }} animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.5, opacity: 0, y: 50 }} transition={{ type: "spring", damping: 15, stiffness: 300 }}
-          className="glass-card rounded-3xl p-8 max-w-sm w-full mx-4 text-center gradient-border"
+          className="glass-card rounded-3xl p-8 max-w-sm w-full mx-4 text-center "
           onClick={(e) => e.stopPropagation()}>
           
           {reward.isCriticalHit && (
@@ -38,21 +38,21 @@ const RewardPopup = ({ reward, onClose }: RewardPopupProps) => {
           {reward.leveledUp && (
             <motion.div initial={{ scale: 0 }} animate={{ scale: [0, 1.3, 1] }} transition={{ delay: 0.1, duration: 0.6 }} className="mb-4">
               <p className="text-xs font-mono text-primary uppercase tracking-widest">Новый уровень!</p>
-              <p className="text-5xl font-bold text-primary text-glow-primary">{reward.newLevel}</p>
+              <p className="text-5xl font-bold text-primary ">{reward.newLevel}</p>
               <p className="text-[10px] font-mono text-muted-foreground mt-1">Ты стал сильнее</p>
             </motion.div>
           )}
 
           {!reward.leveledUp && (
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-              <p className="text-3xl font-bold text-accent text-glow-accent mb-1">+{reward.totalXP}</p>
+              <p className="text-3xl font-bold text-accent  mb-1">+{reward.totalXP}</p>
               <p className="text-[10px] font-mono text-muted-foreground">опыт</p>
             </motion.div>
           )}
 
           {reward.isCriticalHit && (
             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
-              className="text-sm font-semibold text-energy text-glow-energy mb-2 mt-2">
+              className="text-sm font-semibold text-energy  mb-2 mt-2">
               🎯 Удачный момент! x2 опыта
             </motion.p>
           )}

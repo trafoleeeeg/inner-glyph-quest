@@ -46,7 +46,7 @@ const GlyphPage = () => {
       <div className="relative z-10 max-w-2xl mx-auto px-4 py-6 space-y-4">
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
           <h1 className="text-lg font-bold text-foreground flex items-center gap-2">
-            <span className="text-primary text-glow-primary">◈</span> Мой Глиф
+            <span className="text-primary ">◈</span> Мой Глиф
           </h1>
           <p className="text-[10px] text-muted-foreground font-mono">
             визуальное отражение твоей активности

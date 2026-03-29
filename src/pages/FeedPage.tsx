@@ -143,7 +143,7 @@ const FeedPage = () => {
       <div className="relative z-10 max-w-2xl mx-auto px-4 py-6 space-y-4">
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
           <div className="text-center flex-1">
-            <h1 className="text-xl font-bold text-primary text-glow-primary font-display">Лента</h1>
+            <h1 className="text-xl font-bold text-primary  font-display">Лента</h1>
             <p className="text-[10px] text-muted-foreground font-mono">посты сообщества</p>
           </div>
           <NotificationBell />

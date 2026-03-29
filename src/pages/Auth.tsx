@@ -91,10 +91,10 @@ const Auth = () => {
         {/* Logo */}
         <motion.div className="text-center mb-8" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
           <div className="inline-flex items-center gap-2 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center glow-primary">
+            <div className="w-10 h-10 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center ">
               <Zap className="w-5 h-5 text-primary" />
             </div>
-            <h1 className="text-3xl font-bold text-primary text-glow-primary font-display tracking-tight">NEURO.LOG</h1>
+            <h1 className="text-3xl font-bold text-primary  font-display tracking-tight">NEURO.LOG</h1>
           </div>
           <p className="text-xs text-muted-foreground font-mono">система оцифровки нейроинтерфейса</p>
         </motion.div>
@@ -105,7 +105,7 @@ const Auth = () => {
             {["Вход", "Регистрация"].map((tab, i) => (
               <button key={tab} onClick={() => { setIsLogin(i === 0); setErrors({}); setGeneralError(""); }}
                 className={`flex-1 py-2.5 text-sm font-semibold rounded-lg transition-all duration-300 ${
-                  (i === 0 ? isLogin : !isLogin) ? "bg-primary/20 text-primary border border-primary/20 glow-primary" : "text-muted-foreground hover:text-foreground"
+                  (i === 0 ? isLogin : !isLogin) ? "bg-primary/20 text-primary border border-primary/20 " : "text-muted-foreground hover:text-foreground"
                 }`}>{tab}</button>
             ))}
           </div>
@@ -151,7 +151,7 @@ const Auth = () => {
             )}
 
             <motion.button type="submit" disabled={loading} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-primary/80 to-accent/80 text-primary-foreground font-semibold text-sm transition-all glow-primary disabled:opacity-50">
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-primary/80 to-accent/80 text-primary-foreground font-semibold text-sm transition-all  disabled:opacity-50">
               {loading ? (
                 <span className="inline-flex items-center gap-2">
                   <span className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />

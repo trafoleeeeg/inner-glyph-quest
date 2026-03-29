@@ -86,7 +86,7 @@ const SearchPage = () => {
       
       <div className="relative z-10 max-w-2xl mx-auto px-4 py-6 space-y-4">
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-2">
-          <h1 className="text-xl font-bold text-primary text-glow-primary font-display">Участники</h1>
+          <h1 className="text-xl font-bold text-primary  font-display">Участники</h1>
           <p className="text-[10px] text-muted-foreground font-mono">найди единомышленников</p>
         </motion.div>
 

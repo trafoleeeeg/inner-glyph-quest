@@ -127,7 +127,7 @@ const UserProfilePage = () => {
 
         {/* Profile card */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          className="glass-card rounded-2xl p-6 gradient-border text-center">
+          className="glass-card rounded-2xl p-6  text-center">
           <Avatar className="w-20 h-20 mx-auto mb-3 border-2 border-primary/20">
             {profile.avatar_url && <AvatarImage src={profile.avatar_url} />}
             <AvatarFallback className="bg-primary/10 text-primary text-xl font-mono">{initials}</AvatarFallback>

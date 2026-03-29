@@ -175,7 +175,7 @@ const ProfilePage = () => {
 
         {/* Profile Card */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-          className="glass-card rounded-2xl p-6 gradient-border text-center">
+          className="glass-card rounded-2xl p-6  text-center">
           <div className="relative inline-block">
             <Avatar className="w-20 h-20 mx-auto mb-3 border-2 border-primary/20">
               {profile.avatar_url && <AvatarImage src={profile.avatar_url} />}
