@@ -55,10 +55,9 @@ const GlyphPage = () => {
         </motion.div>
 
         <GlyphVisualizer
-          level={profile.level} xp={profile.xp} xpToNext={profile.xp_to_next}
+          level={profile.level}
           energy={profile.energy} maxEnergy={profile.max_energy}
-          streak={profile.streak} balance={lifeBalance}
-          missionsCompleted={profile.total_missions_completed} dreamsLogged={profile.total_dreams_logged}
+          streak={profile.streak}
         />
 
         {/* Life Overview integrated here */}
