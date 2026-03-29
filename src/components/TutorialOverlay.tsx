@@ -33,12 +33,7 @@ export const TutorialProvider = ({ children }: { children: ReactNode }) => {
   const [spotlight, setSpotlight] = useState<SpotlightRect | null>(null);
   const [tooltipPos, setTooltipPos] = useState<"top" | "bottom">("bottom");
 
-  useEffect(() => {
-    if (!localStorage.getItem("igq_tutorial_done") && localStorage.getItem("neuro_onboarded")) {
-      const timer = setTimeout(() => setActive(true), 2000);
-      return () => clearTimeout(timer);
-    }
-  }, []);
+  // Tutorial only starts via manual startTutorial() call — no auto-popup
 
   const updateSpotlight = useCallback(() => {
     const current = TUTORIAL_STEPS[step];
