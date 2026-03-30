@@ -22,7 +22,6 @@ import Onboarding from "@/components/Onboarding";
 
 import LifeOverview from "@/components/LifeOverview";
 import AIInsights from "@/components/AIInsights";
-import DailyCheckin from "@/components/DailyCheckin";
 import StreakShield from "@/components/StreakShield";
 import WeeklyReport from "@/components/WeeklyReport";
 import { toast } from "sonner";
