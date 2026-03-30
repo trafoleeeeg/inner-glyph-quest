@@ -307,6 +307,7 @@ const Index = () => {
 
         {/* WHOOP-style state gauges */}
         {profile && (
+          <div data-tour="gauges">
           <StateGauges
             energy={profile.energy}
             maxEnergy={profile.max_energy}
