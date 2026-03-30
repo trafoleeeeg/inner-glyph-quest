@@ -314,13 +314,14 @@ const Index = () => {
             moodAvg={moodAvg}
             stagnation={stagnationIndex}
           />
+          </div>
         )}
 
         {/* XP + Stats */}
-        <div id="tutorial-xp">
+        <div data-tour="xp-bar">
           {profile && <XPBar current={profile.xp} max={profile.xp_to_next} level={profile.level} displayName={profile.display_name} />}
         </div>
-        <div id="tutorial-stats">
+        <div data-tour="stats-row">
           {profile && <StatsRow energy={profile.energy} maxEnergy={profile.max_energy} streak={profile.streak} longestStreak={profile.longest_streak} totalMissions={profile.total_missions_completed} dreamsLogged={profile.total_dreams_logged} coins={profile.coins} />}
         </div>
 
