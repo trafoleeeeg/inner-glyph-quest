@@ -16,7 +16,7 @@ const BottomNav = () => {
 
   return (
     <nav
-      id="tutorial-nav"
+      data-tour="nav"
       className="fixed bottom-0 inset-x-0 z-40 bg-background border-t border-border pb-[env(safe-area-inset-bottom)]"
     >
       <div className="max-w-2xl mx-auto flex items-center justify-around h-12">

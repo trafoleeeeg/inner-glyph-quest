@@ -307,19 +307,21 @@ const Index = () => {
 
         {/* WHOOP-style state gauges */}
         {profile && (
+          <div data-tour="gauges">
           <StateGauges
             energy={profile.energy}
             maxEnergy={profile.max_energy}
             moodAvg={moodAvg}
             stagnation={stagnationIndex}
           />
+          </div>
         )}
 
         {/* XP + Stats */}
-        <div id="tutorial-xp">
+        <div data-tour="xp-bar">
           {profile && <XPBar current={profile.xp} max={profile.xp_to_next} level={profile.level} displayName={profile.display_name} />}
         </div>
-        <div id="tutorial-stats">
+        <div data-tour="stats-row">
           {profile && <StatsRow energy={profile.energy} maxEnergy={profile.max_energy} streak={profile.streak} longestStreak={profile.longest_streak} totalMissions={profile.total_missions_completed} dreamsLogged={profile.total_dreams_logged} coins={profile.coins} />}
         </div>
 
@@ -373,9 +375,7 @@ const Index = () => {
         )}
 
         {/* Life Overview */}
-        <div id="tutorial-fog">
-          <LifeOverview />
-        </div>
+        <LifeOverview />
 
         {/* AI Insights */}
         <AIInsights />
@@ -384,7 +384,7 @@ const Index = () => {
         <InsightsPanel />
 
         {/* Habits */}
-        <div id="tutorial-missions" className="py-4 border-b border-border">
+        <div data-tour="missions" className="py-4 border-b border-border">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-sm font-semibold text-foreground">Ежедневные привычки</h2>
             {missions.length > 0 && <span className="text-xs font-mono text-muted-foreground">{completedCount}/{missions.length}</span>}
@@ -422,9 +422,11 @@ const Index = () => {
         </div>
 
         {/* Tasks mini-section */}
-        <HubTasks />
+        <div data-tour="tasks">
+          <HubTasks />
+        </div>
 
-        <div id="tutorial-mood" className="grid md:grid-cols-2 gap-0">
+        <div data-tour="mood" className="grid md:grid-cols-2 gap-0">
           <MoodCheckin onSubmit={handleMoodSubmit} />
           <DreamJournal onSubmit={handleDreamSubmit} />
         </div>
