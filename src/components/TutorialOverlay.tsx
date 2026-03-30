@@ -73,22 +73,37 @@ export const TutorialProvider = ({ children }: { children: ReactNode }) => {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               className="fixed inset-0 z-[90]" onClick={skip}
               style={{ position: "fixed" }}>
-              <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.75)" }}>
-                {spotlight && (
-                  <div
-                    className="absolute rounded-xl"
-                    style={{
-                      top: spotlight.top - window.scrollY,
-                      left: spotlight.left,
-                      width: spotlight.width,
-                      height: spotlight.height,
-                      boxShadow: "0 0 0 9999px rgba(0,0,0,0.75)",
-                      background: "transparent",
-                      border: "2px solid hsl(var(--primary) / 0.5)",
-                    }}
+              {spotlight ? (
+                <svg className="absolute inset-0 w-full h-full">
+                  <defs>
+                    <mask id="tutorial-mask">
+                      <rect x="0" y="0" width="100%" height="100%" fill="white" />
+                      <rect
+                        x={spotlight.left}
+                        y={spotlight.top - window.scrollY}
+                        width={spotlight.width}
+                        height={spotlight.height}
+                        rx="12"
+                        fill="black"
+                      />
+                    </mask>
+                  </defs>
+                  <rect x="0" y="0" width="100%" height="100%" fill="rgba(0,0,0,0.8)" mask="url(#tutorial-mask)" />
+                  <rect
+                    x={spotlight.left}
+                    y={spotlight.top - window.scrollY}
+                    width={spotlight.width}
+                    height={spotlight.height}
+                    rx="12"
+                    fill="none"
+                    stroke="hsl(var(--primary))"
+                    strokeWidth="2"
+                    strokeOpacity="0.5"
                   />
-                )}
-              </div>
+                </svg>
+              ) : (
+                <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.8)" }} />
+              )}
             </motion.div>
 
             {/* Tooltip */}

@@ -221,13 +221,6 @@ const Index = () => {
     <div className="min-h-screen bg-background relative pb-20">
       
 
-      {/* Daily Checkin Overlay */}
-      <AnimatePresence>
-        {showDailyCheckin && profile && (
-          <DailyCheckin onComplete={handleDailyCheckinComplete} streak={profile.streak} />
-        )}
-      </AnimatePresence>
-
       {/* Streak Shield */}
       {profile && (
         <StreakShield
