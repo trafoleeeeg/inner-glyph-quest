@@ -384,7 +384,7 @@ const Index = () => {
         <InsightsPanel />
 
         {/* Habits */}
-        <div id="tutorial-missions" className="py-4 border-b border-border">
+        <div data-tour="missions" className="py-4 border-b border-border">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-sm font-semibold text-foreground">Ежедневные привычки</h2>
             {missions.length > 0 && <span className="text-xs font-mono text-muted-foreground">{completedCount}/{missions.length}</span>}
