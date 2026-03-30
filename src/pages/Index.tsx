@@ -51,8 +51,6 @@ const Index = () => {
   const [stagnationIndex, setStagnationIndex] = useState(0);
   const [showWhyBlock, setShowWhyBlock] = useState(() => !localStorage.getItem("neuro_why_understood"));
 
-  // Daily checkin state
-  const [showDailyCheckin, setShowDailyCheckin] = useState(false);
   // Streak shield state
   const [showStreakShield, setShowStreakShield] = useState(false);
   // Weekly report state
