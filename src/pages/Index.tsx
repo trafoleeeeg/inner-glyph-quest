@@ -34,7 +34,7 @@ import HubTasks from "@/components/HubTasks";
 import HubAnalytics from "@/components/HubAnalytics";
 
 
-const CHECKIN_KEY = "neuro_daily_checkin_";
+
 
 const Index = () => {
   const { user } = useAuth();
