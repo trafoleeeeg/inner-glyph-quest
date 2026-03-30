@@ -375,9 +375,7 @@ const Index = () => {
         )}
 
         {/* Life Overview */}
-        <div id="tutorial-fog">
-          <LifeOverview />
-        </div>
+        <LifeOverview />
 
         {/* AI Insights */}
         <AIInsights />
