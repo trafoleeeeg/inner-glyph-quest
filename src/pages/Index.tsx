@@ -60,70 +60,17 @@ const Index = () => {
     if (!localStorage.getItem("neuro_onboarded")) setShowOnboarding(true);
   }, []);
 
-  // Request browser notification permission
-  useEffect(() => {
-    if (!user || !profile) return;
-    if ("Notification" in window && Notification.permission === "default") {
-      // Ask after a short delay so it's not intrusive
-      const timer = setTimeout(() => {
-        Notification.requestPermission();
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [user, profile]);
-
-  // Schedule periodic in-app reminders via browser notifications
-  useEffect(() => {
-    if (!user || !profile) return;
-    if (!("Notification" in window) || Notification.permission !== "granted") return;
-
-    const checkAndNotify = () => {
-      const today = new Date().toISOString().split("T")[0];
-      const lastNotif = localStorage.getItem("neuro_last_notif_" + today);
-      if (lastNotif) return;
-
-      const hour = new Date().getHours();
-      // Morning reminder (9-11) or evening reminder (19-21)
-      if ((hour >= 9 && hour <= 11) || (hour >= 19 && hour <= 21)) {
-        const checkinDone = localStorage.getItem(CHECKIN_KEY + today);
-        if (!checkinDone) {
-          new Notification("Время для чекина 🧠", {
-            body: "Отметь настроение и энергию — это поможет найти закономерности",
-            icon: "/placeholder.svg",
-          });
-          localStorage.setItem("neuro_last_notif_" + today, "1");
-        }
-      }
-    };
-
-    checkAndNotify();
-    const interval = setInterval(checkAndNotify, 30 * 60 * 1000); // every 30 min
-    return () => clearInterval(interval);
-  }, [user, profile]);
-
-  // Check if daily checkin needed
+  // Check if it's Sunday for weekly report
   useEffect(() => {
     if (!user || !profile) return;
     const today = new Date().toISOString().split("T")[0];
-    const checkinDone = localStorage.getItem(CHECKIN_KEY + today);
-    if (!checkinDone && !showOnboarding) {
-      setShowDailyCheckin(true);
-    }
-    // Check if it's Sunday and no weekly report shown this week
     const dayOfWeek = new Date().getDay();
     const weekKey = `neuro_weekly_report_${today.slice(0, 7)}_w${Math.ceil(new Date().getDate() / 7)}`;
     if (dayOfWeek === 0 && !localStorage.getItem(weekKey)) {
       setTimeout(() => setShowWeeklyReport(true), 1000);
       localStorage.setItem(weekKey, "1");
     }
-  }, [user, profile, showOnboarding]);
-
-  const handleDailyCheckinComplete = () => {
-    const today = new Date().toISOString().split("T")[0];
-    localStorage.setItem(CHECKIN_KEY + today, "1");
-    setShowDailyCheckin(false);
-    refetchProfile();
-  };
+  }, [user, profile]);
 
   const handleStreakProtect = async () => {
     if (!user || !profile) return;
