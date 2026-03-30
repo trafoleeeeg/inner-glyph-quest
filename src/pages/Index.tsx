@@ -422,7 +422,9 @@ const Index = () => {
         </div>
 
         {/* Tasks mini-section */}
-        <HubTasks />
+        <div data-tour="tasks">
+          <HubTasks />
+        </div>
 
         <div id="tutorial-mood" className="grid md:grid-cols-2 gap-0">
           <MoodCheckin onSubmit={handleMoodSubmit} />
