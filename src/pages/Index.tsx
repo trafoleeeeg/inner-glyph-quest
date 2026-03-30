@@ -426,7 +426,7 @@ const Index = () => {
           <HubTasks />
         </div>
 
-        <div id="tutorial-mood" className="grid md:grid-cols-2 gap-0">
+        <div data-tour="mood" className="grid md:grid-cols-2 gap-0">
           <MoodCheckin onSubmit={handleMoodSubmit} />
           <DreamJournal onSubmit={handleDreamSubmit} />
         </div>
