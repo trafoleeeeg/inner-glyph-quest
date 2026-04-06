@@ -3,12 +3,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { MessageCircle, Plus, Search, Users, User } from "lucide-react";
+import { MessageCircle, Plus, Search, Users, User, Bot } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import BottomNav from "@/components/BottomNav";
 import NewConversationSheet from "@/components/messaging/NewConversationSheet";
 import { formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
+import { toast } from "sonner";
+
+const AI_USER_ID = "00000000-0000-0000-0000-000000000000";
 
 interface ConversationPreview {
   id: string;
@@ -29,6 +32,70 @@ const MessagesPage = () => {
   const [loading, setLoading] = useState(true);
   const [showNew, setShowNew] = useState(false);
   const [search, setSearch] = useState("");
+  const [startingAiChat, setStartingAiChat] = useState(false);
+
+  const startAiChat = async () => {
+    if (!user || startingAiChat) return;
+    setStartingAiChat(true);
+    
+    try {
+      const { data: myConvs } = await supabase
+        .from("conversation_participants")
+        .select("conversation_id")
+        .eq("user_id", user.id);
+
+      if (myConvs?.length) {
+        for (const mc of myConvs) {
+          const { data: conv } = await supabase
+            .from("conversations")
+            .select("id, type")
+            .eq("id", mc.conversation_id)
+            .eq("type", "dm")
+            .single();
+
+          if (conv) {
+            const { data: otherPart } = await supabase
+              .from("conversation_participants")
+              .select("user_id")
+              .eq("conversation_id", conv.id)
+              .eq("user_id", AI_USER_ID)
+              .single();
+
+            if (otherPart) {
+              navigate(`/messages/${conv.id}`);
+              setStartingAiChat(false);
+              return;
+            }
+          }
+        }
+      }
+
+      const { data: conv, error: convErr } = await supabase
+        .from("conversations")
+        .insert({ type: "dm", created_by: user.id })
+        .select()
+        .single();
+
+      if (convErr || !conv) throw convErr;
+
+      await supabase.from("conversation_participants").insert([
+        { conversation_id: conv.id, user_id: user.id, role: "owner" },
+        { conversation_id: conv.id, user_id: AI_USER_ID, role: "member" },
+      ]);
+
+      await supabase.from("messages").insert({
+        conversation_id: conv.id,
+        sender_id: AI_USER_ID,
+        content: "Привет! Я твой ИИ-психолог. О чем бы ты хотел поговорить сегодня?",
+        message_type: "text"
+      });
+
+      navigate(`/messages/${conv.id}`);
+    } catch (e) {
+      toast.error("Не удалось создать чат с ИИ");
+    }
+    setStartingAiChat(false);
+  };
 
   const fetchConversations = useCallback(async () => {
     if (!user) return;
