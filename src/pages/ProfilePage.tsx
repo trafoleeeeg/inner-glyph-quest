@@ -190,7 +190,7 @@ const ProfilePage = () => {
                 const file = e.target.files?.[0];
                 if (!file || !user) return;
                 const ext = file.name.split('.').pop();
-                const path = `avatars/${user.id}.${ext}`;
+                const path = `${user.id}/avatars/${Date.now()}.${ext}`;
                 const { error: uploadErr } = await supabase.storage.from("media").upload(path, file, { upsert: true });
                 if (uploadErr) { toast.error("Не удалось загрузить фото"); return; }
                 const { data: urlData } = supabase.storage.from("media").getPublicUrl(path);
