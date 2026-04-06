@@ -23,6 +23,8 @@ import LifeAnalysisPage from "./pages/LifeAnalysisPage";
 import MessagesPage from "./pages/MessagesPage";
 import ConversationPage from "./pages/ConversationPage";
 import NotFound from "./pages/NotFound";
+import AiChatWidget from "./components/AiChatWidget";
+import PersonalityTestsPage from "./pages/PersonalityTestsPage";
 
 const queryClient = new QueryClient();
 
