@@ -70,6 +70,23 @@ const AnalyticsCharts = () => {
         });
         setCompletionData(Object.entries(grouped).map(([date, count]) => ({ date, count })));
       }
+
+      // AI Memory entries
+      const { data: memories } = await (supabase as any)
+        .from("ai_memory_nodes")
+        .select("created_at")
+        .eq("user_id", user.id)
+        .gte("created_at", twoWeeksAgo)
+        .order("created_at");
+
+      if (memories) {
+        const grouped2: Record<string, number> = {};
+        memories.forEach((m: any) => {
+          const date = new Date(m.created_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
+          grouped2[date] = (grouped2[date] || 0) + 1;
+        });
+        setAiMemoryData(Object.entries(grouped2).map(([date, count]) => ({ date, count })));
+      }
     };
     fetchData();
   }, [user]);
