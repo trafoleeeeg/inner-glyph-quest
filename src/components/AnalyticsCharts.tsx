@@ -161,6 +161,24 @@ const AnalyticsCharts = () => {
           </ResponsiveContainer>
         </div>
       )}
+
+      {/* AI Psychologist Discussions Chart */}
+      {aiMemoryData.length > 0 && (
+        <div className="glass-card rounded-2xl p-5 border border-accent/10">
+          <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
+            🧠 Обсуждения с Психологом
+          </h3>
+          <ResponsiveContainer width="100%" height={150}>
+            <BarChart data={aiMemoryData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(220 15% 18%)" />
+              <XAxis dataKey="date" tick={{ fontSize: 10, fill: 'hsl(220 10% 55%)' }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 10, fill: 'hsl(220 10% 55%)' }} axisLine={false} tickLine={false} />
+              <Tooltip content={<CustomTooltip />} />
+              <Bar dataKey="count" name="Записи" fill="hsl(280 70% 60%)" radius={[4, 4, 0, 0]} opacity={0.8} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      )}
     </div>
   );
 };
