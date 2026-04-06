@@ -216,6 +216,22 @@ const MessagesPage = () => {
           </button>
         </div>
 
+        {/* AI Chat Banner */}
+        <div className="max-w-2xl mx-auto px-4 pb-2">
+          <button onClick={startAiChat} disabled={startingAiChat} className="w-full flex items-center justify-between p-3 rounded-xl bg-primary/10 border border-primary/20 hover:bg-primary/15 transition-colors">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                <Bot className="w-5 h-5 text-primary" />
+              </div>
+              <div className="text-left">
+                <p className="text-sm font-semibold text-foreground">Чат с ИИ Психологом</p>
+                <p className="text-[10px] text-muted-foreground">Персональный анализ и поддержка</p>
+              </div>
+            </div>
+            <div className="w-2 h-2 rounded-full bg-green-400" />
+          </button>
+        </div>
+
         {/* Search */}
         <div className="max-w-2xl mx-auto px-4 pb-3">
           <div className="relative">
