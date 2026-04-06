@@ -1442,6 +1442,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_conversation_participant: {
+        Args: { _conversation_id: string; _user_id: string }
+        Returns: boolean
+      }
       log_activity: {
         Args: {
           p_action_detail?: string
