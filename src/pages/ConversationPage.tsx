@@ -171,7 +171,7 @@ const ConversationPage = () => {
   const handleFileUpload = async (file: File, type: "image" | "video" | "audio" | "file") => {
     if (!user) return;
     const ext = file.name.split(".").pop();
-    const path = `chat/${conversationId}/${Date.now()}.${ext}`;
+    const path = `${user.id}/chat/${conversationId}/${Date.now()}.${ext}`;
     const { error } = await supabase.storage.from("media").upload(path, file);
     if (error) { toast.error("Ошибка загрузки"); return; }
     const { data: urlData } = supabase.storage.from("media").getPublicUrl(path);
@@ -182,7 +182,7 @@ const ConversationPage = () => {
   const handleMediaUpload = async (blob: Blob, type: "audio" | "video_circle") => {
     if (!user) return;
     const ext = type === "audio" ? "webm" : "webm";
-    const path = `chat/${conversationId}/${Date.now()}.${ext}`;
+    const path = `${user.id}/chat/${conversationId}/${Date.now()}.${ext}`;
     const { error } = await supabase.storage.from("media").upload(path, blob);
     if (error) { toast.error("Ошибка загрузки"); return; }
     const { data: urlData } = supabase.storage.from("media").getPublicUrl(path);
