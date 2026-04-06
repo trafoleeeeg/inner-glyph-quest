@@ -14,10 +14,16 @@ interface CompletionDataPoint {
   count: number;
 }
 
+interface AiMemoryDataPoint {
+  date: string;
+  count: number;
+}
+
 const AnalyticsCharts = () => {
   const { user } = useAuth();
   const [moodData, setMoodData] = useState<MoodDataPoint[]>([]);
   const [completionData, setCompletionData] = useState<CompletionDataPoint[]>([]);
+  const [aiMemoryData, setAiMemoryData] = useState<AiMemoryDataPoint[]>([]);
 
   useEffect(() => {
     if (!user) return;
