@@ -101,6 +101,72 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_memory_nodes: {
+        Row: {
+          category: string | null
+          content: string
+          created_at: string
+          id: string
+          importance: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          content: string
+          created_at?: string
+          id?: string
+          importance?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          content?: string
+          created_at?: string
+          id?: string
+          importance?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_psychologist_sessions: {
+        Row: {
+          created_at: string
+          id: string
+          mood_after: number | null
+          mood_before: number | null
+          session_end: string | null
+          session_start: string
+          summary: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          mood_after?: number | null
+          mood_before?: number | null
+          session_end?: string | null
+          session_start?: string
+          summary?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          mood_after?: number | null
+          mood_before?: number | null
+          session_end?: string | null
+          session_start?: string
+          summary?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       chat_messages: {
         Row: {
           created_at: string
@@ -630,6 +696,97 @@ export type Database = {
           title?: string
           type?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      personality_questions: {
+        Row: {
+          id: string
+          options: Json
+          order_index: number
+          question_text: string
+          test_id: string
+        }
+        Insert: {
+          id?: string
+          options: Json
+          order_index?: number
+          question_text: string
+          test_id: string
+        }
+        Update: {
+          id?: string
+          options?: Json
+          order_index?: number
+          question_text?: string
+          test_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "personality_questions_test_id_fkey"
+            columns: ["test_id"]
+            isOneToOne: false
+            referencedRelation: "personality_tests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      personality_results: {
+        Row: {
+          created_at: string
+          id: string
+          result_type: string
+          summary: string | null
+          test_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          result_type: string
+          summary?: string | null
+          test_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          result_type?: string
+          summary?: string | null
+          test_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "personality_results_test_id_fkey"
+            columns: ["test_id"]
+            isOneToOne: false
+            referencedRelation: "personality_tests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      personality_tests: {
+        Row: {
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          title?: string
         }
         Relationships: []
       }
