@@ -14,10 +14,16 @@ interface CompletionDataPoint {
   count: number;
 }
 
+interface AiMemoryDataPoint {
+  date: string;
+  count: number;
+}
+
 const AnalyticsCharts = () => {
   const { user } = useAuth();
   const [moodData, setMoodData] = useState<MoodDataPoint[]>([]);
   const [completionData, setCompletionData] = useState<CompletionDataPoint[]>([]);
+  const [aiMemoryData, setAiMemoryData] = useState<AiMemoryDataPoint[]>([]);
 
   useEffect(() => {
     if (!user) return;
@@ -63,6 +69,23 @@ const AnalyticsCharts = () => {
           grouped[date] = (grouped[date] || 0) + 1;
         });
         setCompletionData(Object.entries(grouped).map(([date, count]) => ({ date, count })));
+      }
+
+      // AI Memory entries
+      const { data: memories } = await (supabase as any)
+        .from("ai_memory_nodes")
+        .select("created_at")
+        .eq("user_id", user.id)
+        .gte("created_at", twoWeeksAgo)
+        .order("created_at");
+
+      if (memories) {
+        const grouped2: Record<string, number> = {};
+        memories.forEach((m: any) => {
+          const date = new Date(m.created_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
+          grouped2[date] = (grouped2[date] || 0) + 1;
+        });
+        setAiMemoryData(Object.entries(grouped2).map(([date, count]) => ({ date, count })));
       }
     };
     fetchData();
@@ -134,6 +157,24 @@ const AnalyticsCharts = () => {
               <YAxis tick={{ fontSize: 10, fill: 'hsl(220 10% 55%)' }} axisLine={false} tickLine={false} />
               <Tooltip content={<CustomTooltip />} />
               <Bar dataKey="count" name="Миссии" fill="hsl(140 70% 50%)" radius={[4, 4, 0, 0]} opacity={0.8} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      )}
+
+      {/* AI Psychologist Discussions Chart */}
+      {aiMemoryData.length > 0 && (
+        <div className="glass-card rounded-2xl p-5 border border-accent/10">
+          <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
+            🧠 Обсуждения с Психологом
+          </h3>
+          <ResponsiveContainer width="100%" height={150}>
+            <BarChart data={aiMemoryData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(220 15% 18%)" />
+              <XAxis dataKey="date" tick={{ fontSize: 10, fill: 'hsl(220 10% 55%)' }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 10, fill: 'hsl(220 10% 55%)' }} axisLine={false} tickLine={false} />
+              <Tooltip content={<CustomTooltip />} />
+              <Bar dataKey="count" name="Записи" fill="hsl(280 70% 60%)" radius={[4, 4, 0, 0]} opacity={0.8} />
             </BarChart>
           </ResponsiveContainer>
         </div>

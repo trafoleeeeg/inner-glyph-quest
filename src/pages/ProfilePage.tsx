@@ -9,6 +9,7 @@ import AchievementsList from "@/components/AchievementsList";
 import AnalyticsCharts from "@/components/AnalyticsCharts";
 import GrowthPathChart from "@/components/GrowthPathChart";
 import InnerDrives from "@/components/InnerDrives";
+import PersonalityPrints from "@/components/PersonalityPrints";
 import BottomNav from "@/components/BottomNav";
 import PostCard from "@/components/PostCard";
 import CreatePost from "@/components/CreatePost";
@@ -326,6 +327,9 @@ const ProfilePage = () => {
 
             {/* Inner Drives */}
             <InnerDrives />
+
+            {/* Personality Prints */}
+            <PersonalityPrints />
 
             {/* Stats Grid */}
             <div>

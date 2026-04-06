@@ -3,12 +3,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { MessageCircle, Plus, Search, Users, User } from "lucide-react";
+import { MessageCircle, Plus, Search, Users, User, Bot } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import BottomNav from "@/components/BottomNav";
 import NewConversationSheet from "@/components/messaging/NewConversationSheet";
 import { formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
+import { toast } from "sonner";
+
+const AI_USER_ID = "00000000-0000-0000-0000-000000000000";
 
 interface ConversationPreview {
   id: string;
@@ -29,6 +32,70 @@ const MessagesPage = () => {
   const [loading, setLoading] = useState(true);
   const [showNew, setShowNew] = useState(false);
   const [search, setSearch] = useState("");
+  const [startingAiChat, setStartingAiChat] = useState(false);
+
+  const startAiChat = async () => {
+    if (!user || startingAiChat) return;
+    setStartingAiChat(true);
+    
+    try {
+      const { data: myConvs } = await supabase
+        .from("conversation_participants")
+        .select("conversation_id")
+        .eq("user_id", user.id);
+
+      if (myConvs?.length) {
+        for (const mc of myConvs) {
+          const { data: conv } = await supabase
+            .from("conversations")
+            .select("id, type")
+            .eq("id", mc.conversation_id)
+            .eq("type", "dm")
+            .single();
+
+          if (conv) {
+            const { data: otherPart } = await supabase
+              .from("conversation_participants")
+              .select("user_id")
+              .eq("conversation_id", conv.id)
+              .eq("user_id", AI_USER_ID)
+              .single();
+
+            if (otherPart) {
+              navigate(`/messages/${conv.id}`);
+              setStartingAiChat(false);
+              return;
+            }
+          }
+        }
+      }
+
+      const { data: conv, error: convErr } = await supabase
+        .from("conversations")
+        .insert({ type: "dm", created_by: user.id })
+        .select()
+        .single();
+
+      if (convErr || !conv) throw convErr;
+
+      await supabase.from("conversation_participants").insert([
+        { conversation_id: conv.id, user_id: user.id, role: "owner" },
+        { conversation_id: conv.id, user_id: AI_USER_ID, role: "member" },
+      ]);
+
+      await supabase.from("messages").insert({
+        conversation_id: conv.id,
+        sender_id: AI_USER_ID,
+        content: "Привет! Я твой ИИ-психолог. О чем бы ты хотел поговорить сегодня?",
+        message_type: "text"
+      });
+
+      navigate(`/messages/${conv.id}`);
+    } catch (e) {
+      toast.error("Не удалось создать чат с ИИ");
+    }
+    setStartingAiChat(false);
+  };
 
   const fetchConversations = useCallback(async () => {
     if (!user) return;
@@ -146,6 +213,22 @@ const MessagesPage = () => {
             className="w-8 h-8 rounded-full flex items-center justify-center text-foreground hover:bg-muted/30 transition-colors"
           >
             <Plus className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* AI Chat Banner */}
+        <div className="max-w-2xl mx-auto px-4 pb-2">
+          <button onClick={startAiChat} disabled={startingAiChat} className="w-full flex items-center justify-between p-3 rounded-xl bg-primary/10 border border-primary/20 hover:bg-primary/15 transition-colors">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                <Bot className="w-5 h-5 text-primary" />
+              </div>
+              <div className="text-left">
+                <p className="text-sm font-semibold text-foreground">Чат с ИИ Психологом</p>
+                <p className="text-[10px] text-muted-foreground">Персональный анализ и поддержка</p>
+              </div>
+            </div>
+            <div className="w-2 h-2 rounded-full bg-green-400" />
           </button>
         </div>
 

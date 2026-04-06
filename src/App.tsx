@@ -23,6 +23,8 @@ import LifeAnalysisPage from "./pages/LifeAnalysisPage";
 import MessagesPage from "./pages/MessagesPage";
 import ConversationPage from "./pages/ConversationPage";
 import NotFound from "./pages/NotFound";
+import AiChatWidget from "./components/AiChatWidget";
+import PersonalityTestsPage from "./pages/PersonalityTestsPage";
 
 const queryClient = new QueryClient();
 
@@ -66,8 +68,10 @@ const App = () => (
                 <Route path="/messages/:conversationId" element={<ProtectedRoute><ConversationPage /></ProtectedRoute>} />
                 <Route path="/search" element={<ProtectedRoute><SearchPage /></ProtectedRoute>} />
                 <Route path="/user/:userId" element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
+                <Route path="/tests" element={<ProtectedRoute><PersonalityTestsPage /></ProtectedRoute>} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
+              <AiChatWidget />
             </TutorialProvider>
           </AuthProvider>
         </BrowserRouter>
