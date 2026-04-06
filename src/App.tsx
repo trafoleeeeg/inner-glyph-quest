@@ -66,8 +66,10 @@ const App = () => (
                 <Route path="/messages/:conversationId" element={<ProtectedRoute><ConversationPage /></ProtectedRoute>} />
                 <Route path="/search" element={<ProtectedRoute><SearchPage /></ProtectedRoute>} />
                 <Route path="/user/:userId" element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
+                <Route path="/tests" element={<ProtectedRoute><PersonalityTestsPage /></ProtectedRoute>} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
+              <AiChatWidget />
             </TutorialProvider>
           </AuthProvider>
         </BrowserRouter>

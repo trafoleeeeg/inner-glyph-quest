@@ -10,6 +10,9 @@ import { formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
 import AudioRecorder from "@/components/messaging/AudioRecorder";
 import VideoCircleRecorder from "@/components/messaging/VideoCircleRecorder";
+import { handleAiMessage } from "@/services/aiPsychologist";
+
+const AI_USER_ID = "00000000-0000-0000-0000-000000000000";
 
 interface Message {
   id: string;
@@ -164,6 +167,16 @@ const ConversationPage = () => {
       setInput("");
       await supabase.from("conversations").update({ updated_at: new Date().toISOString() }).eq("id", conversationId);
       import("@/lib/activityLogger").then(m => m.logActivity("message_sent", type, { conversation_id: conversationId }));
+      
+      // If we are in a conversation that includes the AI user, trigger the AI response
+      const { data: participants } = await supabase
+        .from("conversation_participants")
+        .select("user_id")
+        .eq("conversation_id", conversationId);
+        
+      if (participants?.some(p => p.user_id === AI_USER_ID) && type === "text" && text) {
+        handleAiMessage(conversationId, user.id, text);
+      }
     }
     setSending(false);
   };
